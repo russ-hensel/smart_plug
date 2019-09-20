@@ -1,14 +1,250 @@
 D:\Russ\0000\python00\python3\_projects\smart_plug\readme_rsh.txt
 
 
+this is mostly a scratch file for notes and output that really belong somewhere else
+
+
+
+
+====================== Notes ==========================
+
+adding DateEntry to the gui, pip install
+
+
+======================History To Do ================================
+** = when done   !! = planned or considerd ?? = think about
+
+
+?? should i be using from tkinter.scrolledtext import ScrolledText
+
+?? live graph -- research
+
+       self.starting_dir   = os.getcwd()
+
+!! fix time
+** create empty db
+** export csv
+*! coordinate function calls in 2 apps, get into Python convention
+!! initial db file name needs to be full path if it is not in the parameter file
+
+!! add device name to graph
+** add save graph ( on window )
+** units and zero
+!! make several devices on seperate graphs
+*! needs better error mangaement
+
+for time see parameters.py
+
+right now ( maybe ) unit conversion is supported only for the time axis
+units that are available ( parameters.py   )
+
+
+
+
+
+-------------------- wiki ---------------------
+
+[[Python Control of Smart Plugs]], [[Python Smart Terminal]], [[Python Smart Terminal Graph]], and other programs.
+
+The main page for this project is: [[Python Smart Terminal]].
+
+== Links ==
+=== Projects Using these Conventions ===
+=== Other Links ===
+*Use wiki feature "What Links Here".
+*[[Configuration Files For Python]]
+
+<!-----------
+
+this cannot bee seen
+------------->
+
 for using the tplink smart plug
 
-functions
-    info
-    on
-    off
-    monitor
-    timer count down
+functions  - at open circuits
+
+
+================  Help File =========================
+should all be at the open circuits wiki
+
+stuff below will go away
+
+wiki info should eventually be in .\wiki_etc
+
+
+
+
+
+================ Table of Contents =======================
+
+Application Features
+First Use of the SmartPlug Application
+How to Use the Parameter File
+
+
+
+
+======================= Working With Database Files ====================
+
+* Create a directory for your data and database -- application comes with defaults
+
+
+* Run database definition routine   button wf1
+       You need to name a database, application will default
+       You also need your sample file input, start with the one from
+       the step above.
+       look at output.......
+
+
+
+====================== Debugging ====================
+
+
+        Watch the console for error messages and in particular look for modules that may be missing ( I do not provide these, pip or conda should install them )
+
+
+
+= Work Flow Overview =
+
+================= Just a bit of theory the may be helpful - Some Definitions =
+
+Databases
+    These encode data in a structured and efficiently searchable format.  It also easily select subsets of
+    data and can sort those results.  There are lots of different kinds, but one fairly standard one is a SQL or
+    relational database.
+
+Database File
+    The file ( or one of the files ) where database information is kept.  We are using sqllite, which keeps a whole database
+    in one file.  This makes it very easy to move and/or backup a database.
+
+Table, Record, Column
+    in a SQL data base data is stored in Tables ( many tables may be put in one database ).  A table consists of records ( also called rows. )  Each row is information about some "thing".  For example if the "thing" is a person a record
+    might contain the person's first name, last name, date of birth.... The table is much like a spread sheet with
+    the information on each person in a row.  Each of the items ( first name, last name, date of birth.... ) is called a column.
+
+SQL - Structured Query Language
+    This is the language used by relational databases.  Typically the system generated the required SQL and runs
+    it.  The user interface often shows the SQL which is quite a bit easier to read than it is to write.
+    It may give you useful feedback on what the system is doing.
+
+
+readme_rsh.txt for the smartplug_graph
+D:\Russ\0000\python00\python3\_projects\smart_plug_graph\Ver2\readme_rsh.txt
+
+Author: Russ Hensel
+github: ??
+
+======================= Status ========================
+
+
+Runs but largely not working .... gui appears but lots of bogus stuff
+
+
+
+======================= to do =======================
+
+
+** create empty db
+** export csv
+
+!! initial db file name needs to be full path if it is not in the parameter file
+
+!! add device name to graph
+** add save graph ( on window )
+** units and zero
+!! make several devices on seperate graphs
+
+
+for time see parameters.py
+
+right now ( maybe ) unit conversion is supported only for the time axis
+units that are available ( parameters.py   )
+
+
+
+
+====================== Notes ==========================
+
+adding DateEntry to the gui, pip instlled
+
+
+======================History To Do ================================
+** = when done   !! = planned or considerd ?? = think about
+
+!! live graph -- research
+
+       self.starting_dir   = os.getcwd()
+	   
+	   
+	   readme_rsh.txt for the smartplug_graph
+D:\Russ\0000\python00\python3\_projects\smart_plug_graph\Ver2\readme_rsh.txt
+
+Author: Russ Hensel
+github: ??
+
+======================= Status ========================
+
+
+Runs but largely not working .... gui appears but lots of bogus stuff
+
+
+
+======================= to do =======================
+
+
+** create empty db
+** export csv
+
+!! initial db file name needs to be full path if it is not in the parameter file
+
+!! add device name to graph
+** add save graph ( on window )
+** units and zero
+!! make several devices on seperate graphs
+
+
+for time see parameters.py
+
+right now ( maybe ) unit conversion is supported only for the time axis
+units that are available ( parameters.py   )
+
+
+
+
+====================== Notes ==========================
+
+adding DateEntry to the gui, pip instlled
+
+
+======================History To Do ================================
+** = when done   !! = planned or considerd ?? = think about
+
+!! live graph -- research
+
+       self.starting_dir   = os.getcwd()
+
+========================= Dead Code ========================================================
+
+
+------------------- db and mode settings -------------
+
+
+
+
+========================= Dead Code ========================================================
+
+
+------------------- db and mode settings -------------
+
+
+
+
+
+
+
+
+
+========================= Dead Code ========================================================
 
 
 

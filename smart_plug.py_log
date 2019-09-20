@@ -1,0 +1,57 @@
+..2019-09-19 21:16:17,957 - splug - INFO - SmartPlugGraph : all done
+2019-09-19 21:27:53,403 - splug - INFO - Done config_logger
+2019-09-19 21:27:53,404 - splug - Level 99 - 
+2019-09-19 21:27:53,404 - splug - Level 99 - 
+2019-09-19 21:27:53,404 - splug - Level 99 - ============================
+2019-09-19 21:27:53,404 - splug - Level 99 - 
+2019-09-19 21:27:53,404 - splug - Level 99 - Running SmartPlug version = Ver5 2019 09 19.0
+2019-09-19 21:27:53,404 - splug - Level 99 - 
+2019-09-19 21:27:53,404 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver5/smart_plug.py
+2019-09-19 21:27:53,404 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver5
+2019-09-19 21:27:53,404 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-09-19 21:27:53,404 - splug - Level 99 - Time now: 2019-09-20 01:27:53
+2019-09-19 21:28:03,411 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-09-19 21:28:03,411 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-09-19 21:28:03,411 - splug - INFO - SmartPlug: all done
+2019-09-19 21:29:33,218 - splug - INFO - Done config_logger
+2019-09-19 21:29:33,218 - splug - Level 99 - 
+2019-09-19 21:29:33,218 - splug - Level 99 - 
+2019-09-19 21:29:33,218 - splug - Level 99 - ============================
+2019-09-19 21:29:33,218 - splug - Level 99 - 
+2019-09-19 21:29:33,218 - splug - Level 99 - Running SmartPlug version = Ver5 2019 09 19.0
+2019-09-19 21:29:33,218 - splug - Level 99 - 
+2019-09-19 21:29:33,218 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver5/smart_plug.py
+2019-09-19 21:29:33,218 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver5
+2019-09-19 21:29:33,218 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-09-19 21:29:33,218 - splug - Level 99 - Time now: 2019-09-20 01:29:33
+2019-09-19 21:29:46,227 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-09-19 21:29:46,227 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-09-19 21:29:46,227 - splug - INFO - SmartPlug: all done
+2019-09-20 11:49:56,332 - splug - INFO - Done config_logger
+2019-09-20 11:49:56,332 - splug - Level 99 - 
+2019-09-20 11:49:56,332 - splug - Level 99 - 
+2019-09-20 11:49:56,332 - splug - Level 99 - ============================
+2019-09-20 11:49:56,332 - splug - Level 99 - 
+2019-09-20 11:49:56,333 - splug - Level 99 - Running SmartPlug version = Ver5 2019 09 19.0
+2019-09-20 11:49:56,333 - splug - Level 99 - 
+2019-09-20 11:49:56,333 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver5/smart_plug.py
+2019-09-20 11:49:56,333 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver5
+2019-09-20 11:49:56,333 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-09-20 11:49:56,333 - splug - Level 99 - Time now: 2019-09-20 15:49:56
+2019-09-20 11:50:02,336 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-09-20 11:50:02,336 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-09-20 11:50:02,336 - splug - INFO - SmartPlug: all done
+2019-09-20 11:50:07,777 - splug - INFO - Done _config_logger
+2019-09-20 11:50:07,777 - splug - Level 99 - 
+2019-09-20 11:50:07,777 - splug - Level 99 - 
+2019-09-20 11:50:07,777 - splug - Level 99 - ============================
+2019-09-20 11:50:07,777 - splug - Level 99 - 
+2019-09-20 11:50:07,777 - splug - Level 99 - Running SmartPlugGraph  version = Ver5 2019 09 19.0 Mode: Default
+2019-09-20 11:50:07,777 - splug - Level 99 - 
+2019-09-20 11:50:07,777 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver5/smart_plug_graph.py
+2019-09-20 11:50:07,777 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver5
+2019-09-20 11:50:07,777 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-09-20 11:50:07,778 - splug - Level 99 - Time now: 2019-09-20 15:50:07
+2019-09-20 11:50:07,778 - splug.sp_graph - INFO - in Grapher __init__
+2019-09-20 11:50:07,825 - splug.gui - INFO - in class gui_new GUI init
+2019-09-20 11:50:13,737 - splug - INFO - SmartPlugGraph : all done

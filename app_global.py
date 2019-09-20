@@ -17,7 +17,7 @@ class AppGlobal( object ):
     use at class level ( do not _init_ ) for applicaation globals, similar to but different from parameters
     some global functions ??
     """
-    force_log_level         = 99    # value to force logging, high but not for errors
+    force_log_level         = 99        # value to force logging, high but not for errors
 
     controller              = None      # populated by the controller
     parameters              = "None"    # populated by parameters
@@ -29,10 +29,9 @@ class AppGlobal( object ):
     parameter_dicts         = {}         # set up in parameters ????? -- see and example std setup somw where
     smartplug_adapter_list   = None    # from controlerself.smartplug_adapter_list
 
+    # for the hours in the gui and their conversion to time
     dd_hours    = [ "0 Begin Day","01 - 1am","02 2am","03 3am","04 4am","05 5am","06 6am","07 7am","08 8am","09 9am","10 10am","11 11am","12 12am Noon",
                              "13 - 1pm","14 2pm","15 3pm","16 4pm","17 5pm","18 6pm","19 7pm","20 8pm","21 9pm","22 10pm","23 11pm",  ]
-
-
 
     def __init__(self,  controller  ):
         # this guy should not be created
@@ -42,6 +41,7 @@ class AppGlobal( object ):
     def to_str():
         """
         convert some of AppGlobals contents to a string for debugging - left over from some other app
+        might revive or delete
         """
         a_string   = (   "AppGlobal" +
                                   str (AppGlobal.parameter_dicts ) +

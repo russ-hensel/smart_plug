@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-
 """
 Purpose:
-    smart plut  ( tp link ) app with a gui
+    smart_plug.py  ( tp link ) app with a gui
     this is the main program, start it
+    related program smart_plug_graph.py
 
 Environment:
 
@@ -50,9 +50,8 @@ class SmartPlug( object ):
     """
     def __init__(self ):
         """
-        try to get all declared here or restart
+        mostl instances declared here or in restart
         """
-        #global print
         # ------------------- basic setup --------------------------------
         print( "" )
         print( "=============== starting SmartPlug ========================= " )
@@ -62,7 +61,7 @@ class SmartPlug( object ):
 
         AppGlobal.controller        = self
         self.app_name               = "SmartPlug"
-        self.version                = "Ver4 2019 09 08.0"
+        self.version                = "Ver5 2019 09 19.0"
 
         self.gui                    =  None  # the gui created later
         self.no_restarts            =  -1    # counter for the number of times the application is restarted
@@ -72,13 +71,12 @@ class SmartPlug( object ):
         self.queue_from_gui         = None
 #        self.gui_recieve_lock       = threading.Lock()   # when locked the gui will process recieve, aquired released in helper
                                                          # how different from just a variable set?
-        #self.org_print              = print  # save so can be reset this is the print function
         self.restart( )
 
     # --------------------------------------------------------
     def restart(self ):
         """
-        use to restart the app without ending it
+        use to restart the app without ending it - also exten init
         parameters will be reloaded and the gui rebuilt
         args: zip
         ret: zip ... all sided effects
@@ -100,7 +98,7 @@ class SmartPlug( object ):
             except Exception as ex_arg:
                 reload( parameters )              # this is python 2
 
-        self.polling_fail         = False   # flag set if polling in gui thread fails
+        self._polling_fail         = False   # flag set if _polling in gui thread fails
 
         self.is_first_gui_loop    = True
         self.ext_processing       = None     # built later frompermaters if specified
@@ -119,7 +117,7 @@ class SmartPlug( object ):
         self.smartplug_adapter_list     = []
 
         for i_device in self.parameters.device_list:
-            i_smartplug_adapter              = smart_plug_adapter.SmartPlugAdapter()
+            i_smartplug_adapter                = smart_plug_adapter.SmartPlugAdapter()
             self.smartplug_adapter_list.append( i_smartplug_adapter  )
             i_smartplug_adapter.name           = i_device[ "name" ]
             i_smartplug_adapter.tcpip          = i_device[ "tcpip" ]
@@ -150,7 +148,7 @@ class SmartPlug( object ):
 #        print( "==============================================" )
 
         self.gui                = gui.GUI(  )
-        self.gui.root.after( self.parameters.gt_delta_t, self.polling )
+        self.gui.root.after( self.parameters.gt_delta_t, self._polling )
         self.gui.run()
 
         self.post_to_queue( "stop", None  , (  ) )
@@ -189,7 +187,6 @@ class SmartPlug( object ):
         ret:  zip
         log_msg = "a message "
         # debug info warning, error critical
-
 
         """
         fll         = AppGlobal.force_log_level
@@ -232,6 +229,7 @@ class SmartPlug( object ):
     def post_to_queue( self, action, function, args ):
         """
         self.post_to_queue( action, function, args )
+        request action by other thread
         """
         loop_flag          = True
         ix_queue_max       = 10
@@ -244,7 +242,7 @@ class SmartPlug( object ):
                 self.queue_to_helper.put_nowait( ( action, function, args ) )
             except queue.Full:
 
-                # try again but give polling a chance to catch up
+                # try again but give _polling a chance to catch up
                 print( "smart_terminal queue full looping" )
                 self.logger.error( "queue to helper full looping" )
                 # protect against infinit loop if queue is not emptied
@@ -257,13 +255,14 @@ class SmartPlug( object ):
                     time.sleep( self.parameters.queue_sleep )
 
      # -------------------------------------------------------
-    def polling( self, ):
+    def _polling( self, ):
         """
         this is a private method
-        polling task runs continually in the GUI
+        _polling task runs continually in the GUI
         reciving data is an important task. but is it in this thread  any more  ??
+        there is still some effectively dead stuff from the smart_terminal
         also auto tasks will be run from here
-        polling frequency set via taskDelta, ultimately in parameters
+        _polling frequency set via taskDelta, ultimately in parameters
         http://matteolandi.blogspot.com/2012/06/threading-with-tkinter-done-properly.html
         safely invoke the method tk.after_idle to actually schedule the update. That's it!
         """
@@ -274,7 +273,7 @@ class SmartPlug( object ):
         function_args     = arguments to function which will be called  function( function_args ) This should be a tuple
         """
         if self.is_first_gui_loop:
-            # if we need a first loop item make a polling_init that is called ??
+            # if we need a first loop item make a _polling_init that is called ??
             # should be moved to gui !! turn back on unless messing up whole app
             # print("lifting...")
 #            self.gui.root.attributes("-topmost", True)  # seems to work
@@ -299,18 +298,18 @@ class SmartPlug( object ):
                 ( action, function, function_args ) = self.rec_from_queue()
 
         except Exception as ex_arg:
-            self.logger.error( "polling Exception in smart_terminal: " + str( ex_arg ) )
+            self.logger.error( "_polling Exception in smart_terminal: " + str( ex_arg ) )
             # ?? need to look at which we catch maybe just rsh
             (atype, avalue, atraceback)   = sys.exc_info()
             a_join  = "".join( traceback.format_list ( traceback.extract_tb( atraceback ) ) )
             self.logger.error( a_join )
 
         finally:
-            if  self.polling_fail:
+            if  self._polling_fail:
                 pass
             else:
                 #print 'In finally block for cleanup'
-                self.gui.root.after( self.parameters.gt_delta_t, self.polling )  # reschedule event
+                self.gui.root.after( self.parameters.gt_delta_t, self._polling )  # reschedule event
 
         return
 
@@ -360,9 +359,10 @@ class SmartPlug( object ):
     # ------------------------------------------
     def cb_device_action( self, button_ix, action  ):
         """
-        process devices, see lambda setup
+        process devices perhaps on, off timer , see lambda setup in button creation
+        mabe decode string in adapter as well
         """
-        print( f"controller.cb_device_action {button_ix}, {action}" )
+#        print( f"controller.cb_device_action {button_ix}, {action}" )
 
 #       check for valid index -- may be overly defensive, but so what
         if button_ix < len( AppGlobal.device_list ):
@@ -372,6 +372,7 @@ class SmartPlug( object ):
         else:
             msg      = f"invalid device index{button_ix}"
             self.gui.print_info_string( msg )
+            self.logger.info( msg )
             return
 
         # test getting time
@@ -381,6 +382,7 @@ class SmartPlug( object ):
 
         # wrap actions in try except and capture error info
         if   action == "info":
+            # move code to device adapter
             #self.gui.print_info_string( tcpip )
             info    = plug.hw_info   # need to process this into something nice -- is this subset of get_sysinfo()
             #print( type( info ) )
@@ -389,58 +391,36 @@ class SmartPlug( object ):
             info        = plug.get_sysinfo()
             info        = dict_to_str( info )
             self.gui.print_info_string( info )
-            label       = i_device.gui_tk_label
-            label.config( text = 'see info below' )
+#            label       = i_device.gui_tk_label
+#            label.config( text = 'see info below' )
+            msg  = "see info below"
+            self.gui.display_device_label( self, msg, i_device  )
 
         elif action == "start":   # may make synomonus with on ??
-
-            #        gui_combo      = i_device.gui_tk_combo
-            combo_contents = i_device.gui_tk_combo.get()
-            time_sec, time_string   = string_to_time( combo_contents )
-            if time_sec is None:
-                # factor as a function
-                i_device.on()
-                msg     = f"Plug start not time limit , is on: {plug.is_on }"
-                self.gui.print_info_string( msg )
-
-            else:
-                # move into device_adapter
-                i_device.timer_start         = time.time()
-                i_device.time_sec            = time_sec
-                i_device.time_sec_left       = time_sec
-                i_device.timer_on            = True
-
-                i_device.on()
-                print( f"Plug start time" )
-                msg     = f"Plug start is_on: {plug.is_on }"
-                self.gui.print_info_string( msg )
+            i_device.start_timer()
 
         elif action == "on":
+            # ?? move messaging to i_device ??/
             i_device.on()
-            #    print( f"Current state: {plug.state}" )
-            msg     = f"Plug is_on: {plug.is_on }"
-            self.gui.print_info_string( msg )
-
 
         elif action == "off":
             i_device.off()
-            msg     = f"Plug is_on: {plug.is_on }"
-            self.gui.print_info_string( msg )
+#            msg     = f"Plug is_on: {plug.is_on }"
+#            self.gui.print_info_string( msg )
 
         elif action == "record_on":
             i_device.record_on()
-            msg      = f"Record on plug is on : {plug.is_on }"
-            self.gui.print_info_string( msg )
+#            msg      = f"Record on plug is on : {plug.is_on }"
+#            self.gui.print_info_string( msg )
 
         elif action == "record_off":
             i_device.record_off()
-            msg     = f"Record off plug is on : {plug.is_on }"
-            self.gui.print_info_string( msg )
+#            msg     = f"Record off plug is on : {plug.is_on }"
+#            self.gui.print_info_string( msg )
 
         else:
             msg      = f"invalid action {action}"
             self.gui.print_info_string( msg )
-
 
    # ----------------------------------------------
     def cb_gui_test_1( self,  ):
@@ -462,8 +442,6 @@ class SmartPlug( object ):
         print( ret )
         #self.helper_thread.toggle_lock()
 
-
-
 # ==============================================
 if __name__ == '__main__':
     """
@@ -472,7 +450,6 @@ if __name__ == '__main__':
     a_app = SmartPlug(  )
 
 
-#    a_app = TestAppOne(  )
 
 
 

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #
-# gui    for schedule me  - this is a cleaned up ( somewhat ) new version
-#
-#
-# status
-#       ** from smart terminal
+"""
+ gui    for smartplug
+
+"""
+
 
 import  logging
 import  pyperclip
@@ -12,24 +12,20 @@ from    tkinter import *   # is added everywhere since a gui assume tkinter name
 import  sys
 from    tkinter import ttk
 
-# local
+# local imports
 from app_global import AppGlobal
-
-#class XButton(object):
-#    """
-#    extended button to let us hold some more instances .... but cant we just inject
-#    """
-#
 
 
 class RedirectText(object):
     """
+    not currently used ???
     simple class to let us redirect console prints to our recieve area
     http://www.blog.pythonlibrary.org/2014/07/14/tkinter-redirecting-stdout-stderr/
+
     """
     #----------------------------------------------------------------------
     def __init__(self, text_ctrl):
-        """Constructor
+        """
         text_ctrl text area where we want output to go
         """
         self.output = text_ctrl
@@ -70,9 +66,7 @@ class GUI( object ):
         self.root               = Tk()    # this is the tkinter root for the GUI move to gui after new working well plus bunch after here
 
         a_title   = self.controller.app_name + " version: " + self.controller.version # + " mode: " + self.parameters.mode
-
         self.root.title( a_title )
-
         self.root.geometry( self.parameters.win_geometry )
 
         self.logger             = logging.getLogger( self.controller.logger_id + ".gui")
@@ -80,7 +74,7 @@ class GUI( object ):
 
         self.save_redir          = None
 
-        self.save_sys_stdout     = sys.stdout
+        self.save_sys_stdout     = sys.stdout   # think obsolete
 
         self.rec_text            = None    # set later   # ?? rename globally later
 
@@ -91,7 +85,7 @@ class GUI( object ):
         self.prefix_info         = self.parameters.prefix_info
 
         #Button names -- this is a method I am not sure I will use in the future
-        self.BN_PORTS             = "Ports"
+
         self.BN_CP_SELECTION      = "Copy Sel"
         self.BN_CVERT             = "Cvert"
         self.BN_CP_ALL            = "Copy All"
@@ -100,191 +94,155 @@ class GUI( object ):
 
         # --------- gui standards work on more have themes have in another object ?
         # but there are things called themes, look for more docu
-        self.bn_color      = "gray"
-        lbl_color          = "gray"
-        self.text_color    = "white"
-        self.bkg_color     = "gray"
+        self.btn_color     = self.parameters.btn_color
+        self.bkg_color     = self.parameters.bkg_color
+        #self.text_color    = "white"
 
         next_frame = 0    # position row for frames
-        # self.aParent -> self.root -> self.rec_frame
 
-        #self.root_b      = Frame( self.root )   # this may be an extra unneeded frame
+        self.root.configure(background = self.bkg_color )
 
-        # try without root_b
-        self.root_b       = self.root
-        self.root.configure(background='black')
-#
-#        #self.root.grid( column=1, row=1 )  # this seems to set up the col grid in the root
-#        #self.root.pack( expand = True, sticky = E+W )  # this also works, why needed? sticky not an option here
-#
-#        # --------------------->> begin building ---------------------
-#        # this frame self.root may be rudundant with its parent
-        #self.root_b.grid(  column=0,row=0, sticky= E+W+N+S )
+        self.root.grid_columnconfigure( 0, weight=1 ) # final missing bit of magic
+#        self.root.grid_rowconfigure(    0, weight=1 )
 
-        self.root.grid_columnconfigure( 0, weight = 1 )
-        self.root.grid_rowconfigure(    0, weight = 0 )
-
-        #self.root.grid_columnconfigure( 1, weight = 1 )
-        self.root.grid_rowconfigure(    1, weight = 1 )
-#
-#        if self.parameters.id_height > 0:
-#            a_frame  = self.make_id_frame( self.root_b,  )
-#            a_frame.grid( row=next_frame, column=0, sticky = E + W + N + S )   # + N + S  )  # actually only expands horiz
-#            next_frame += 1
-#
-#        a_frame  = self.__make_parm_frame__( self.root_b,  )
-#        a_frame.grid( row=next_frame, column=0, sticky = E + W + N + S )   # + N + S  )  # actually only expands horiz
-#        next_frame += 1
-#
-#        if self.parameters.show_helper_frame:
-#            a_frame  = self.__make_helper_frame__( self.root_b,  )
-#            a_frame.grid( row=next_frame, column=0, sticky = E + W + N + S )   # + N + S  )  # actually only expands horiz
-#            next_frame += 1
-#
-        a_frame = self.make_button_frame( self.root_b,  )
-        a_frame.grid(row=next_frame, column=0, sticky=E + W + N)
+        a_frame = self._make_button_frame( self.root,  )
+        a_frame.grid(row=next_frame, column=0, sticky = E + W + N )
         next_frame += 1
 
-
-        a_frame = self.__make_smart_plug_frame__( self.root_b,  )
-        a_frame.grid( row = next_frame, column=0, sticky=E + W + N)
+        a_frame = self._make_smart_plug_frame( self.root,  )
+        a_frame.grid( row = next_frame, column=0, sticky = E + W + N)
         next_frame += 1
 
-        # ------------ recieve frame ---------------------
+        # ------------ message frame ---------------------
         self.cb_scroll_var  = IntVar()  # for check box in reciev frame
 
-        a_frame    = self.make_rec_frame( self.root_b, "green" )
+        a_frame    = self._make_message_frame( self.root,   )
         self.rec_frame    = a_frame
         a_frame.grid( row=next_frame, column=0, sticky= E + W + N + S )
         next_frame += 1
 
+#        # -------- does this help
+        self.root.grid_rowconfigure( ( next_frame - 1 ), weight=1 )
 
-    #------ build frames  ------------------------
+    #------ build frame methods ------------------------
     # ------------------------------------------
-    def make_id_frame( self, parent, ):
+    def _make_id_frame( self, parent, ):
         """
         make a frame to help ID the app, initially a color band.
+        not implemented ?? but may be nice to have
         """
         a_frame  = Frame( parent, width=300, height=20, bg=self.parameters.id_color, relief=RAISED, borderwidth=1 )
 
         return a_frame
 
+#    # ------------------------------------------
+#    def _make_parm_frame( self, parent, ):
+#        """
+#        make parameter frame
+#        open/close port show port parms
+#        arg: parent is parent widget
+#        return frame to be placed
+#        """
+#        a_frame  = Frame( parent, width=600, height=200, bg =  self.parameters.bk_color, relief=RAISED, borderwidth=1 )
+#
+#        lrow   =  0
+#        lcol   =  0
+#        a_spacer  = Frame( a_frame, width=60, height=60, bg =self.parameters.id_color, relief=RAISED, borderwidth=1 )
+#        a_spacer.grid( row = 0, column=1, sticky=E + W + N + S, rowspan = 2 )
+#
+#        lrow   =  0
+#        lcol   += 1
+#        a_label   = ( Label( a_frame, text = "Communications >>", relief = RAISED,  )  )
+#        a_label.grid( row = lrow, column = lcol, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+#
+#        # ---------
+#        for ix in range( self.max_lables ):
+#            self.lables.append( Label( a_frame, text = "lbls" + str( ix ), relief = RAISED,  )  )
+#
+#        lrow    = 0
+#        lcol   += 2
+#        #lcol   += 1
+#        for i_label in self.lables:
+#            #print "label at ", lrow, lcol
+#            i_label.grid( row=lrow, column=lcol, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+#
+#            lrow    += 1
+#            if lrow >= 2:
+#                lrow   =  0
+#                lcol   += 1
+#
+#        for ix in range(  2, lcol  ):
+#            a_frame.grid_columnconfigure( ix, weight=0 )
+#
+#        # add some more for db, different style, which do I like best?   self.parameters.bk_color
+#        lrow   =  0
+#        lcol   += 1
+#        a_spacer  = Frame( a_frame, width=60, height=60, bg = self.parameters.bk_color, relief=RAISED, borderwidth=1 )
+#        a_spacer.grid( row = 0, column = lcol, sticky = E + W + N + S, rowspan = 2 )
+#
+#        lrow   =  0
+#        lcol   += 1
+#        a_label   = ( Label( a_frame, text = "Database >>", relief = RAISED,  )  )
+#        a_label.grid( row = lrow, column = lcol, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+#
+#        lcol   += 1
+#        #lrow    += 1
+#        if lrow >= 2:
+#            lrow   =  0
+#            lcol   += 1
+#
+#        a_label   = ( Label( a_frame, text = "status", relief = RAISED,  )  )
+#        a_label.grid( row=lrow, column=lcol, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+#        self.lbl_db_status                    = a_label
+#        self.show_dict[ 'db_status' ]         = a_label
+#
+#        ( lrow, lcol, self.lbl_db_connect )   = self._make_a_label( a_frame, lrow, lcol, "connnect", )
+#        self.show_dict[ 'db_connect' ]        = self.lbl_db_connect      # Add new entry
+#
+#        ( lrow, lcol, self.lbl_db_host )      = self._make_a_label( a_frame, lrow, lcol, "host", )
+#        self.show_dict[ 'db_host' ]           = self.lbl_db_host
+#
+#        ( lrow, lcol, self.lbl_db_db )        = self._make_a_label( a_frame, lrow, lcol, "db", )
+#        self.show_dict[ "db_db" ]             = self.lbl_db_db
+#
+#        ( lrow, lcol, self.lbl_db_user )      = self._make_a_label( a_frame, lrow, lcol, "user", )
+#        self.show_dict[ "db_user" ]           = self.lbl_db_user
+#
+#        #( lrow, lcol, a_lbl        )          = self._make_a_label( a_frame, lrow, lcol, "Extraaaa", "extra", self.show_dict )
+#        #self.show_dict[ "Extra" ]           = a_lbl
+#
+#        return  a_frame
+
+#     # ------------------------------------------
+#    def _make_helper_frame( self, parent, ):
+#        """
+#        make helper frame place to display helper info/status
+#        this may be only for debugging
+#        arg: parent is parent widget
+#        return frame to be placed
+#        """
+#        a_frame  = Frame( parent, width=600, height=20, bg ="gray", relief=RAISED, borderwidth=1 )
+#
+#        lrow   =  0
+#        lcol   =  0
+#        a_label   = Label( a_frame, text = "auto", relief = RAISED, width = 100, ) # wraplength = 90   )
+#        a_label.grid( row = lrow, column = lcol, columnspan=10,  sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+#
+#        self.show_dict[ "helper_info" ]   =  a_label    # if not there then  houston we have a prblem
+#        #self.helper_label     = a_label   # only helper writes to it
+#
+#        return  a_frame
+
     # ------------------------------------------
-    def __make_parm_frame__( self, parent, ):
-        """
-        make parameter frame
-        open/close port show port parms
-        arg: parent is parent widget
-        return frame to be placed
-        """
-        a_frame  = Frame( parent, width=600, height=200, bg =  self.parameters.bk_color, relief=RAISED, borderwidth=1 )
-
-        lrow   =  0
-        lcol   =  0
-        a_spacer  = Frame( a_frame, width=60, height=60, bg =self.parameters.id_color, relief=RAISED, borderwidth=1 )
-        a_spacer.grid( row = 0, column=1, sticky=E + W + N + S, rowspan = 2 )
-
-        lrow   =  0
-        lcol   += 1
-        a_label   = ( Label( a_frame, text = "Communications >>", relief = RAISED,  )  )
-        a_label.grid( row = lrow, column = lcol, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-
-        # ---------
-        for ix in range( self.max_lables ):
-            self.lables.append( Label( a_frame, text = "lbls" + str( ix ), relief = RAISED,  )  )
-
-        lrow    = 0
-        lcol   += 2
-        #lcol   += 1
-        for i_label in self.lables:
-            #print "label at ", lrow, lcol
-            i_label.grid( row=lrow, column=lcol, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-
-            lrow    += 1
-            if lrow >= 2:
-                lrow   =  0
-                lcol   += 1
-
-        for ix in range(  2, lcol  ):
-            a_frame.grid_columnconfigure( ix, weight=0 )
-            #iframe.grid_rowconfigure(    0, weight=0 )
-
-        # add some more for db, different style, which do I like best?   self.parameters.bk_color
-        lrow   =  0
-        lcol   += 1
-        a_spacer  = Frame( a_frame, width=60, height=60, bg = self.parameters.bk_color, relief=RAISED, borderwidth=1 )
-        a_spacer.grid( row = 0, column = lcol, sticky = E + W + N + S, rowspan = 2 )
-
-        lrow   =  0
-        lcol   += 1
-        a_label   = ( Label( a_frame, text = "Database >>", relief = RAISED,  )  )
-        a_label.grid( row = lrow, column = lcol, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-
-        lcol   += 1
-        #lrow    += 1
-        if lrow >= 2:
-            lrow   =  0
-            lcol   += 1
-
-        a_label   = ( Label( a_frame, text = "status", relief = RAISED,  )  )
-        a_label.grid( row=lrow, column=lcol, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-        self.lbl_db_status                    = a_label
-        self.show_dict[ 'db_status' ]         = a_label
-
-        ( lrow, lcol, self.lbl_db_connect )   = self.__make_label__( a_frame, lrow, lcol, "connnect", )
-        self.show_dict[ 'db_connect' ]        = self.lbl_db_connect      # Add new entry
-
-        ( lrow, lcol, self.lbl_db_host )      = self.__make_label__( a_frame, lrow, lcol, "host", )
-        self.show_dict[ 'db_host' ]           = self.lbl_db_host
-
-        ( lrow, lcol, self.lbl_db_db )        = self.__make_label__( a_frame, lrow, lcol, "db", )
-        self.show_dict[ "db_db" ]             = self.lbl_db_db
-
-        ( lrow, lcol, self.lbl_db_user )      = self.__make_label__( a_frame, lrow, lcol, "user", )
-        self.show_dict[ "db_user" ]           = self.lbl_db_user
-
-        #( lrow, lcol, a_lbl        )          = self.__make_label__( a_frame, lrow, lcol, "Extraaaa", "extra", self.show_dict )
-        #self.show_dict[ "Extra" ]           = a_lbl
-
-        return  a_frame
-
-     # ------------------------------------------
-    def __make_helper_frame__( self, parent, ):
-        """
-        make helper frame place to display helper info/status
-        this may be only for debugging
-        arg: parent is parent widget
-        return frame to be placed
-        """
-        a_frame  = Frame( parent, width=600, height=20, bg ="gray", relief=RAISED, borderwidth=1 )
-
-        lrow   =  0
-        lcol   =  0
-        a_label   = Label( a_frame, text = "auto", relief = RAISED, width = 100, ) # wraplength = 90   )
-        a_label.grid( row = lrow, column = lcol, columnspan=10,  sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-
-        self.show_dict[ "helper_info" ]   =  a_label    # if not there then  houston we have a prblem
-        #self.helper_label     = a_label   # only helper writes to it
-
-        return  a_frame
-
-    # ------------------------------------------
-    def make_button_frame( self, parent, ):
+#    def make_cc_button_frame( self, parent, ):
+    def _make_button_frame( self, parent, ):
         """
         this is the primary frame for the standard gui buttons pretty much for all modes
         """
         a_frame  = Frame( parent, width=300, height=200,
-                         #bg          = self.parameters.bk_color,
-                         bg          = "red",
+                         #bg          = self.parameters.id_color,
+                         bg          = self.parameters.bkg_color,
                          relief      = RAISED, borderwidth=1 )
-
-#        buttonOpen = Button( a_frame , width=10, height=2, text = "Open" )
-#        buttonOpen.bind( "<Button-1>", self.doOpenButton )
-#        buttonOpen.pack( side = LEFT )
-#
-#        buttonClose = Button( a_frame , width=10, height=2, text = "Close" )
-#        buttonClose.bind( "<Button-1>", self.doCloseButton )
-#        buttonClose.pack( side = LEFT )
 
         a_button = Button( a_frame , width=10, height=2, text = "Edit Log" )
         a_button.config( command = self.controller.os_open_logfile )
@@ -298,15 +256,6 @@ class GUI( object ):
             a_button = Button( a_frame , width=10, height=2, text = "Edit ParmsX" )
             a_button.config( command = self.controller.os_open_parmxfile )
             a_button.pack( side = LEFT )
-
-#        buttonClose = Button( a_frame , width=10, height=2, text = "SendParms" )
-#        buttonClose.bind( "<Button-1>", self.cb_send_as_parm )
-#        buttonClose.pack( side = LEFT )
-#
-#        #------- LIST PORTS
-#        a_button = Button( a_frame , width=10, height=2, text = self.BN_PORTS )
-#        a_button.bind( "<Button-1>", self.doButtonText )
-#        a_button.pack( side = LEFT )
 
         a_button = Button( a_frame , width=10, height=2, text = "Restart" )
         a_button.config( command = self.controller.restart )
@@ -325,16 +274,15 @@ class GUI( object ):
         return a_frame
 
         # ------------------------------------------
-    def __make_smart_plug_frame__( self, parent, ):
+    def _make_smart_plug_frame( self, parent, ):
         """
         one button set for each smartplug, config from parameters
-        consider gui helper functions
+        consider column titles ??
         note cute lambda
         may want to put function call in the array ... no ??
         """
         a_frame  = Frame( parent, width=300, height=200,
-                         #bg          = self.parameters.bk_color,
-                         bg          = "green",
+                         bg          = self.bkg_color,
                          relief      = RAISED, borderwidth=1 )
 
         rowspan    = 2
@@ -374,21 +322,25 @@ class GUI( object ):
             a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
             lcol +=  1
 
-            a_button  = Button( a_frame , width=10, height=2, text = "Start Timer"  )
+            a_button  = Button( a_frame , width=10, height=2, text = "Start Timer for:"  )
             a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "start" ) )
             a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
             #print( "made device button" )
             lcol +=  1
 
-            times = ( "infinite", .1, .5, 1,  2,   3, 5, 10 )   # think about adding units
+            times = ( "infinite", .1, .5, 1,  2, 3, 5, 10, 15, 20, 25, 30, 40, 50, 60  )   # think about adding units...
             #cbp3 = ttk.Labelframe(demoPanel, text='Pre-defined List')  # see ex_tkcombobox
-            a_widget   =  ttk.Combobox( a_frame, values=times, state='readonly')
-            a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+            a_widget   =  ttk.Combobox( a_frame, values=times, state='readonly', ) # text = "infinite" ) does not work
+            a_widget.current( 6 )    # set vaue
+            a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )
             i_smartplug_adapter.gui_tk_combo = a_widget
             lcol +=  1
 
-            a_widget   =  Label( a_frame, text = "12345678901234567890", justify = LEFT, anchor = W,
+            # once lable width set seems to stick -- adjust to your liking
+            a_widget   =  Label( a_frame, text =  80*" ", justify = LEFT, anchor = W,
                                  borderwidth = 5, relief = RAISED,  )
+            a_widget.config( width = 30)   # if not set adjusts to text
+
             a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky = E + W + N + S )
             i_smartplug_adapter.gui_tk_label  = a_widget
             lcol +=  1
@@ -396,12 +348,12 @@ class GUI( object ):
         return a_frame
 
     # ------------------------------------------
-    def __make_one_send_frame__( self, parent, ix_send ):
+    def _make_one_send_frame( self, parent, ix_send ):
         """
         make a new send frame, for just one button and text entry to send
         return frame for placement
         """
-        # print "__make_send_frame__"  color does not really work here as sends fill area
+        # print "___make_send_frame__"  color does not really work here as sends fill area
         send_frame  = Frame( parent, width=300, height=200, bg=self.parameters.id_color, relief=RAISED, borderwidth=1 )
 
         a_text = Entry( send_frame , ) # width=50, ) # height=2 )
@@ -429,101 +381,102 @@ class GUI( object ):
 
         return send_frame
 
+#    # ------------------------------------------
+#    def _make_send_frame( self, parent,  ):  # if this were a class then could access its variables later
+#        """
+#        make a new send frame containing little send frames
+#        """
+#        # print "___make_send_frame__"  color does not really work here as sends fill area
+#
+#        send_frame        = Frame( parent, width=300, height=200,
+#                                    #bg = self.parameters.bk_color,
+#                                    bg = "green",
+#                                    relief=RAISED, borderwidth=1 )
+#        self.ix_send      = 0
+#        self.send_frames  = []
+#        ix_row            = 0
+#        ix_col            = 0
+#
+#        # convert the parameter send_ctrls to our tuple form to make later processing easier
+#        ix_max_row        = self.parameters.max_send_rows
+#        parm_send_ctrls   = self.parameters.send_ctrls
+#        send_ctrls        = []
+#
+#        for ix in range( self.parameters.gui_sends ):
+#
+#            if ix < len( parm_send_ctrls ):
+#                parm_send_ctrl  = parm_send_ctrls[ ix ]
+#                if type( parm_send_ctrl ).__name__ == "tuple":
+#                    #print "is tuple"
+#                    send_ctrl  = parm_send_ctrl
+#                else:
+#                    # then it is text
+#                    send_ctrl  = ( "Send", parm_send_ctrl, True )
+#            else:
+#                send_ctrl  = ( "Send", "", True )
+#            #print( send_ctrl )
+#            send_ctrls.append( send_ctrl )
+#        #print( send_ctrls )
+#
+#        for i_send_ctrl  in send_ctrls:
+#
+#            send_frame1    =  self._make_one_send_frame_new( send_frame, self.ix_send, i_send_ctrl   )
+#            self.send_frames.append( send_frame1 )
+#            send_frame1.grid( row=ix_row,  column=ix_col, sticky= E + W + N  )
+#
+#            self.ix_send   += 1
+#            ix_row         += 1
+#            if ix_row >= ix_max_row:
+#                ix_row    = 0
+#                ix_col    += 1
+#
+#        return send_frame
+#
+#    # ------------------------------------------
+#    def _make_one_send_frame_new( self, parent, ix_send, ctrl_info ):  # if this were a class then could access its variables later
+#        """
+#        make a new send frame, for just one button and text entry to send
+#        """
+#        ( b_text, s_text, s_enable )  = ctrl_info
+#
+#        # print "___make_send_frame__"  color does not really work here as sends fill area
+#        #send_frame  = Frame( parent, width=300, height=200, bg=self.parameters.bk_color, relief=RAISED, borderwidth=1 )  # maybe color should always be gray
+#        send_frame  = Frame( parent, width=300, height=200, bg="gray", relief=RAISED, borderwidth=1 )  # maybe color should always be gray
+#
+#        a_text = Entry( send_frame , ) # width=50, ) # height=2 )
+#        a_text.configure( bg = "gray" )
+#        a_text.delete(0, END)    # this may be bad syntax when use eleswher
+#
+#        a_text.insert( 0, s_text )
+#
+#        if s_enable:
+#            a_text.config( state =  NORMAL   )
+#        else:
+#            a_text.config( state =  DISABLED )
+#
+#        a_button = Button( send_frame , width=10, height=2, text = b_text )
+#        a_button.bind( "<Button-1>", self.cb_send_button ) # function name no () which would call function then
+#
+#        # position
+#        a_button.pack( side = LEFT )
+#        a_text.pack(   side = LEFT, fill=BOTH, expand=1)  #  fill X Y BOTH but also need expand=1 ( or prehaps True )
+#
+#        # save for send function
+#        self.sends.append( send_frame )
+#        self.sends_buttons.append( a_button )
+#        self.sends_data.append( a_text )
+#
+#        return send_frame
+
     # ------------------------------------------
-    def make_send_frame( self, parent,  ):  # if this were a class then could access its variables later
+    def _make_message_frame( self, parent,  ):
         """
-        make a new send frame containing little send frames
+        make the message frame
         """
-        # print "__make_send_frame__"  color does not really work here as sends fill area
-
-        send_frame        = Frame( parent, width=300, height=200,
-                                    #bg = self.parameters.bk_color,
-                                    bg = "green",
-                                    relief=RAISED, borderwidth=1 )
-        self.ix_send      = 0
-        self.send_frames  = []
-        ix_row            = 0
-        ix_col            = 0
-
-        # convert the parameter send_ctrls to our tuple form to make later processing easier
-        ix_max_row        = self.parameters.max_send_rows
-        parm_send_ctrls   = self.parameters.send_ctrls
-        send_ctrls        = []
-
-        for ix in range( self.parameters.gui_sends ):
-
-            if ix < len( parm_send_ctrls ):
-                parm_send_ctrl  = parm_send_ctrls[ ix ]
-                if type( parm_send_ctrl ).__name__ == "tuple":
-                    #print "is tuple"
-                    send_ctrl  = parm_send_ctrl
-                else:
-                    # then it is text
-                    send_ctrl  = ( "Send", parm_send_ctrl, True )
-            else:
-                send_ctrl  = ( "Send", "", True )
-            #print( send_ctrl )
-            send_ctrls.append( send_ctrl )
-        #print( send_ctrls )
-
-        for i_send_ctrl  in send_ctrls:
-
-            send_frame1    =  self.__make_one_send_frame___new( send_frame, self.ix_send, i_send_ctrl   )
-            self.send_frames.append( send_frame1 )
-            send_frame1.grid( row=ix_row,  column=ix_col, sticky= E + W + N  )
-
-            self.ix_send   += 1
-            ix_row         += 1
-            if ix_row >= ix_max_row:
-                ix_row    = 0
-                ix_col    += 1
-
-        return send_frame
-
-    # ------------------------------------------
-    def __make_one_send_frame___new( self, parent, ix_send, ctrl_info ):  # if this were a class then could access its variables later
-        """
-        make a new send frame, for just one button and text entry to send
-        """
-        ( b_text, s_text, s_enable )  = ctrl_info
-
-        # print "__make_send_frame__"  color does not really work here as sends fill area
-        #send_frame  = Frame( parent, width=300, height=200, bg=self.parameters.bk_color, relief=RAISED, borderwidth=1 )  # maybe color should always be gray
-        send_frame  = Frame( parent, width=300, height=200, bg="gray", relief=RAISED, borderwidth=1 )  # maybe color should always be gray
-
-        a_text = Entry( send_frame , ) # width=50, ) # height=2 )
-        a_text.configure( bg = "gray" )
-        a_text.delete(0, END)    # this may be bad syntax when use eleswher
-
-        a_text.insert( 0, s_text )
-
-        if s_enable:
-            a_text.config( state =  NORMAL   )
-        else:
-            a_text.config( state =  DISABLED )
-
-        a_button = Button( send_frame , width=10, height=2, text = b_text )
-        a_button.bind( "<Button-1>", self.cb_send_button ) # function name no () which would call function then
-
-        # position
-        a_button.pack( side = LEFT )
-        a_text.pack(   side = LEFT, fill=BOTH, expand=1)  #  fill X Y BOTH but also need expand=1 ( or prehaps True )
-
-        # save for send function
-        self.sends.append( send_frame )
-        self.sends_buttons.append( a_button )
-        self.sends_data.append( a_text )
-
-        return send_frame
-
-    # ------------------------------------------
-    def make_rec_frame( self, parent, color ):
-        """
-        make the recieve frame
-        """
+#        color   = "black"   # this may need a bit of rework -- looks like not used
         iframe  = Frame( parent, width=300, height=800, bg ="blue", relief=RAISED, borderwidth=1,  )
 
-        bframe  = Frame( iframe, bg ="black", width=30  ) # width=300, height=800, bg ="blue", relief=RAISED, borderwidth=1,  )
+        bframe  = Frame( iframe, bg = self.bkg_color, width=30  ) # width=300, height=800, bg ="blue", relief=RAISED, borderwidth=1,  )
         bframe.grid( row=0, column=0, sticky = N + S )
 
         text0 = Text( iframe , width=50, height=20 )
@@ -564,7 +517,7 @@ class GUI( object ):
 
         #-----
         b_copy = Button( bframe , width=10, height=2, text = self.BN_CP_ALL )
-        b_copy.bind( "<Button-1>", self.doCopyButton )
+        b_copy.bind( "<Button-1>", self.do_copy_button )
         b_copy.grid( row=row_ix, column=0   )
         row_ix += 1
 
@@ -577,28 +530,28 @@ class GUI( object ):
 
         return iframe
 
-    # ------------------------------------------
-    def __make_label__( self, a_frame, a_row, a_col, a_text, label_id = None, label_dict = None ):
-        """
-        a_id   id for lable in the dict
-        a_dict will contain the label reference now used for setting text as in show_item
-        helper for making and placing labels
-        return tuple -- or by ref do not need to , test this in templates
-        return label
-        increment row col
-        """
-        a_row    += 1
-        if a_row >= 2:
-            a_row   =  0
-            a_col   += 1
-
-        a_label   = ( Label( a_frame, text = a_text, relief = RAISED,  )  )
-        a_label.grid( row=a_row, column=a_col, sticky = E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-
-        if not( label_id is None ):
-            label_dict[ label_id ]   =  a_label
-
-        return ( a_row, a_col, a_label )
+#    # ------------------------------------------
+#    def _make_a_label( self, a_frame, a_row, a_col, a_text, label_id = None, label_dict = None ):
+#        """
+#        a_id   id for lable in the dict
+#        a_dict will contain the label reference now used for setting text as in show_item
+#        helper for making and placing labels
+#        return tuple -- or by ref do not need to , test this in templates
+#        return label
+#        increment row col
+#        """
+#        a_row    += 1
+#        if a_row >= 2:
+#            a_row   =  0
+#            a_col   += 1
+#
+#        a_label   = ( Label( a_frame, text = a_text, relief = RAISED,  )  )
+#        a_label.grid( row=a_row, column=a_col, sticky = E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+#
+#        if not( label_id is None ):
+#            label_dict[ label_id ]   =  a_label
+#
+#        return ( a_row, a_col, a_label )
 
     #-----  functions mostly for calling from controller  ------------------------
     # ------------------------------------------
@@ -623,7 +576,7 @@ class GUI( object ):
     # ------------------------------------------
     def show_item( self, item_name, a_show_string ):
         """
-        display a message on the gui
+        display a message on the gui -- mostly db info for mysql not used in this app.
 
         arg:  item_name, string name for the label widget, assigned to the dict when label is constructed
               a_show_string, the string you want shown
@@ -646,20 +599,20 @@ class GUI( object ):
     # ------------------------------------------
     def print_send_string( self, data ):
         """
-        fix name !!
+        obsolete fix name !!
         add recieve tag to parameters ??
         """
         sdata = self.prefix_send + data  + "\n"
-        self.print_string( sdata )   # or just use directly
+        self.display_string( sdata )   # or just use directly
         return
 
     # ------------------------------------------
     def print_rec_string( self, data ):
         """
-
+        obsolete
         """
         sdata = self.prefix_rec +  data  + "\n"
-        self.print_string( sdata )
+        self.display_string( sdata )
         return
 
     # ------------------------------------------
@@ -668,7 +621,7 @@ class GUI( object ):
         add info prefix and new line suffix and show in recieve area
         """
         sdata = self.prefix_info +  data  + "\n"    # how did data get to be an int and cause error ??
-        self.print_string( sdata )
+        self.display_string( sdata )
         return
 
     # ------------------------------------------
@@ -677,15 +630,19 @@ class GUI( object ):
         add new line suffix and show in recieve area
         """
         sdata = data  + "\n"
-        self.print_string( sdata )
+        self.display_string( sdata )
         return
 
     # ---------------------------------------
-    def print_string( self, a_string ):
+    def display_string( self, a_string ):
         """
-        print to recieve area, with scrolling and
+        print to message area, with scrolling and
+        log if we are configured for it
         delete if there are too many lines in the area
         """
+        if  AppGlobal.parameters.log_gui_text:
+            AppGlobal.logger.log( AppGlobal.parameters.log_gui_text_level, a_string, )
+
         self.rec_text.insert( END, a_string, )      # this is going wrong, why how
         try:
              numlines = int( self.rec_text.index( 'end - 1 line' ).split('.')[0] )  # !! beware int( None ) how could it happen ?? it did this is new
@@ -706,57 +663,25 @@ class GUI( object ):
 
         return
 
-   # ------------------------------------------
-    def cb_send_as_parm( self, button_stuff ):
-        """
-        take the current send buttons and entry fields and optput as an array
-        in the same format as used by the parameter.py file
-        no interaction with controller
-        put in clipboard too boot ??
-        ??  put in some crlf
-        get current send areas as parameter string
-        [ ( "Send", "send_me", True ), ( "Send
-        """
-        # parm = ""
-        # parm_lines    = []
-        parm_list     = [ "button_parms = [" ]
-#        self.sends               = []  frames seem not to be used !!
-#        self.sends_buttons       = []
-#        self.sends_data          = []
-        ix_for_line   = 0
-        for ix_button, i_button in enumerate( self.sends_buttons ):
-
-            button_text    =  i_button.config('text')[-1]
-            if  i_button.cget( "state" )  == "normal":
-                button_enable = "True"
-            else:
-                button_enable = "False"
-            send_data      = self.sends_data[ix_button].get()
-            parm_list      +=  [ '("', button_text, '", "', send_data , '", ', button_enable, ' ),']   # or add
-            ix_for_line    += 1
-            if ix_for_line > 5:
-                parm_list   += [ "\n" ]
-                a_line     =  "".join( parm_list )
-                self.print_no_pefix_string( a_line )
-                parm_list  = []
-                ix_for_line   = 0
-
-        parm_list += [ "]" ]
-        parm   =  "".join( parm_list )
-        # print( parm )
-        self.print_no_pefix_string( parm )
+#    # ------------------------------------------
+#    def display_device_label( self, msg, device_adapter  ):
+#        """
+#        not needed ?? done by actions directly in device adapter
+#        display msg in the device's label area
+#        """
+#        label       = device_adapter.gui_tk_label
+#        label.config( text = msg )
 
     #----- buttons ------------------------
     # ------------------------------------------
     def cb_device_action( self, button_ix, action  ):
         """
-        process devices, see lambda setup
+        process devices perhaps on, off timer , see lambda setup in button creation
+        this may be more indirect than needed, go straight to controller ??
         """
-        print( f"cb_device_action {button_ix}, {action}" )
+#        print( f"cb_device_action {button_ix}, {action}" )
 
         self.controller.cb_device_action( button_ix, action  )
-
-
 
     # ------------------------------------------
     def cb_test_1( self ):
@@ -764,26 +689,7 @@ class GUI( object ):
         process test button 1
         """
         print( "cb_test_1" )
-        #self.controller.cb_gui_test_1()
         self.controller.cb_gui_test_1()
-
-        #self.controller.os_open_graph()
-
-    # ------------------------------------------
-    def cb_test_2( self ):
-        """
-        process test button 2
-        """
-        #print "cb_test_2"
-        self.controller.cb_gui_test_2()
-
-    # ------------------------------------------
-    def cb_test_3( self ):
-        """
-        process test button
-        """
-        #print "cb_test_3"
-        self.controller.cb_gui_test_3()
 
     # ------------------------------------------
     def doButtonText( self, event):
@@ -793,7 +699,7 @@ class GUI( object ):
         btext =  event.widget["text"]
 
         if btext == self.BN_CP_SELECTION:
-            #def doCopyButton( self, event ):
+            #def do_copy_button( self, event ):
             # nogood if no selection put in try except
             try:
                 data  = self.rec_text.get( "sel.first", "sel.last" )
@@ -806,7 +712,7 @@ class GUI( object ):
         elif btext == "Copy All":
 
             # may be in do CopyButton
-            #def doCopyButton( self, event ):
+            #def do_copy_button( self, event ):
             """
             """
             data  = self.rec_text.get( 1.0, END )
@@ -842,9 +748,7 @@ class GUI( object ):
             pyperclip.copy( bdata )
             self.rec_text.delete( 1.0, END )
 
-        elif btext == self.BN_PORTS:
-            self.controller.ports()
-            pass
+
 
         #        elif btext == self.BN_SND_ARRAY:
         #            #self.text0.delete( 1.0, END )
@@ -876,7 +780,7 @@ class GUI( object ):
         return
 
     # ------------------------------------------
-    def doCopyButton( self, event ):
+    def do_copy_button( self, event ):
         """
         copy all text to the clipboard
         """

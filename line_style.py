@@ -14,14 +14,17 @@ class LineStyle():
     help make it easy to tell graph lines apart
     use instead of mathplot defaults
     use:
-        sys.path.append( "../rshlib" )
+        ( this may be out of date see use in graph_smart_plug )
         import line_style
 
         self.line_style     = line_style.LineStyle()
 
-        self.current_style  = self.lineStyle.getNextStyle()  # ( line, color, marker, width )
+        self.current_style  = self.lineStyle.get_next_style()  # ( line, color, marker, width )
         .....plot(  x, y, label= alabel, linestyle = self.current_style[0],   color     = self.current_style[1],
                                          marker    = self.current_style[2] ,  linewidth = self.current_style[3]  )
+        or after the get_next_style you can access the instant values
+        self.line_style.marker_style ........
+
 
         self.line_style.reset()      # for a new set
         !!consider changing to named tuple
@@ -29,6 +32,9 @@ class LineStyle():
     # -----------------------------------------------
     def __init__(self ):
 
+        """
+        think we want lists to be relatively prime for longest cycle time
+        """
         self.lines       = [  '-', '--', ':' ]  #   "-." "_" totl of 4 ??
         self.line_ix     = 0
         self.max_line    = len( self.lines  )
@@ -44,6 +50,7 @@ class LineStyle():
         self.widths      = [ 1, 2, 3, 4 ]       # "1" ......23   "4"
         self.max_width   = len( self.widths  )
 
+        # setup, need get_next_style befor use
         self.line_style     = None
         self.color_style    = None
         self.marker_style   = None
@@ -118,6 +125,7 @@ class LineStyle():
         """
         get the next tuple: ( line, color, marker )
         return tuple see below !! change to named tuple ??
+        can use the returned or perhaps cleare the instance var like   .marker_style
         """
         return ( self._getNextLine_() , self._getNextColor_(), self._getNextMarker_(), self._getNextWidth_()  )
 

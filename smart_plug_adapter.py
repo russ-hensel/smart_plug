@@ -3,42 +3,27 @@
 
 
 
-#import logging
-#import sys
-#import os
 import time
-#import datetime
-#import traceback
-#import queue
-#import threading
-#import importlib
 import pyHS100
 import sqlite3 as lite
 
-
-
 # ----------- local imports --------------------------
 #import parameters
-#import gui
+
 from   app_global import AppGlobal
-#import smart_plug_helper
-
-
 
 
 # ========================== Begin Class ================================
 class SmartPlugAdapter( object ):
     """
-    smart plug with added attributes, to adapt to this application,
-    now replaces named tuple which might have been enough. ??
+    smart plug with added attributes and methods, to adapt to this application,
     """
     def __init__(self ):
         """
         try to get all declared here -- could be slots ??
 
-
         """
-        # some set via parameters
+        # some set via parameters see parameters.py
         self.name                = None
         self.tcpip               = None
         self.plug                = None   # looks like we can create once here and use forever
@@ -66,7 +51,6 @@ class SmartPlugAdapter( object ):
 
         self.retrived_data_cache = None   # will be a list of lists or something similar, set back to None when done with data
 
-
     # ----------------------------------------------
     def poll( self, ):
         """
@@ -74,7 +58,6 @@ class SmartPlugAdapter( object ):
         """
         self.check_timer_done()
         self.check_recording()
-
 
     # ----------------------------------------------
     def insert_event( self, ):
@@ -111,9 +94,7 @@ class SmartPlugAdapter( object ):
             self.timer_on   = False
             #self.record_off()  to much messaging and will throw own error
             msg     = f"failed to communicate with plug - record off for: {self.name}"
-#            label       = self.gui_tk_label
-#            msg         = "failed to communicate with plug"
-#            label.config( text = msg )
+
             AppGlobal.gui.print_info_string( msg )
             return
 
@@ -135,13 +116,13 @@ class SmartPlugAdapter( object ):
         print( f"check_timer_done sec_left {sec_left} for plug: {self.name} " )   # debug
         if  sec_left <= 0:
             self.off()
-            label       = self.gui_tk_label
-            label.config( text = 'timer stop' )
-
+            self.display_msg( "Timer Stop" )
         else:
             self.timer_sec_left  = sec_left
+            a_string             = self.sec_to_string( sec_left )
             # just update display
-            self.gui_tk_label.config( text = f'timer running, time left: {sec_left} plug: {self.name}' )
+            self.display_msg( f"Timer  {a_string}" )
+            #self.gui_tk_label.config( text = f'timer running, time left: {sec_left} plug: {self.name}' )
 
     # ----------------------------------------------
     def off( self, ):
@@ -154,18 +135,16 @@ class SmartPlugAdapter( object ):
             self.timer_on   = False
             plug            = pyHS100.SmartPlug( self.tcpip )
             plug.turn_off()
-            label       = self.gui_tk_label
-            label.config( text = 'plug off' )
+            self.display_msg( "Plug Off" )
             if self.timer_on:
                 self.timer_on = False
                 msg   = "Plug off and Timer Off"
-                print( msg  )
+#                print( msg  )
                 AppGlobal.gui.print_info_string( msg )
         # may save event
         except Exception as exception:             # look up correct exception
-            label       = self.gui_tk_label
             msg         = "failed to communicate with plug"
-            label.config( text = msg )
+            self.display_msg( msg )
             msg         = msg + ": " + self.name
             AppGlobal.gui.print_info_string( msg )
 
@@ -173,7 +152,6 @@ class SmartPlugAdapter( object ):
     def get_device_checked( self, ):
         """
         see if device is checked
-
 
         """
 
@@ -186,12 +164,10 @@ class SmartPlugAdapter( object ):
         try:
             plug            = pyHS100.SmartPlug( self.tcpip )
             plug.turn_on()
-            label       = self.gui_tk_label
-            label.config( text = 'plug on' )
+            self.display_msg( "Plug On" )
         except Exception as exception:             # look up correct exception
-            label       = self.gui_tk_label
             msg         = "failed to communicate with plug"
-            label.config( text = msg )
+            self.display_msg( msg )
             msg         = msg + ": " + self.name
             AppGlobal.gui.print_info_string( msg )
         # may save event
@@ -201,7 +177,7 @@ class SmartPlugAdapter( object ):
         """
         call from ht or gt
         """
-
+        self.display_msg( "Record On" )
         msg   = f"record on for: {self.name}"
         print( msg  )
         AppGlobal.gui.print_info_string( msg )
@@ -211,12 +187,12 @@ class SmartPlugAdapter( object ):
         self.record_delta        = 10
         # may save event
 
-
     # ----------------------------------------------
     def record_off( self, ):
         """
         call from ht or gt
         """
+        self.display_msg( "Record Off" )
         msg   = f"record_off for: {self.name}"
         print( msg  )
         AppGlobal.gui.print_info_string( msg )
@@ -226,11 +202,62 @@ class SmartPlugAdapter( object ):
 #        self.next_record_time    = time.time()     # start now
 #        self.record_delta        = 10
         # may save event
+    # ----------------------------------------------
+    def start_timer( self, ):
+        """
+        call from ht or gt
+        """
+        combo_contents = self.gui_tk_combo.get()
+        time_sec  = self.string_to_time( combo_contents )   # or could get index and look up
+        if time_sec is None:
+            # factor as a function
+            self.on()
+            msg     = f"Plug start not time limit , is on: {plug.is_on }"
+            self.gui.print_info_string( msg )
 
+        else:
+            # move into device_adapter
+            self.timer_start         = time.time()
+            self.time_sec            = time_sec
+            self.time_sec_left       = time_sec
+            self.timer_on            = True
+
+            self.on()
+            print( f"Plug start time" )
+#            msg     = f"Plug start is_on: {self.is_on }"
+#            AppGlobal.gui.gui.print_info_string( msg )
+
+   # ----------------------------------------------
+    def string_to_time( self, a_string ):
+        """
+        convert times in gui drop down to time in units of....
+        drop the string part have a sec to string function
+        use index or a loolup
+        """
+
+        #times = ( "infinite", .1, .5, 1,  2,   3, 5, 10 )
+        if a_string == "infinite":
+            return None
+
+        sec   = float( a_string ) * 60
+
+#        print( "fix string to time and combo box....  " )
+        return  sec
+
+   # ----------------------------------------------
+    def sec_to_string( self, sec ):
+        """
+        take seconds to a minute time string, rounded to nearest second
+        """
+        min       = int( sec /60 )
+        int_sec   = int( sec - min * 60 )
+        a_string  = f"{min} min {int_sec} sec"
+        return a_string
 
     # ----------------------------------------------
     def insert_measurements( self, data ):
         """
+        insert data into the db
         call from ht
         data tuple of tuples or similar
         add smart filtering from greenhouse monitor
@@ -246,6 +273,15 @@ class SmartPlugAdapter( object ):
             cur.executemany( "INSERT INTO plug_measurements " +
                        " ( plug_name, plug_time, measure_type, plug_state, voltage, current, inst_power, total_power ) VALUES  " +
                        " ( ?,         ?,         ?,             ?,          ?,       ?,       ?,          ?  ) " , data  )   # could count the cols
+
+    # ----------------------------------------------
+    def display_msg( self, msg ):
+        """
+        msg in the lable area
+
+        """
+        #msg   = ( msg + ( 100 * " " ) )[0:30]   # seems not to be necessary
+        self.gui_tk_label.config( text = msg )
 
 # =======================================
 
