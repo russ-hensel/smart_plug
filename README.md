@@ -2,7 +2,7 @@ Purpose: This is a Graphical User Interface Application is to control TP-LINK HS
 
 Enviroment: Program should run on any OS supporting Python 3.6.  This should include Windows, Mac, Linux, and Raspberry Pi.  So far only tested on Windows.  More coming... 
 
-Program Status: More or less alpha/beta, seems to work, but rough. Intended for those with some Python experience who can add the files to their Python development environment ( no install features for this code ). Some dependencies will need to be installed, probably prompted by error messages. Editing of the parameter file should be easier for those with Python experience. Users should find some useful documentation in the code, this is still a work in progress. Much code has been lifted from other projects of mine, some artifacts remain.
+Program Status: More or less alpha/beta, seems to work, but rough. Intended for those with some Python experience who can add the files to their Python development environment ( no install features for this code ). Some dependencies will need to be installed, probably prompted by error messages. Editing of the parameter file should be easier for those with Python experience. Users should find some useful documentation in the code, this is still a work in progress. Much code has been lifted from other projects of mine, some artifacts of the other projects remain.
 
 http://www.opencircuits.com/Python_Control_of_Smart_Plugs
 
@@ -17,9 +17,11 @@ http://www.opencircuits.com/Python_Control_of_Smart_Plugs
 ``` 		
 
 Would You Like to Contribute??
-* Add other iot devices/sensors
-* Link to cloud
-* Support other databases
+* Add other iot devices/sensors.
+* Link to cloud.
+* Support other databases.
+* Other ideas.
+* Bug reports -- which I will read and may fix.
 	
 ```	
 	Note for contributers 
@@ -29,3 +31,8 @@ Would You Like to Contribute??
 		( take a look at readme_rsh.txt for some additional notes on changes... )
 	
 ```
+Guide to Repository
+
+* Root - all code ( src ) required to run the application.  I think it qualifies as pure python ( 3.6 ).
+* images - various graphics: screen shots, and extra icons....
+* wiki_etc - pdf versions of the wiki at open circuits.
