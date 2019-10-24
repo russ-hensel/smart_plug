@@ -9,7 +9,6 @@ Purpose:
     related program smart_plug_graph.py
 
 Environment:
-
         Spyder 3.3.6
         Python 3.6
         Tkinker
@@ -21,9 +20,10 @@ See Also:
         readme.txt
         readme_rsh.txt
 
-
+=========================
 """
 
+#import webbrowser
 import logging
 import sys
 import os
@@ -34,6 +34,7 @@ import queue
 #import threading
 import importlib
 import pyHS100
+#import matplotlib.pyplot as plt     # plotting stuff
 
 # ----------- local imports --------------------------
 import parameters
@@ -41,7 +42,8 @@ import gui
 from   app_global import AppGlobal
 import smart_plug_helper
 import smart_plug_adapter
-
+import plug_util
+import graph_live
 
 # ========================== Begin Class ================================
 class SmartPlug( object ):
@@ -50,7 +52,7 @@ class SmartPlug( object ):
     """
     def __init__(self ):
         """
-        mostl instances declared here or in restart
+        mostly instances declared here or in restart
         """
         # ------------------- basic setup --------------------------------
         print( "" )
@@ -61,7 +63,7 @@ class SmartPlug( object ):
 
         AppGlobal.controller        = self
         self.app_name               = "SmartPlug"
-        self.version                = "Ver5 2019 09 19.0"
+        self.version                = "Ver6 2019 10 23.1"
 
         self.gui                    =  None  # the gui created later
         self.no_restarts            =  -1    # counter for the number of times the application is restarted
@@ -69,19 +71,19 @@ class SmartPlug( object ):
         # ----------- for second thread -------
         self.queue_to_gui           = None
         self.queue_from_gui         = None
-#        self.gui_recieve_lock       = threading.Lock()   # when locked the gui will process recieve, aquired released in helper
+#        self.gui_recieve_lock       = threading.Lock()   # when locked the gui will process receive, acquired released in helper
                                                          # how different from just a variable set?
         self.restart( )
 
     # --------------------------------------------------------
     def restart(self ):
         """
-        use to restart the app without ending it - also exten init
+        use to restart the app without ending it - also extend init
         parameters will be reloaded and the gui rebuilt
         args: zip
         ret: zip ... all sided effects
         """
-        print( "===================restart===========================" )
+#        print( "===================restart===========================" )
         #global print
         self.no_restarts    += 1
         if self.gui is not None:
@@ -98,18 +100,17 @@ class SmartPlug( object ):
             except Exception as ex_arg:
                 reload( parameters )              # this is python 2
 
-        self._polling_fail         = False   # flag set if _polling in gui thread fails
+        self._polling_fail        = False   # flag set if _polling in gui thread fails
 
         self.is_first_gui_loop    = True
-        self.ext_processing       = None     # built later frompermaters if specified
+        self.ext_processing       = None    # built later from parameters if specified
         self.logger               = None    # set later none value protects against call against nothing
 
         # ----- parameters
-
         self.parmeters_x          = "none"        # name without .py for parameters extension may ?? be replaced by command line args
         #self.__get_args__( )
         # command line might look like this
-        # python smart_terminal.py    parameters=gh_paramaters
+        # python smart_plug.py    parameters=gh_paramaters
 
         self.parameters         = parameters.Parameters( )  #  std name -- open early may effect other
         self.starting_dir       = os.getcwd()    #
@@ -121,6 +122,7 @@ class SmartPlug( object ):
             self.smartplug_adapter_list.append( i_smartplug_adapter  )
             i_smartplug_adapter.name           = i_device[ "name" ]
             i_smartplug_adapter.tcpip          = i_device[ "tcpip" ]
+            i_smartplug_adapter.delta_t        = i_device[ "delta_t" ]
             AppGlobal.smartplug_adapter_list   = self.smartplug_adapter_list
 
         # get parm extensions  !! will this work on a reload ??
@@ -136,16 +138,15 @@ class SmartPlug( object ):
 
         self.prog_info()
 
-        # set up queues befor creating helper thread
+        self.graph_live         = graph_live.GraphLive()
+
+        # set up queues before creating helper thread
         self.queue_to_helper    = queue.Queue( self.parameters.queue_length )   # send strings back to tkinker mainloop here
         self.queue_fr_helper    = queue.Queue( self.parameters.queue_length )
         self.helper_thread      = smart_plug_helper.HelperThread( )
         AppGlobal.helper        = self.helper_thread
 
         self.helper_thread.start()
-
-#        AppGlobal.print_me()        # debug, take out
-#        print( "==============================================" )
 
         self.gui                = gui.GUI(  )
         self.gui.root.after( self.parameters.gt_delta_t, self._polling )
@@ -181,7 +182,7 @@ class SmartPlug( object ):
  # -------------------------------------------------------
     def prog_info( self ):
         """
-        log info about program and its argument/enviroment to the logger
+        log info about program and its argument/environment to the logger
         after logger is set up
         args: zip
         ret:  zip
@@ -243,9 +244,9 @@ class SmartPlug( object ):
             except queue.Full:
 
                 # try again but give _polling a chance to catch up
-                print( "smart_terminal queue full looping" )
+                print( "smart_plug queue full looping" )
                 self.logger.error( "queue to helper full looping" )
-                # protect against infinit loop if queue is not emptied
+                # protect against infinite loop if queue is not emptied
                 if self.ix_queue > ix_queue_max:
                     print( "too much queue looping" )
                     self.logger.error( "too much queue looping" )
@@ -257,9 +258,8 @@ class SmartPlug( object ):
      # -------------------------------------------------------
     def _polling( self, ):
         """
-        this is a private method
         _polling task runs continually in the GUI
-        reciving data is an important task. but is it in this thread  any more  ??
+        receiving data is an important task. but is it in this thread  any more  ??
         there is still some effectively dead stuff from the smart_terminal
         also auto tasks will be run from here
         _polling frequency set via taskDelta, ultimately in parameters
@@ -298,7 +298,7 @@ class SmartPlug( object ):
                 ( action, function, function_args ) = self.rec_from_queue()
 
         except Exception as ex_arg:
-            self.logger.error( "_polling Exception in smart_terminal: " + str( ex_arg ) )
+            self.logger.error( "_polling Exception in smart_plug: " + str( ex_arg ) )
             # ?? need to look at which we catch maybe just rsh
             (atype, avalue, atraceback)   = sys.exc_info()
             a_join  = "".join( traceback.format_list ( traceback.extract_tb( atraceback ) ) )
@@ -308,10 +308,77 @@ class SmartPlug( object ):
             if  self._polling_fail:
                 pass
             else:
-                #print 'In finally block for cleanup'
                 self.gui.root.after( self.parameters.gt_delta_t, self._polling )  # reschedule event
-
         return
+
+    # --------------------------------------------------
+    def probe_device_list( self, ):
+        """
+        !!check devices to see if parms see correct
+        !! need output to gui ??
+        """
+        for i_adapter in self.smartplug_adapter_list:
+             tcpip      = i_adapter.tcpip
+             msg        = f"probe_device_list {i_adapter.name} {tcpip}"
+             print( msg )
+             plug_ok    = plug_util.scan_a_plug( tcpip )
+             msg        = f"{tcpip} >> {plug_ok}"
+             print( msg )
+
+    # -------------------------------------------------------
+    def probe_add_device_list( self, ):
+        """
+        probe and add any found and missing devices
+        ?? just an idea
+        """
+        pass
+
+    # -------------------------------------------------------
+    def probe_for_plugs( self ):
+        """
+        use parms to control probe
+        return tcpip of devices found
+        """
+        probe_lists        = self.parameters.probe_lists
+        max_probe          = self.parameters.max_probe
+        msg                = "Probing for plugs..."
+        self.print_info_string_now( msg )
+
+#        self.gui.print_info_string( "Probing for plugs..." )
+#        self.gui.root.update()
+        if len( probe_lists) == 0 or probe_lists is None :
+            self.gui.print_info_string( "parameters specify no probe lists. Done." )
+            return []
+        found_list    = []
+        found_so_far  = 0
+        for ix_probe in probe_lists:
+            found_list   += plug_util.scan_for_plugs( *ix_probe, msg_function = self.print_info_string_now )
+        msg   = f"....found {found_list} Done."
+        self.print_info_string_now( msg )
+        return found_list
+
+    # -------------------------------------------------------
+    def probe_make_device_list( self ):
+        """
+        do probe using parameters then make a device list
+        from devices found
+        name will be alias
+
+        """
+        dev_list      = "self.device_list = [ \n"
+        found_list    = self.probe_for_plugs()
+        for i_tcpip in found_list:
+            full_info  = plug_util.get_full_info( i_tcpip )
+            alias      = full_info["alias"]
+            dev_list   += f'{{ "name": "{alias}", "tcpip": "{i_tcpip}" }},\n'
+        dev_list       += ']'
+        self.gui.print_info_string( dev_list )
+#       sample from parameters --- but think of update
+#        self.device_list       =  [
+#                { "name": "device_230","tcpip": "192.168.0.230",    },
+#                { "name": "device_2",  "tcpip": "192.168.0.209",    },
+#                { "name": "device_3",  "tcpip": "192.168.0.209",    },
+
 
     # --------------------------------------------------
     def rec_from_queue( self, ):
@@ -331,9 +398,9 @@ class SmartPlug( object ):
     # ----------------------------------------------
     def os_open_parmfile( self,  ):
         """
-        used as callback from gui button
+        used as callback from gui button -- rename cb ??
         """
-        a_filename = self.starting_dir  + os.path.sep + "parameters.py"
+        a_filename = self.starting_dir  + os.path.sep + "parameters.py"   # assuming a txt file
 
         from subprocess import Popen, PIPE  # since infrequently used
         proc = Popen( [ self.parameters.ex_editor, a_filename ] )
@@ -351,20 +418,42 @@ class SmartPlug( object ):
         """
         used as callback from gui button
         """
+        help_file            = self.parameters.help_file
+        AppGlobal.os_open_help_file( help_file )
+
 #        a_filename = self.starting_dir  + os.path.sep + "parameters.py"
-        a_filename = self.parameters.help_file
-        from subprocess import Popen, PIPE  # since infrequently used
-        proc = Popen( [ self.parameters.ex_editor, a_filename ] )
+#        a_filename = self.parameters.help_file
+#        from subprocess import Popen, PIPE  # since infrequently used
+#        proc = Popen( [ self.parameters.ex_editor, a_filename ] )
+
+#        ret  = webbrowser.open( r"http://www.opencircuits.com/SmartPlug_Help_File", new=0, autoraise=True )    # popopen might also work with a url
+#        print( f"help returned {ret}")
+
+    # ----------------------------------------------
+    def print_info_string_now( self, msg ):
+        """
+        object to pass in cb_probe
+        """
+        print( f"print_info_string_now {msg}" )
+        self.gui.print_info_string( msg, update_now = True )
+
+    # ----------------------------------------------
+    def cb_probe( self,  ):
+        """
+        used as callback from gui button
+        """
+        #self.probe_for_plugs()
+        self.probe_make_device_list()
 
     # ------------------------------------------
     def cb_device_action( self, button_ix, action  ):
         """
         process devices perhaps on, off timer , see lambda setup in button creation
-        mabe decode string in adapter as well
+        maybe decode string in adapter as well
         """
 #        print( f"controller.cb_device_action {button_ix}, {action}" )
 
-#       check for valid index -- may be overly defensive, but so what
+        # check for valid index -- may be overly defensive, but so what
         if button_ix < len( AppGlobal.device_list ):
             i_device    = AppGlobal.smartplug_adapter_list[ button_ix ]
             tcpip       = i_device.tcpip
@@ -384,23 +473,25 @@ class SmartPlug( object ):
         if   action == "info":
             # move code to device adapter
             #self.gui.print_info_string( tcpip )
-            info    = plug.hw_info   # need to process this into something nice -- is this subset of get_sysinfo()
-            #print( type( info ) )
-            self.gui.print_info_string( str( info ) )
-            # add more info
-            info        = plug.get_sysinfo()
-            info        = dict_to_str( info )
-            self.gui.print_info_string( info )
-#            label       = i_device.gui_tk_label
-#            label.config( text = 'see info below' )
-            msg  = "see info below"
-            self.gui.display_device_label( self, msg, i_device  )
+            #info    = str( plug.hw_info )  # need to process this into something nice -- is this subset of get_sysinfo()
+            info    = "Full device info: \n" + plug_util.dict_to_str(  plug_util.get_full_info( tcpip ) )
 
-        elif action == "start":   # may make synomonus with on ??
+            #print( type( info ) )
+            self.gui.print_info_string( info  )
+
+        elif action == "start":   # may make synonymous with on ??
             i_device.start_timer()
 
+        elif action == "cb_on":
+            i_device.cb_on()
+
+        elif action == "mon":
+            i_device.cb_mon()
+
+        elif action == "record":
+            i_device.cb_record()
+
         elif action == "on":
-            # ?? move messaging to i_device ??/
             i_device.on()
 
         elif action == "off":
@@ -409,6 +500,7 @@ class SmartPlug( object ):
 #            self.gui.print_info_string( msg )
 
         elif action == "record_on":
+            # !! check first for db file exists
             i_device.record_on()
 #            msg      = f"Record on plug is on : {plug.is_on }"
 #            self.gui.print_info_string( msg )
@@ -423,24 +515,47 @@ class SmartPlug( object ):
             self.gui.print_info_string( msg )
 
    # ----------------------------------------------
+    def cb_graph_live( self,  ):
+        """
+        call back for gui button
+        """
+#        print( f"cb_graph_live  -- not linked {self.gui.graph_live_var.get()}" )
+
+        if  self.gui.graph_live_var.get():
+            if AppGlobal. graph_live_flag:
+                 return
+            self.graph_live.start_graph_live( )
+
+        else:
+            print( f"cb_graph_live  -- need turn off code {self.gui.graph_live_var.get()}" )
+
+        return
+
+   # ----------------------------------------------
     def cb_gui_test_1( self,  ):
         """
         call back for gui button
         """
         print( "cb_gui_test_1" )
+#        self.probe_device_list()
+        self.cb_graph_live(  )
 
-#        # -----------------------
-#        import db
-#        a_db    = db.DBAccess()
-#        ok      = a_db.open()
-#        print( "db.open ", ok  )
-#
-#        a_db.close()
+   # ----------------------------------------------
+    def cb_gui_test_2( self,  ):
+        """
+        call back for gui button
+        """
+        print( "cb_gui_test_2" )
+#        self.probe_device_list()
+#        da   = AppGlobal.smartplug_adapter_list[0]
+#        da.gui_tk_mon_checkbox_var.set( 1 )   # will it trigger command ??
 
-        #----------------------
-        ret = AppGlobal.scheduled_event_list.test_query()
-        print( ret )
-        #self.helper_thread.toggle_lock()
+   # ----------------------------------------------
+    def cb_csv( self,  ):
+        """
+        call back for gui button
+        """
+        print( "cb_csv" )
 
 # ==============================================
 if __name__ == '__main__':

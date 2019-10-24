@@ -1,57 +1,630 @@
-..2019-09-19 21:16:17,957 - splug - INFO - SmartPlugGraph : all done
-2019-09-19 21:27:53,403 - splug - INFO - Done config_logger
-2019-09-19 21:27:53,404 - splug - Level 99 - 
-2019-09-19 21:27:53,404 - splug - Level 99 - 
-2019-09-19 21:27:53,404 - splug - Level 99 - ============================
-2019-09-19 21:27:53,404 - splug - Level 99 - 
-2019-09-19 21:27:53,404 - splug - Level 99 - Running SmartPlug version = Ver5 2019 09 19.0
-2019-09-19 21:27:53,404 - splug - Level 99 - 
-2019-09-19 21:27:53,404 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver5/smart_plug.py
-2019-09-19 21:27:53,404 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver5
-2019-09-19 21:27:53,404 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-09-19 21:27:53,404 - splug - Level 99 - Time now: 2019-09-20 01:27:53
-2019-09-19 21:28:03,411 - splug - DEBUG - in helper, rec_from_queue  stop None ()
-2019-09-19 21:28:03,411 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
-2019-09-19 21:28:03,411 - splug - INFO - SmartPlug: all done
-2019-09-19 21:29:33,218 - splug - INFO - Done config_logger
-2019-09-19 21:29:33,218 - splug - Level 99 - 
-2019-09-19 21:29:33,218 - splug - Level 99 - 
-2019-09-19 21:29:33,218 - splug - Level 99 - ============================
-2019-09-19 21:29:33,218 - splug - Level 99 - 
-2019-09-19 21:29:33,218 - splug - Level 99 - Running SmartPlug version = Ver5 2019 09 19.0
-2019-09-19 21:29:33,218 - splug - Level 99 - 
-2019-09-19 21:29:33,218 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver5/smart_plug.py
-2019-09-19 21:29:33,218 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver5
-2019-09-19 21:29:33,218 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-09-19 21:29:33,218 - splug - Level 99 - Time now: 2019-09-20 01:29:33
-2019-09-19 21:29:46,227 - splug - DEBUG - in helper, rec_from_queue  stop None ()
-2019-09-19 21:29:46,227 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
-2019-09-19 21:29:46,227 - splug - INFO - SmartPlug: all done
-2019-09-20 11:49:56,332 - splug - INFO - Done config_logger
-2019-09-20 11:49:56,332 - splug - Level 99 - 
-2019-09-20 11:49:56,332 - splug - Level 99 - 
-2019-09-20 11:49:56,332 - splug - Level 99 - ============================
-2019-09-20 11:49:56,332 - splug - Level 99 - 
-2019-09-20 11:49:56,333 - splug - Level 99 - Running SmartPlug version = Ver5 2019 09 19.0
-2019-09-20 11:49:56,333 - splug - Level 99 - 
-2019-09-20 11:49:56,333 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver5/smart_plug.py
-2019-09-20 11:49:56,333 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver5
-2019-09-20 11:49:56,333 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-09-20 11:49:56,333 - splug - Level 99 - Time now: 2019-09-20 15:49:56
-2019-09-20 11:50:02,336 - splug - DEBUG - in helper, rec_from_queue  stop None ()
-2019-09-20 11:50:02,336 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
-2019-09-20 11:50:02,336 - splug - INFO - SmartPlug: all done
-2019-09-20 11:50:07,777 - splug - INFO - Done _config_logger
-2019-09-20 11:50:07,777 - splug - Level 99 - 
-2019-09-20 11:50:07,777 - splug - Level 99 - 
-2019-09-20 11:50:07,777 - splug - Level 99 - ============================
-2019-09-20 11:50:07,777 - splug - Level 99 - 
-2019-09-20 11:50:07,777 - splug - Level 99 - Running SmartPlugGraph  version = Ver5 2019 09 19.0 Mode: Default
-2019-09-20 11:50:07,777 - splug - Level 99 - 
-2019-09-20 11:50:07,777 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver5/smart_plug_graph.py
-2019-09-20 11:50:07,777 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver5
-2019-09-20 11:50:07,777 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-09-20 11:50:07,778 - splug - Level 99 - Time now: 2019-09-20 15:50:07
-2019-09-20 11:50:07,778 - splug.sp_graph - INFO - in Grapher __init__
-2019-09-20 11:50:07,825 - splug.gui - INFO - in class gui_new GUI init
-2019-09-20 11:50:13,737 - splug - INFO - SmartPlugGraph : all done
+ 2019-10-23 09:53:23,898 - splug - INFO - Done config_logger
+2019-10-23 09:53:23,898 - splug - Level 99 - 
+2019-10-23 09:53:23,898 - splug - Level 99 - 
+2019-10-23 09:53:23,898 - splug - Level 99 - ============================
+2019-10-23 09:53:23,898 - splug - Level 99 - 
+2019-10-23 09:53:23,898 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 09:53:23,898 - splug - Level 99 - 
+2019-10-23 09:53:23,898 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug.py
+2019-10-23 09:53:23,898 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 09:53:23,898 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 09:53:23,898 - splug - Level 99 - Time now: 2019-10-23 13:53:23
+2019-10-23 09:54:27,939 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 09:54:27,939 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 09:54:27,941 - splug - INFO - SmartPlug: all done
+2019-10-23 09:54:39,235 - splug - INFO - Done config_logger
+2019-10-23 09:54:39,235 - splug - Level 99 - 
+2019-10-23 09:54:39,235 - splug - Level 99 - 
+2019-10-23 09:54:39,235 - splug - Level 99 - ============================
+2019-10-23 09:54:39,235 - splug - Level 99 - 
+2019-10-23 09:54:39,235 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 09:54:39,235 - splug - Level 99 - 
+2019-10-23 09:54:39,236 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug.py
+2019-10-23 09:54:39,236 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 09:54:39,236 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 09:54:39,236 - splug - Level 99 - Time now: 2019-10-23 13:54:39
+2019-10-23 09:54:54,243 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 09:54:54,243 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 09:54:54,244 - splug - INFO - SmartPlug: all done
+2019-10-23 09:57:06,444 - splug - INFO - Done config_logger
+2019-10-23 09:57:06,444 - splug - Level 99 - 
+2019-10-23 09:57:06,444 - splug - Level 99 - 
+2019-10-23 09:57:06,444 - splug - Level 99 - ============================
+2019-10-23 09:57:06,445 - splug - Level 99 - 
+2019-10-23 09:57:06,445 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 09:57:06,445 - splug - Level 99 - 
+2019-10-23 09:57:06,445 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug.py
+2019-10-23 09:57:06,445 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 09:57:06,445 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 09:57:06,445 - splug - Level 99 - Time now: 2019-10-23 13:57:06
+2019-10-23 09:57:10,390 - splug - DEBUG - >> monitor_on on for: device_1
+
+2019-10-23 09:57:11,881 - splug - INFO - self.live_graph_lines created for device: device_1 <class 'matplotlib.lines.Line2D'>  Line2D(_line1)
+2019-10-23 10:01:39,142 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 10:01:39,142 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 10:01:39,144 - splug - INFO - SmartPlug: all done
+2019-10-23 10:01:43,716 - splug - INFO - Done config_logger
+2019-10-23 10:01:43,716 - splug - Level 99 - 
+2019-10-23 10:01:43,716 - splug - Level 99 - 
+2019-10-23 10:01:43,716 - splug - Level 99 - ============================
+2019-10-23 10:01:43,716 - splug - Level 99 - 
+2019-10-23 10:01:43,716 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 10:01:43,716 - splug - Level 99 - 
+2019-10-23 10:01:43,716 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug.py
+2019-10-23 10:01:43,717 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 10:01:43,717 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 10:01:43,717 - splug - Level 99 - Time now: 2019-10-23 14:01:43
+2019-10-23 10:12:30,856 - splug - INFO - Done config_logger
+2019-10-23 10:12:30,856 - splug - Level 99 - 
+2019-10-23 10:12:30,856 - splug - Level 99 - 
+2019-10-23 10:12:30,856 - splug - Level 99 - ============================
+2019-10-23 10:12:30,856 - splug - Level 99 - 
+2019-10-23 10:12:30,856 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 10:12:30,856 - splug - Level 99 - 
+2019-10-23 10:12:30,856 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/gui.py
+2019-10-23 10:12:30,856 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 10:12:30,856 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 10:12:30,856 - splug - Level 99 - Time now: 2019-10-23 14:12:30
+2019-10-23 10:12:52,869 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 10:12:52,869 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 10:12:52,871 - splug - INFO - SmartPlug: all done
+2019-10-23 10:13:35,092 - splug - INFO - Done config_logger
+2019-10-23 10:13:35,092 - splug - Level 99 - 
+2019-10-23 10:13:35,092 - splug - Level 99 - 
+2019-10-23 10:13:35,092 - splug - Level 99 - ============================
+2019-10-23 10:13:35,092 - splug - Level 99 - 
+2019-10-23 10:13:35,092 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 10:13:35,093 - splug - Level 99 - 
+2019-10-23 10:13:35,093 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/gui.py
+2019-10-23 10:13:35,093 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 10:13:35,093 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 10:13:35,093 - splug - Level 99 - Time now: 2019-10-23 14:13:35
+2019-10-23 10:14:34,124 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 10:14:34,124 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 10:14:34,126 - splug - INFO - SmartPlug: all done
+2019-10-23 10:14:37,114 - splug - INFO - Done config_logger
+2019-10-23 10:14:37,115 - splug - Level 99 - 
+2019-10-23 10:14:37,115 - splug - Level 99 - 
+2019-10-23 10:14:37,115 - splug - Level 99 - ============================
+2019-10-23 10:14:37,115 - splug - Level 99 - 
+2019-10-23 10:14:37,115 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 10:14:37,115 - splug - Level 99 - 
+2019-10-23 10:14:37,115 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/gui.py
+2019-10-23 10:14:37,115 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 10:14:37,115 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 10:14:37,115 - splug - Level 99 - Time now: 2019-10-23 14:14:37
+2019-10-23 10:14:54,126 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 10:14:54,126 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 10:14:54,128 - splug - INFO - SmartPlug: all done
+2019-10-23 10:31:52,564 - splug - INFO - Done config_logger
+2019-10-23 10:31:52,564 - splug - Level 99 - 
+2019-10-23 10:31:52,564 - splug - Level 99 - 
+2019-10-23 10:31:52,564 - splug - Level 99 - ============================
+2019-10-23 10:31:52,565 - splug - Level 99 - 
+2019-10-23 10:31:52,565 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 10:31:52,565 - splug - Level 99 - 
+2019-10-23 10:31:52,565 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/gui.py
+2019-10-23 10:31:52,565 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 10:31:52,565 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 10:31:52,565 - splug - Level 99 - Time now: 2019-10-23 14:31:52
+2019-10-23 10:32:51,840 - splug - INFO - Done config_logger
+2019-10-23 10:32:51,841 - splug - Level 99 - 
+2019-10-23 10:32:51,841 - splug - Level 99 - 
+2019-10-23 10:32:51,841 - splug - Level 99 - ============================
+2019-10-23 10:32:51,841 - splug - Level 99 - 
+2019-10-23 10:32:51,841 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 10:32:51,841 - splug - Level 99 - 
+2019-10-23 10:32:51,841 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/gui.py
+2019-10-23 10:32:51,841 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 10:32:51,841 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 10:32:51,841 - splug - Level 99 - Time now: 2019-10-23 14:32:51
+2019-10-23 10:36:02,121 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 10:36:02,121 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 10:36:02,121 - splug - INFO - SmartPlug: all done
+2019-10-23 10:36:04,271 - splug - INFO - Done config_logger
+2019-10-23 10:36:04,271 - splug - Level 99 - 
+2019-10-23 10:36:04,272 - splug - Level 99 - 
+2019-10-23 10:36:04,272 - splug - Level 99 - ============================
+2019-10-23 10:36:04,272 - splug - Level 99 - 
+2019-10-23 10:36:04,272 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 22.3
+2019-10-23 10:36:04,272 - splug - Level 99 - 
+2019-10-23 10:36:04,272 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/gui.py
+2019-10-23 10:36:04,272 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 10:36:04,272 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 10:36:04,272 - splug - Level 99 - Time now: 2019-10-23 14:36:04
+2019-10-23 11:00:28,236 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 11:00:28,236 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 11:00:28,237 - splug - INFO - SmartPlug: all done
+2019-10-23 11:41:14,030 - splug - INFO - Done config_logger
+2019-10-23 11:41:14,030 - splug - Level 99 - 
+2019-10-23 11:41:14,030 - splug - Level 99 - 
+2019-10-23 11:41:14,030 - splug - Level 99 - ============================
+2019-10-23 11:41:14,030 - splug - Level 99 - 
+2019-10-23 11:41:14,030 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 23.0
+2019-10-23 11:41:14,030 - splug - Level 99 - 
+2019-10-23 11:41:14,030 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug.py
+2019-10-23 11:41:14,030 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 11:41:14,030 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 11:41:14,031 - splug - Level 99 - Time now: 2019-10-23 15:41:14
+2019-10-23 11:41:19,689 - splug - DEBUG - >> monitor_on on for: device_1
+
+2019-10-23 11:41:44,643 - splug - DEBUG - >> record on for: device_1
+
+2019-10-23 11:41:45,252 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845305.2043242, 'r', '?', 124.499509, 0.099801, 11.40393, 1.953),)
+
+2019-10-23 11:41:56,111 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845315.4520786, 'r', '?', 124.5436, 0.104336, 12.222575, 1.953),)
+
+2019-10-23 11:42:06,552 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845326.321985, 'r', '?', 124.445533, 0.100112, 11.491044, 1.953),)
+
+2019-10-23 11:42:16,991 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845336.7579856, 'r', '?', 124.80774, 0.093647, 10.422597, 1.953),)
+
+2019-10-23 11:42:27,251 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845347.201644, 'r', '?', 124.875599, 0.098059, 11.160196, 1.953),)
+
+2019-10-23 11:42:37,404 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845357.3562424, 'r', '?', 124.839338, 0.102661, 10.245863, 1.953),)
+
+2019-10-23 11:42:47,710 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845367.5277503, 'r', '?', 124.796043, 0.096937, 10.923782, 1.953),)
+
+2019-10-23 11:42:58,147 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845377.8290315, 'r', '?', 125.032434, 0.092972, 10.250348, 1.953),)
+
+2019-10-23 11:43:08,700 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845388.656201, 'r', '?', 124.741902, 0.013624, 0, 1.953),)
+
+2019-10-23 11:43:18,947 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845398.9075878, 'r', '?', 124.891628, 0.013879, 0, 1.953),)
+
+2019-10-23 11:43:29,192 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845409.152268, 'r', '?', 124.797627, 0.013709, 0, 1.953),)
+
+2019-10-23 11:43:39,452 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845419.4033644, 'r', '?', 125.019866, 0.092173, 10.086012, 1.953),)
+
+2019-10-23 11:43:42,591 - splug - INFO - self.live_graph_lines created for device: device_1 <class 'matplotlib.lines.Line2D'>  Line2D(_line1)
+2019-10-23 11:43:49,992 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845429.9454505, 'r', '?', 125.129228, 0.092101, 10.058381, 1.953),)
+
+2019-10-23 11:44:00,795 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845440.1338766, 'r', '?', 124.999632, 0.092424, 10.094849, 1.953),)
+
+2019-10-23 11:44:11,272 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845451.0125616, 'r', '?', 125.083254, 0.092374, 10.081528, 1.953),)
+
+2019-10-23 11:44:21,715 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845461.4961479, 'r', '?', 124.937964, 0.092335, 10.089969, 1.953),)
+
+2019-10-23 11:44:31,965 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845471.9267302, 'r', '?', 124.694387, 0.092293, 10.078098, 1.953),)
+
+2019-10-23 11:44:42,262 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845482.2024553, 'r', '?', 124.687986, 0.092467, 10.11272, 1.953),)
+
+2019-10-23 11:44:52,526 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845492.479623, 'r', '?', 124.652603, 0.092333, 10.091353, 1.953),)
+
+2019-10-23 11:45:02,780 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845502.7327785, 'r', '?', 124.61858, 0.044268, 1.39969, 1.953),)
+
+2019-10-23 11:45:13,324 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845513.0838358, 'r', '?', 124.521648, 0.044274, 1.39547, 1.953),)
+
+2019-10-23 11:45:23,477 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845523.4475021, 'r', '?', 125.050223, 0.045019, 1.464646, 1.953),)
+
+2019-10-23 11:45:33,684 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845533.644452, 'r', '?', 125.06921, 0.045056, 1.428442, 1.953),)
+
+2019-10-23 11:45:44,035 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845543.8598263, 'r', '?', 124.86905, 0.044294, 1.399228, 1.953),)
+
+2019-10-23 11:45:54,330 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845554.290822, 'r', '?', 124.953916, 0.044616, 1.450336, 1.953),)
+
+2019-10-23 11:46:04,509 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845564.478442, 'r', '?', 125.073811, 0.045343, 1.457063, 1.953),)
+
+2019-10-23 11:46:14,753 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845574.638394, 'r', '?', 125.199086, 0.044762, 1.412286, 1.953),)
+
+2019-10-23 11:46:25,221 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845584.8945851, 'r', '?', 125.270683, 0.045454, 1.432135, 1.953),)
+
+2019-10-23 11:46:35,661 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845595.36118, 'r', '?', 125.225399, 0.045231, 1.459239, 1.953),)
+
+2019-10-23 11:46:45,897 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845605.8572, 'r', '?', 125.291432, 0.045248, 1.437807, 1.953),)
+
+2019-10-23 11:46:56,171 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845616.1238668, 'r', '?', 125.263769, 0.045033, 1.473219, 1.953),)
+
+2019-10-23 11:47:06,463 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845626.4003274, 'r', '?', 124.905122, 0.044448, 1.390458, 1.953),)
+
+2019-10-23 11:47:16,812 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845636.6845386, 'r', '?', 124.924358, 0.045149, 1.39204, 1.953),)
+
+2019-10-23 11:47:27,076 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845647.0369139, 'r', '?', 124.968215, 0.044647, 1.448094, 1.953),)
+
+2019-10-23 11:47:37,361 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845657.3111207, 'r', '?', 124.988988, 0.044687, 1.454952, 1.953),)
+
+2019-10-23 11:47:47,632 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845667.584288, 'r', '?', 125.140851, 0.044869, 1.434443, 1.953),)
+
+2019-10-23 11:47:57,879 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845677.828217, 'r', '?', 125.179825, 0.045176, 1.419737, 1.953),)
+
+2019-10-23 11:48:08,152 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845688.1116495, 'r', '?', 125.155036, 0.045243, 1.402196, 1.953),)
+
+2019-10-23 11:48:18,315 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845698.2668326, 'r', '?', 125.095826, 0.045076, 1.514501, 1.953),)
+
+2019-10-23 11:48:28,708 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845708.5358536, 'r', '?', 125.135229, 0.045468, 1.439983, 1.953),)
+
+2019-10-23 11:48:39,142 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845718.933711, 'r', '?', 125.244375, 0.045054, 1.441763, 1.953),)
+
+2019-10-23 11:48:49,404 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845729.3563874, 'r', '?', 124.932834, 0.044299, 1.431674, 1.953),)
+
+2019-10-23 11:48:59,681 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845739.6334007, 'r', '?', 125.146206, 0.045171, 1.476121, 1.953),)
+
+2019-10-23 11:49:09,953 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845749.9041033, 'r', '?', 125.560276, 0.045589, 1.486672, 1.953),)
+
+2019-10-23 11:49:20,221 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845760.171698, 'r', '?', 125.599214, 0.045332, 1.470647, 1.953),)
+
+2019-10-23 11:49:30,480 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845770.4417984, 'r', '?', 125.357996, 0.045105, 1.466493, 1.953),)
+
+2019-10-23 11:49:40,755 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845780.7068028, 'r', '?', 125.251425, 0.044979, 1.444467, 1.953),)
+
+2019-10-23 11:49:51,035 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845790.8988864, 'r', '?', 125.203603, 0.044842, 1.426068, 1.953),)
+
+2019-10-23 11:50:01,228 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845801.1797366, 'r', '?', 125.253775, 0.045115, 1.446907, 1.953),)
+
+2019-10-23 11:50:11,390 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845811.345033, 'r', '?', 125.567233, 0.045682, 1.422507, 1.953),)
+
+2019-10-23 11:50:21,754 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845821.5318098, 'r', '?', 125.402215, 0.045661, 1.430487, 1.953),)
+
+2019-10-23 11:50:31,921 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845831.873249, 'r', '?', 125.250695, 0.045039, 1.444467, 1.953),)
+
+2019-10-23 11:50:42,113 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845842.0631762, 'r', '?', 125.232228, 0.044682, 1.416836, 1.953),)
+
+2019-10-23 11:50:52,471 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845852.2336364, 'r', '?', 125.217686, 0.045018, 1.475791, 1.953),)
+
+2019-10-23 11:51:02,916 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845862.6045115, 'r', '?', 124.955773, 0.044679, 1.487266, 1.953),)
+
+2019-10-23 11:51:13,382 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845873.133054, 'r', '?', 125.140282, 0.045012, 1.441565, 1.953),)
+
+2019-10-23 11:51:23,811 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845883.5888214, 'r', '?', 125.295666, 0.045105, 1.497553, 1.953),)
+
+2019-10-23 11:51:34,081 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845894.0328896, 'r', '?', 125.165819, 0.044986, 1.390722, 1.953),)
+
+2019-10-23 11:51:44,363 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845904.3009338, 'r', '?', 125.353848, 0.045012, 1.468933, 1.953),)
+
+2019-10-23 11:51:54,631 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845914.5837092, 'r', '?', 125.396806, 0.04544, 1.493992, 1.953),)
+
+2019-10-23 11:52:04,963 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845924.8519013, 'r', '?', 125.026517, 0.044681, 1.481264, 1.953),)
+
+2019-10-23 11:52:15,420 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845935.1955748, 'r', '?', 124.882236, 0.044453, 1.404372, 1.953),)
+
+2019-10-23 11:52:25,683 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845945.635063, 'r', '?', 124.840154, 0.044714, 1.453436, 1.953),)
+
+2019-10-23 11:52:35,951 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845955.903011, 'r', '?', 125.080529, 0.044701, 1.452117, 1.953),)
+
+2019-10-23 11:52:46,214 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845966.1677942, 'r', '?', 125.288114, 0.045451, 1.495772, 1.953),)
+
+2019-10-23 11:52:56,585 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845976.4454806, 'r', '?', 125.601493, 0.045948, 1.490299, 1.953),)
+
+2019-10-23 11:53:06,863 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845986.8147311, 'r', '?', 125.690626, 0.04577, 1.47645, 1.953),)
+
+2019-10-23 11:53:17,111 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571845997.0711644, 'r', '?', 125.635539, 0.045476, 1.470186, 1.953),)
+
+2019-10-23 11:53:27,371 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846007.3223186, 'r', '?', 125.594446, 0.045798, 1.462272, 1.953),)
+
+2019-10-23 11:53:37,556 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846017.5078928, 'r', '?', 125.461217, 0.045172, 1.455612, 1.953),)
+
+2019-10-23 11:53:47,749 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846027.702872, 'r', '?', 125.117709, 0.044979, 1.46491, 1.953),)
+
+2019-10-23 11:53:58,028 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846037.8880577, 'r', '?', 125.399965, 0.045582, 1.446973, 1.953),)
+
+2019-10-23 11:54:08,489 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846048.1593208, 'r', '?', 125.487778, 0.045351, 1.521755, 1.953),)
+
+2019-10-23 11:54:18,669 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846058.617839, 'r', '?', 125.411819, 0.04541, 1.475659, 1.953),)
+
+2019-10-23 11:54:29,021 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846068.9716637, 'r', '?', 124.993746, 0.04484, 1.495311, 1.953),)
+
+2019-10-23 11:54:39,268 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846079.2263172, 'r', '?', 124.964144, 0.04453, 1.481528, 1.953),)
+
+2019-10-23 11:54:49,639 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846089.4812906, 'r', '?', 125.430901, 0.04503, 1.502565, 1.953),)
+
+2019-10-23 11:54:59,912 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846099.864587, 'r', '?', 125.405257, 0.045147, 1.429036, 1.953),)
+
+2019-10-23 11:55:10,085 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846110.0360043, 'r', '?', 125.443085, 0.04535, 1.475659, 1.953),)
+
+2019-10-23 11:55:20,415 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846120.3675601, 'r', '?', 125.550697, 0.04588, 1.518919, 1.953),)
+
+2019-10-23 11:55:30,801 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846130.6252782, 'r', '?', 125.629064, 0.045566, 1.477638, 1.953),)
+
+2019-10-23 11:55:41,115 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846141.0235455, 'r', '?', 125.603044, 0.045852, 1.478099, 1.953),)
+
+2019-10-23 11:55:51,352 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846151.3202016, 'r', '?', 125.58098, 0.04548, 1.514501, 1.953),)
+
+2019-10-23 11:56:01,610 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846161.5627108, 'r', '?', 125.516997, 0.045996, 1.497025, 1.953),)
+
+2019-10-23 11:56:11,974 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846171.872269, 'r', '?', 125.420496, 0.045282, 1.469262, 1.953),)
+
+2019-10-23 11:56:22,230 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846182.1817849, 'r', '?', 125.491609, 0.04557, 1.504082, 1.953),)
+
+2019-10-23 11:56:32,858 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846192.3737595, 'r', '?', 125.557046, 0.045475, 1.488255, 1.953),)
+
+2019-10-23 11:56:43,116 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846203.0688198, 'r', '?', 125.406135, 0.045479, 1.522546, 1.953),)
+
+2019-10-23 11:56:53,388 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846213.3402855, 'r', '?', 125.240014, 0.044688, 1.471702, 1.953),)
+
+2019-10-23 11:57:03,687 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846223.640091, 'r', '?', 125.539566, 0.045546, 1.527097, 1.953),)
+
+2019-10-23 11:57:13,883 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846233.8229802, 'r', '?', 125.675081, 0.046006, 1.492607, 1.953),)
+
+2019-10-23 11:57:24,367 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846244.319423, 'r', '?', 125.452702, 0.045228, 1.499399, 1.953),)
+
+2019-10-23 11:57:34,539 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846254.494156, 'r', '?', 125.720737, 0.0459, 1.454425, 1.953),)
+
+2019-10-23 11:57:44,746 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846264.674724, 'r', '?', 125.571381, 0.045565, 1.476516, 1.953),)
+
+2019-10-23 11:57:54,933 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846274.8846982, 'r', '?', 125.214658, 0.100589, 11.585214, 1.953),)
+
+2019-10-23 11:58:05,133 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846285.0820422, 'r', '?', 125.620895, 0.101653, 11.888035, 1.953),)
+
+2019-10-23 11:58:15,457 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846295.2667012, 'r', '?', 125.523431, 0.103368, 12.172457, 1.953),)
+
+2019-10-23 11:58:25,897 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846305.679388, 'r', '?', 125.251529, 0.1033, 12.146606, 1.954),)
+
+2019-10-23 11:58:36,171 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846316.120035, 'r', '?', 125.2788, 0.101658, 11.85948, 1.954),)
+
+2019-10-23 11:58:46,437 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846326.3899627, 'r', '?', 125.465914, 0.103314, 12.165862, 1.954),)
+
+2019-10-23 11:58:56,710 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846336.6636665, 'r', '?', 125.131608, 0.099717, 11.50021, 1.954),)
+
+2019-10-23 11:59:07,152 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846346.9458935, 'r', '?', 125.170758, 0.10325, 12.133813, 1.954),)
+
+2019-10-23 11:59:17,499 - splug - DEBUG - >> insert_measurements into test_data.db >> (('device_1', 1571846357.3722007, 'r', '?', 125.262152, 0.098413, 11.253179, 1.954),)
+
+2019-10-23 11:59:25,867 - splug - DEBUG - >> record_off for: device_1
+
+2019-10-23 11:59:30,981 - splug - DEBUG - >> monitor_off for: device_1
+
+2019-10-23 11:59:36,794 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 11:59:36,794 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 11:59:36,794 - splug - INFO - SmartPlug: all done
+2019-10-23 11:59:40,019 - splug - INFO - Done _config_logger
+2019-10-23 11:59:40,019 - splug - Level 99 - 
+2019-10-23 11:59:40,019 - splug - Level 99 - 
+2019-10-23 11:59:40,019 - splug - Level 99 - ============================
+2019-10-23 11:59:40,020 - splug - Level 99 - 
+2019-10-23 11:59:40,020 - splug - Level 99 - Running SmartPlugGraph  version = Ver5 2019 10 10.2 Mode: Mode 1
+2019-10-23 11:59:40,020 - splug - Level 99 - 
+2019-10-23 11:59:40,020 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug_graph.py
+2019-10-23 11:59:40,020 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 11:59:40,020 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 11:59:40,020 - splug - Level 99 - Time now: 2019-10-23 15:59:40
+2019-10-23 11:59:40,020 - splug.sp_graph - INFO - in Grapher __init__
+2019-10-23 11:59:40,097 - splug.gui - INFO - in class gui_new GUI init
+2019-10-23 11:59:54,337 - splug - DEBUG - >>Beginning a graph...
+
+2019-10-23 11:59:54,337 - splug - DEBUG - >>Preparing data for device_1
+
+2019-10-23 11:59:54,347 - splug - DEBUG - >>For device device_1: data points fetched: 103
+
+2019-10-23 12:01:14,331 - splug - INFO - SmartPlugGraph : all done
+2019-10-23 12:01:30,160 - splug - INFO - Done _config_logger
+2019-10-23 12:01:30,161 - splug - Level 99 - 
+2019-10-23 12:01:30,161 - splug - Level 99 - 
+2019-10-23 12:01:30,161 - splug - Level 99 - ============================
+2019-10-23 12:01:30,161 - splug - Level 99 - 
+2019-10-23 12:01:30,161 - splug - Level 99 - Running SmartPlugGraph  version = Ver5 2019 10 10.2 Mode: Mode 1
+2019-10-23 12:01:30,161 - splug - Level 99 - 
+2019-10-23 12:01:30,161 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug_graph.py
+2019-10-23 12:01:30,161 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 12:01:30,161 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 12:01:30,161 - splug - Level 99 - Time now: 2019-10-23 16:01:30
+2019-10-23 12:01:30,161 - splug.sp_graph - INFO - in Grapher __init__
+2019-10-23 12:01:30,220 - splug.gui - INFO - in class gui_new GUI init
+2019-10-23 12:01:46,269 - splug - DEBUG - >>Beginning a graph...
+
+2019-10-23 12:01:46,270 - splug - DEBUG - >>Preparing data for device_1
+
+2019-10-23 12:01:46,280 - splug - DEBUG - >>For device device_1: data points fetched: 103
+
+2019-10-23 12:01:46,327 - splug - DEBUG - >>... Graph ready...
+
+2019-10-23 12:01:47,087 - splug - DEBUG - >>... Graph done.
+
+2019-10-23 12:02:27,409 - splug - INFO - SmartPlugGraph : all done
+2019-10-23 12:04:49,764 - splug - INFO - Done _config_logger
+2019-10-23 12:04:49,764 - splug - Level 99 - 
+2019-10-23 12:04:49,764 - splug - Level 99 - 
+2019-10-23 12:04:49,764 - splug - Level 99 - ============================
+2019-10-23 12:04:49,764 - splug - Level 99 - 
+2019-10-23 12:04:49,764 - splug - Level 99 - Running SmartPlugGraph  version = Ver5 2019 10 10.2 Mode: Mode 1
+2019-10-23 12:04:49,764 - splug - Level 99 - 
+2019-10-23 12:04:49,764 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/gui_for_graph.py
+2019-10-23 12:04:49,764 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 12:04:49,764 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 12:04:49,764 - splug - Level 99 - Time now: 2019-10-23 16:04:49
+2019-10-23 12:04:49,765 - splug.sp_graph - INFO - in Grapher __init__
+2019-10-23 12:04:49,825 - splug.gui - INFO - in class gui_new GUI init
+2019-10-23 12:05:06,063 - splug - DEBUG - >>Beginning a graph...
+
+2019-10-23 12:05:06,063 - splug - DEBUG - >>Preparing data for device_1
+
+2019-10-23 12:05:06,064 - splug - DEBUG - >>For device device_1: data points fetched: 0
+
+2019-10-23 12:05:06,068 - splug - DEBUG - >>Not enough data to process for device_1
+
+2019-10-23 12:05:06,115 - splug - DEBUG - >>... Graph ready...
+
+2019-10-23 12:05:06,845 - splug - DEBUG - >>... Graph done.
+
+2019-10-23 12:05:20,645 - splug - DEBUG - >>Beginning a graph...
+
+2019-10-23 12:05:20,646 - splug - DEBUG - >>Preparing data for device_1
+
+2019-10-23 12:05:20,655 - splug - DEBUG - >>For device device_1: data points fetched: 103
+
+2019-10-23 12:05:20,703 - splug - DEBUG - >>... Graph ready...
+
+2019-10-23 12:05:21,452 - splug - DEBUG - >>... Graph done.
+
+2019-10-23 12:08:04,852 - splug - DEBUG - >>Export data to csv file data.csv...
+
+2019-10-23 12:08:04,852 - splug - DEBUG - >>Preparing data for device_1
+
+2019-10-23 12:08:04,860 - splug - DEBUG - >>For device device_1: data points fetched: 103
+
+2019-10-23 12:08:04,872 - splug - DEBUG - >>...CSV file complete.
+
+2019-10-23 12:08:38,868 - splug - INFO - Done _config_logger
+2019-10-23 12:08:38,869 - splug - Level 99 - 
+2019-10-23 12:08:38,869 - splug - Level 99 - 
+2019-10-23 12:08:38,869 - splug - Level 99 - ============================
+2019-10-23 12:08:38,869 - splug - Level 99 - 
+2019-10-23 12:08:38,869 - splug - Level 99 - Running SmartPlugGraph  version = Ver5 2019 10 10.2 Mode: Mode 1
+2019-10-23 12:08:38,869 - splug - Level 99 - 
+2019-10-23 12:08:38,869 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/gui_for_graph.py
+2019-10-23 12:08:38,869 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 12:08:38,869 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 12:08:38,869 - splug - Level 99 - Time now: 2019-10-23 16:08:38
+2019-10-23 12:08:38,869 - splug.sp_graph - INFO - in Grapher __init__
+2019-10-23 12:08:38,933 - splug.gui - INFO - in class gui_new GUI init
+2019-10-23 12:09:40,420 - splug - INFO - SmartPlugGraph : all done
+2019-10-23 12:09:40,420 - splug - INFO - SmartPlugGraph : all done
+2019-10-23 12:09:50,244 - splug - INFO - Done config_logger
+2019-10-23 12:09:50,244 - splug - Level 99 - 
+2019-10-23 12:09:50,244 - splug - Level 99 - 
+2019-10-23 12:09:50,245 - splug - Level 99 - ============================
+2019-10-23 12:09:50,245 - splug - Level 99 - 
+2019-10-23 12:09:50,245 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 23.0
+2019-10-23 12:09:50,245 - splug - Level 99 - 
+2019-10-23 12:09:50,245 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug.py
+2019-10-23 12:09:50,245 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 12:09:50,245 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 12:09:50,245 - splug - Level 99 - Time now: 2019-10-23 16:09:50
+2019-10-23 12:09:54,007 - splug - DEBUG - >> Probing for plugs...
+
+2019-10-23 12:09:54,009 - splug - DEBUG - >> probe: 192.168.0.209
+
+2019-10-23 12:09:54,628 - splug - DEBUG - >> found device at: 192.168.0.209
+
+2019-10-23 12:09:54,631 - splug - DEBUG - >> probe: 192.168.0.210
+
+2019-10-23 12:09:59,633 - splug - DEBUG - >> no device at: 192.168.0.210
+
+2019-10-23 12:09:59,633 - splug - DEBUG - >> probe: 192.168.0.9
+
+2019-10-23 12:10:04,635 - splug - DEBUG - >> no device at: 192.168.0.9
+
+2019-10-23 12:10:04,636 - splug - DEBUG - >> probe: 192.168.0.10
+
+2019-10-23 12:10:09,638 - splug - DEBUG - >> no device at: 192.168.0.10
+
+2019-10-23 12:10:09,639 - splug - DEBUG - >> probe: 192.168.0.11
+
+2019-10-23 12:10:14,639 - splug - DEBUG - >> no device at: 192.168.0.11
+
+2019-10-23 12:10:14,640 - splug - DEBUG - >> ....found ['192.168.0.209'] Done.
+
+2019-10-23 12:10:20,450 - splug - DEBUG - >> Full device info: 
+active_mode:schedule
+alias:joe
+dev_name:Wi-Fi Smart Plug With Energy Monitoring
+deviceId:80062D8FB657D94838110793834DD2451B1FF283
+device_type:DeviceType.Plug
+dst_offset:60
+feature:TIM:ENE
+fwId:00000000000000000000000000000000
+hwId:60FF6B258734EA6880E186F8C96DDC61
+hw_ver:1.0
+icon_hash:
+index:18
+is_bulb:False
+is_plug:True
+is_strip:False
+is_variable_color_temp:False
+latitude:41.540025
+led_off:0
+longitude:-71.010105
+mac:D8:0D:17:C5:98:90
+model:HS110(US)
+oemId:FFF22CFF774A0B89F7624BFC6F50D5DE
+on_time:1604
+relay_state:1
+rssi:-40
+sw_ver:1.2.5 Build 171206 Rel.085954
+tcpip:192.168.0.209
+time:2019-10-23 12:10:20
+type:IOT.SMARTPLUGSWITCH
+tz_str:EST5EDT,M3.2.0,M11.1.0
+updating:0
+zone_str:(UTC-05:00) Eastern Daylight Time (US & Canada)
+
+2019-10-23 12:12:54,370 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 12:12:54,370 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 12:12:54,371 - splug - INFO - SmartPlug: all done
+2019-10-23 12:13:08,950 - splug - INFO - Done _config_logger
+2019-10-23 12:13:08,950 - splug - Level 99 - 
+2019-10-23 12:13:08,951 - splug - Level 99 - 
+2019-10-23 12:13:08,951 - splug - Level 99 - ============================
+2019-10-23 12:13:08,951 - splug - Level 99 - 
+2019-10-23 12:13:08,951 - splug - Level 99 - Running SmartPlugGraph  version = Ver5 2019 10 10.2 Mode: Mode 1
+2019-10-23 12:13:08,951 - splug - Level 99 - 
+2019-10-23 12:13:08,951 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug_graph.py
+2019-10-23 12:13:08,951 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 12:13:08,951 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 12:13:08,951 - splug - Level 99 - Time now: 2019-10-23 16:13:08
+2019-10-23 12:13:08,951 - splug.sp_graph - INFO - in Grapher __init__
+2019-10-23 12:13:09,013 - splug.gui - INFO - in class gui_new GUI init
+2019-10-23 12:13:34,342 - splug - INFO - SmartPlugGraph : all done
+2019-10-23 12:13:42,199 - splug - INFO - Done config_logger
+2019-10-23 12:13:42,199 - splug - Level 99 - 
+2019-10-23 12:13:42,199 - splug - Level 99 - 
+2019-10-23 12:13:42,199 - splug - Level 99 - ============================
+2019-10-23 12:13:42,199 - splug - Level 99 - 
+2019-10-23 12:13:42,199 - splug - Level 99 - Running SmartPlug version = Ver6 2019 10 23.0
+2019-10-23 12:13:42,199 - splug - Level 99 - 
+2019-10-23 12:13:42,199 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver6/smart_plug.py
+2019-10-23 12:13:42,199 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver6
+2019-10-23 12:13:42,199 - splug - Level 99 - COMPUTERNAME THEPROF
+2019-10-23 12:13:42,199 - splug - Level 99 - Time now: 2019-10-23 16:13:42
+2019-10-23 12:13:47,168 - splug - DEBUG - >> Probing for plugs...
+
+2019-10-23 12:13:47,169 - splug - DEBUG - >> probe: 192.168.0.209
+
+2019-10-23 12:13:47,178 - splug - DEBUG - >> found device at: 192.168.0.209
+
+2019-10-23 12:13:47,179 - splug - DEBUG - >> probe: 192.168.0.210
+
+2019-10-23 12:13:52,181 - splug - DEBUG - >> no device at: 192.168.0.210
+
+2019-10-23 12:13:52,181 - splug - DEBUG - >> probe: 192.168.0.9
+
+2019-10-23 12:13:57,183 - splug - DEBUG - >> no device at: 192.168.0.9
+
+2019-10-23 12:13:57,183 - splug - DEBUG - >> probe: 192.168.0.10
+
+2019-10-23 12:14:02,185 - splug - DEBUG - >> no device at: 192.168.0.10
+
+2019-10-23 12:14:02,186 - splug - DEBUG - >> probe: 192.168.0.11
+
+2019-10-23 12:14:07,187 - splug - DEBUG - >> no device at: 192.168.0.11
+
+2019-10-23 12:14:07,189 - splug - DEBUG - >> ....found ['192.168.0.209'] Done.
+
+2019-10-23 12:14:07,916 - splug - DEBUG - >> self.device_list = [ 
+{ "name": "joe", "tcpip": "192.168.0.209" },
+]
+
+2019-10-23 12:14:18,225 - splug - DEBUG - >> Full device info: 
+active_mode:schedule
+alias:joe
+dev_name:Wi-Fi Smart Plug With Energy Monitoring
+deviceId:80062D8FB657D94838110793834DD2451B1FF283
+device_type:DeviceType.Plug
+dst_offset:60
+feature:TIM:ENE
+fwId:00000000000000000000000000000000
+hwId:60FF6B258734EA6880E186F8C96DDC61
+hw_ver:1.0
+icon_hash:
+index:18
+is_bulb:False
+is_plug:True
+is_strip:False
+is_variable_color_temp:False
+latitude:41.540025
+led_off:0
+longitude:-71.010105
+mac:D8:0D:17:C5:98:90
+model:HS110(US)
+oemId:FFF22CFF774A0B89F7624BFC6F50D5DE
+on_time:1842
+relay_state:1
+rssi:-41
+sw_ver:1.2.5 Build 171206 Rel.085954
+tcpip:192.168.0.209
+time:2019-10-23 12:14:18
+type:IOT.SMARTPLUGSWITCH
+tz_str:EST5EDT,M3.2.0,M11.1.0
+updating:0
+zone_str:(UTC-05:00) Eastern Daylight Time (US & Canada)
+
+2019-10-23 12:17:09,341 - splug - DEBUG - in helper, rec_from_queue  stop None ()
+2019-10-23 12:17:09,341 - splug - DEBUG - smart_plug_helper.polling() queue: stop None ()
+2019-10-23 12:17:09,343 - splug - INFO - SmartPlug: all done

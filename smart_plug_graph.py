@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
 
-# main for smartplug
-# for documentation see: *>text
-"""
 
+"""
 Purpose:
     smart plug_graph.py  ( tp link ) app with a gui for graphing and....
     related program smart_plug.py
     this is the main program, start it
 
 Environment:
-
+    development:
         Spyder 3.3.6
         Python 3.6
         Tkinker
         .....
+    runtime:
         tested in Win 10 should work in all os's
 
 """
@@ -26,17 +25,20 @@ import os
 import time
 #import traceback
 import datetime
+#import webbrowser
+from   tkinter import messagebox
+from   subprocess import Popen
+#from   pathlib import Path
 
 # ----------- local imports --------------------------
 import parameters
 import gui_for_graph
 #import gui_tabbed
 from   app_global import AppGlobal
-import graph_smart_plug
+import graph_from_db
 import define_db
 import smart_plug_adapter
 
-          # this may need refactoring but for now.....
 
 # ========================== Begin Class ================================
 class SmartPlugGraph:
@@ -53,7 +55,7 @@ class SmartPlugGraph:
         print( "" )
 
         self.app_name       = "SmartPlugGraph "
-        self.version        = "Ver5 2019 09 19.0"
+        self.version        = "Ver5 2019 10 10.2"
         self.gui            = None
 
         self.no_restarts    =  -1   # we count the restarts, adding one each time, first start is not a restart
@@ -75,9 +77,10 @@ class SmartPlugGraph:
         self.parmeters_x    = "none"        # name without .py for parameters extension may be replaced by command line args
         self.get_args( )
         # command line might look like this
-        # python smart_terminal_graph.py    parameters=gh_paramaters
+        # python smart_plug_graph.py    parameters=gh_paramaters
 
         self.parameters     = parameters.Parameters(  )  #  std name -- open early may effect other
+        # AppGlobal.db_file_name       =  self.parameters.db_file_name  # or from init of parameters
 
         self.logger         = None      # set later none value protects against call against nothing
         if self.parmeters_x != "none":  # !! code clean up broke this, fixed ??
@@ -89,9 +92,6 @@ class SmartPlugGraph:
         AppGlobal.logger    = self.logger
         AppGlobal.logger_id = self.logger_id
 
-        self.db             = None
-
-        #self.connect        = self.parameters.connect
         self.mode           = self.parameters.mode
 
         self.starting_dir   = os.getcwd()    # or perhaps parse out of command line
@@ -105,15 +105,12 @@ class SmartPlugGraph:
             i_smartplug_adapter.tcpip          = i_device[ "tcpip" ]
             AppGlobal.smartplug_adapter_list   = self.smartplug_adapter_list
 
-        self.grapher   = graph_smart_plug.Grapher()
+        self.grapher   = graph_from_db.Grapher()
 
         self.gui       = gui_for_graph.GUI( )  # create the gui or view part of the program
         # self.gui       = gui_tabbed.GUI( )  # create the gui or view part of the program  dropping this guy
 
         self.exception_records   = []          # keep a list of  ExceptionRecord  add at end limit    self.ex_max  ?? implemented?
-
-        self.display_db_status()
-        #self.db_select_from_parms()
 
         # --------------------------------------------------------
         self.gui.root.mainloop()
@@ -145,7 +142,7 @@ class SmartPlugGraph:
      # -------------------------------------------------------
     def _prog_info( self ):
         """
-        log info about program and its argument/enviroment
+        log info about program and its argument/environment
         after logger is set up
         """
         fll         = AppGlobal.force_log_level
@@ -157,7 +154,6 @@ class SmartPlugGraph:
 
         logger.log( fll, "Running " + self.app_name + " version = " + self.version + " Mode: " +self.parameters.mode )
         logger.log( fll,  "" )
-        # !! add mode
 
         if len( sys.argv ) == 0:
             logger.log( fll, "no command line arg " )
@@ -197,7 +193,7 @@ class SmartPlugGraph:
                 self.parmeters_x  =  parm_value   #
                 print( "command line arg >> " + iarg  )  # log file not open
             else:
-                print( "no parmeter extensions" )
+                print( "no parameter extensions" )
             return
 
     # -------------------------------------------------------
@@ -221,14 +217,14 @@ class SmartPlugGraph:
     def polling( self, ):
         """
         currently no polling, probably not called
-        used if I multithread the app.
+        used if I multi-thread the app.
         """
         pass
 
     # ----------------------------------------------
     def back_sundays_from_now( self, n_sun ):
         """
-        n_sun back, 1 is lowest leagal
+        n_sun back, 1 is lowest legal
         from now - might be good
         return: datetime
         """
@@ -245,29 +241,70 @@ class SmartPlugGraph:
         return midnight_sun
 
     #-------------------------------------------
+    def db_select_from_now_minus_hr( self, n_hr ):
+        """
+        put values into gui for later use in graph
+        need date for calendar
+        need index for hour
+                self.gui.cal_begin
+                self.gui.cal_end
+        """
+        pass
+
+    #-------------------------------------------
+    def db_select_today( self, ):
+        """
+        what it says
+        put values into gui for later use in graph
+
+        """
+        #print( "db_select_today" )
+        dt_now         = datetime.datetime.now()
+        tt_now         = dt_now.timetuple( )
+        dt_now         = datetime.datetime.now()
+
+        # set to begin today
+        date_begin     =  dt_now.date()  # today
+        self.gui.cal_begin.set_date( date_begin )                           # actually could just use the datetime
+        self.gui.time_begin.set( AppGlobal.dd_hours[0] )
+
+        # set to begin tomorrow, end today
+        date_end     =  ( dt_now + datetime.timedelta( days=1 ) ).date()  #
+        self.gui.cal_end.set_date( date_end )                               # actually could just use the datetime
+        self.gui.time_end.set( AppGlobal.dd_hours[0] )
+
+    #-------------------------------------------
     def db_select_from_now( self, n_days ):
         """
+        update in process this as test of gui_for_graph
+
+        get now, split to date and time of day,  round time of day forward, adjust date if required.
+        subtract time from now and round backward to get new date and time of day
+        convert times into strings and place in the gui
+        look at conversions for query in... gui.get_begin_end  ... and maybe some of this logic should be in the gui as well
+
         select with start now  and  n days  back )
         need to set self.db_start and self.db_end
         note formats dt for date time and ts for time stamp
         does not seem to round time to begin of day should it ??
         """
+        pass
         #print( "----------- db_select_from_sun  ------------" )
-        dt       = datetime.datetime.now()
-        # convert to string  and timestamp store both
-        a_string        = dt.strftime( "%Y/%m/%d" )    # not quite accurate, add formatting
-        ts_end          = time.mktime( dt.timetuple() )
-
-        self.db_end     = ( a_string, ts_end )
-
-        dt              = datetime.datetime.now()
-        dt              = dt - datetime.timedelta( days = 1 * n_days )   #this seems to mess up next line
-
-        a_string        = dt.strftime( "%Y/%m/%d" )
-        ts_begin        = time.mktime( dt.timetuple() )
-
-        self.db_start   = ( a_string, ts_begin )
-        self.display_db_select()
+#        dt       = datetime.datetime.now()
+#        # convert to string  and timestamp store both
+#        a_string        = dt.strftime( "%Y/%m/%d" )    # not quite accurate, add formatting
+#        ts_end          = time.mktime( dt.timetuple() )
+#
+#        self.db_end     = ( a_string, ts_end )
+#
+#        dt              = datetime.datetime.now()
+#        dt              = dt - datetime.timedelta( days = 1 * n_days )   #this seems to mess up next line
+#
+#        a_string        = dt.strftime( "%Y/%m/%d" )
+#        ts_begin        = time.mktime( dt.timetuple() )
+#
+#        self.db_start   = ( a_string, ts_begin )
+#        self.display_db_select()
 
     #-------------------------------------------
     def db_select_from_sun( self, n ):
@@ -306,23 +343,21 @@ class SmartPlugGraph:
     #-------------------------------------------
     def db_select_from_parms( self ):
         """
-
+        what it says
         """
+        #print( "fix db_select_from_parms" )
 
-        print( "fix db_select_from_parms" )
-#        time_str   =  self.parameters.graph_start_time
-#        time_ts    =  time.mktime( datetime.datetime.strptime( time_str, "%Y/%m/%d").timetuple() )
-#
-#        self.db_start   = ( time_str, time_ts )
-#
-#        time_str   =  self.parameters.graph_end_time
-#        time_ts    =  time.mktime( datetime.datetime.strptime( time_str, "%Y/%m/%d").timetuple() )
-#        self.db_end     = ( time_str, time_ts )
-#        self.display_db_select()
+        self.gui.cal_begin.set_date( self.parameters.graph_begin_date  )
+        self.gui.cal_end.set_date( self.parameters.graph_end_date  )
+
+        self.gui.time_begin.set( self.parameters.graph_begin_hr )
+        self.gui.time_end.set( self.parameters.graph_end_hr )
 
     #-------------------------------------------
     def display_db_select( self ):
-
+        """
+        !! fix allignment of lables and length and will not need padding
+        """
         spacer   = "                                              "
         lab_len  = 20
 
@@ -331,49 +366,6 @@ class SmartPlugGraph:
 
         lbl_text  = ( "End:   " + self.db_end[0]   + spacer )[0:lab_len]
         self.gui.lbl_end.config(    text    =  lbl_text     )
-
-    #-------------------------------------------
-    def display_db_status( self ):
-        """
-        was used for marina sql
-        """
-        pass
-#        spacer   = "                                              "
-#        lab_len  = 25
-#        if self.db is None:
-#            lbl_text  = ( "Status: Not Connected" + spacer )[0:lab_len]
-#            self.gui.lbl_db_status.config(  text    =  lbl_text     )
-#
-#            lbl_text  = ( "Host: None" + spacer )[0:lab_len]
-#            self.gui.lbl_db_host.config(    text    =  lbl_text     )
-#
-#            lbl_text  = ( "DB: None" + spacer )[0:lab_len]
-#            self.gui.lbl_db_db.config(      text    =  lbl_text     )
-#
-#            lbl_text  = ( "User: None" + spacer )[0:lab_len]
-#            self.gui.lbl_db_user.config( text       =  lbl_text     )
-#
-#        else:
-#            lbl_text  = ( self.parameters.connect    + spacer )[0:lab_len]
-#            self.gui.lbl_db_connect.config(    text    =  lbl_text     )
-#
-#            if self.db.db_open:
-#                is_open = "Open"
-#            else:
-#                is_open = "Closed"
-#
-#            lbl_text  = ( "Status: " + is_open + spacer )[0:lab_len]
-#            self.gui.lbl_db_status.config(  text    =  lbl_text     )
-#
-#            lbl_text  = ( "Host: " + self.parameters.db_host    + spacer )[0:lab_len]
-#            self.gui.lbl_db_host.config(    text    =  lbl_text     )
-#
-#            lbl_text  = ( "DB: " + self.parameters.db_db    + spacer )[0:lab_len]
-#            self.gui.lbl_db_db.config(    text    =  lbl_text     )
-#
-#            lbl_text  = ( "User: " + self.parameters.db_user    + spacer )[0:lab_len]
-#            self.gui.lbl_db_user.config(    text    =  lbl_text     )
-
 
     # ----------------------------------------------
     def os_open_logfile( self,  ):
@@ -388,10 +380,8 @@ class SmartPlugGraph:
         """
         callback from gui button
         """
-        a_filename = self.starting_dir  + os.path.sep + "parameters.py"
-
-        from subprocess import Popen   # since infrequently used ??
-        proc = Popen( [ self.parameters.ex_editor, a_filename ] )
+        a_filename  = self.starting_dir  + os.path.sep + "parameters.py"
+        AppGlobal.os_open_txt_file( a_filename )
 
     # ----------------------------------------------
     def os_open_parmxfile( self,  ):
@@ -407,18 +397,17 @@ class SmartPlugGraph:
     def os_open_helpfile( self,  ):
         """
         callback from gui button
-        """
-        a_filename = self.starting_dir  + os.path.sep + "help.txt"
 
-        from subprocess import Popen   # since infrequently used ??
-        proc = Popen( [ self.parameters.ex_editor, a_filename ] )
+        """
+        help_file            = self.parameters.help_file
+        AppGlobal.os_open_help_file( help_file )
 
     # ------------------ callbacks for buttons -----------------
-
     def cb_graph( self,  ):
         """
         callback from gui button
         do the graph -- called from gui send to grapher
+        need !! to fix point count across multiple graphs and getting rid or point cache
         """
         #self.grapher.do_graph( self.db_start, self.db_end  )  from smart terminal
         # move get date back to here
@@ -440,24 +429,26 @@ class SmartPlugGraph:
 #            device = device_list[0]
 
         self.grapher.do_graph( device_list, ts_begin, ts_end  )
+
     # ----------------------------------------------
     def cb_rb_select( self,  ):
         """
         call back for gui button
         """
         ix_rb     = self.gui.rb_var.get()
-        print( "rb val", ix_rb )
+#        print( "rb val", ix_rb )
 
         if    ix_rb == 0:
             self.db_select_from_parms()
         elif  ix_rb == 1:
-            self.db_select_from_sun( 1 )
+            self.db_select_today()
         elif  ix_rb == 2:
             self.db_select_from_sun( 2 )
 
+#        elif  ix_rb == 6:
+#            self.db_select_from_now( 1 )
         elif  ix_rb == 6:
-            self.db_select_from_now( 1 )
-
+            self.db_select_from_now_minus_hr( 1 )
         elif  ix_rb == 7:
             self.db_select_from_now( 7 )
         else:
@@ -469,10 +460,9 @@ class SmartPlugGraph:
         define a new sql data base file
         must be in a new file ( not currently existing )
         """
-        from tkinter import messagebox    # lazy import?
-        db_file_name    = self.gui.get_db_file_name()
+        db_file_name    = AppGlobal.gui.get_db_file_name()   # !! may want to change to use a dialog
         if os.path.isfile( db_file_name ):
-#            msg   =  f"File aexists: {db_file_name}"
+#            msg   =  f"File exists: {db_file_name}"
 #            AppGlobal.gui.display_info_string( msg )
 #            print( f"file exists: {db_file_name}" )
             msg   =  f"Error: File ({db_file_name}) already exists."
@@ -482,6 +472,8 @@ class SmartPlugGraph:
         msg     = f"Creating empty database in file ({db_file_name})."
         AppGlobal.gui.display_info_string( msg )
         define_db.create_db( db_file_name )
+        msg     = f"Empty database in file ({db_file_name}) done."
+        AppGlobal.gui.display_info_string( msg )
 
  # ----------------------------------------------
     def cb_export_csv( self,  ):
@@ -507,10 +499,9 @@ class SmartPlugGraph:
         call back for gui button
         """
         print("cb_test called may cause error if test not set up  ")
-        AppGlobal.graphing.test_query()
+#        AppGlobal.graphing.test_query()
 
 # --------------------------------------
-
 if __name__ == '__main__':
         """
         run the app

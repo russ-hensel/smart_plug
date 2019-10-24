@@ -10,43 +10,14 @@ import sys
 from   tkcalendar import Calendar, DateEntry
 import datetime
 from   tkinter.filedialog import askopenfilename
+from   tkinter.filedialog import asksaveasfile
 import pyperclip
-
+import ctypes
 
 #------- local imports
 from   app_global import AppGlobal
 
 
-#class RedirectText(object):
-#    """
-#    simple class to let us redirect console prints to our recieve area
-#    http://www.blog.pythonlibrary.org/2014/07/14/tkinter-redirecting-stdout-stderr/
-#    think no longer used
-#    """
-#    #----------------------------------------------------------------------
-#    def __init__(self, text_ctrl):
-#        """Constructor
-#        text_ctrl text area where we want output to go
-#        """
-#        self.output = text_ctrl
-#
-#    #----------------------------------------------------------------------
-#    def write(self, string):
-#        """"""
-#        self.output.insert( END, string )
-#        # add scrolling?
-#        self.output.see( END )
-#
-#        #self.myRecText.insert( END, adata, )
-#        #self.myRecText.see( END )
-#
-#    #--------------------------------
-#    def flush(self, ):
-#        """
-#        here to mimic the standard sysout
-#        does not really do the flush
-#        """
-#        pass
 
 # ======================= begin class ====================
 class GUI:
@@ -63,19 +34,24 @@ class GUI:
 
         self.root               = Tk()
 
-        if self.parameters.os_win:
-            # icon may cause problem in linux for now only use in win
-            # print "in windows setting icon"
-            #self.root.iconbitmap( self.parameters.icon )
-            pass  # still woking on the icon
-
         a_title   = self.controller.app_name + " version: " + self.controller.version + " Mode: " +self.parameters.mode
         if self.controller.parmeters_x    != "none":
             a_title  += " parameters=" +   self.controller.parmeters_x
 
         self.root.title( a_title )
-
         self.root.geometry( self.parameters.win_geometry )
+
+        if self.parameters.os_win:
+            # from qt - How to set application's taskbar icon in Windows 7 - Stack Overflow
+            # https://stackoverflow.com/questions/1551605/how-to-set-applications-taskbar-icon-in-windows-7/1552105#1552105
+
+            icon = self.parameters.icon_graph
+            if not( icon is None ):
+                print( "set icon "  + str( icon ))
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(icon)
+                self.root.iconbitmap( icon )
+            else:
+                print( "no icon for you!"  + str( icon ))
 
         self.logger             = logging.getLogger( self.controller.logger_id + ".gui")
         self.logger.info("in class gui_new GUI init") # logger not currently used by here
@@ -95,8 +71,8 @@ class GUI:
         self.button_padx          = "2m"
         self.button_pady          = "1m"
 
-        self.btn_color     = self.parameters.btn_color
-        self.bkg_color     = self.parameters.bkg_color
+        self.btn_color            = self.parameters.btn_color
+        self.bkg_color            = self.parameters.bkg_color
 
         next_frame       = 0      # index of frames and position row for frames
 
@@ -118,7 +94,7 @@ class GUI:
         a_frame.grid( row=next_frame, column=0, sticky = E + W + N + S )   # + N + S  )  # actually only expands horiz
         next_frame += 1
 
-        a_frame  = self.make_db_frame( self.root_b,  )
+        a_frame  = self._make_db_frame( self.root_b,  )
         a_frame.grid( row=next_frame, column=0, sticky = E + W + N + S )   # + N + S  )  # actually only expands horiz
         next_frame += 1
 
@@ -169,7 +145,7 @@ class GUI:
         return a_frame
 
     # ------------------------------------------
-    def make_db_frame( self, parent, ):
+    def _make_db_frame( self, parent, ):
         """
         make a frame for db connect and .....
         Return:  a frame with the controls in it
@@ -206,8 +182,8 @@ class GUI:
 #        a_spacer  = Frame( a_frame, width=60, height=60, bg ="green", relief=RAISED, borderwidth=1 )
 #        a_spacer.grid( row = 0, column = lcol, sticky = E + W + N + S, rowspan = 2 )
 
-
         # ------------------------------------
+        # !! do not need to save lables
         lrow    += 1
         ( lrow, lcol, self.lbl_start )   = self._make_label( a_frame, lrow, lcol, "Start date and hour:", )
         ( lrow, lcol, self.lbl_end   )   = self._make_label( a_frame, lrow, lcol, "End date and hour:", )
@@ -228,7 +204,7 @@ class GUI:
         cal.grid( row = lrow +1, column=lcol, sticky=E + W + N + S )
         cal.configure( date_pattern = "yyyy/mm/dd" )
         cal.set_date( self.parameters.graph_end_date  )
-        self.cal_end     = cal
+        self.cal_end     = cal  # save for later
 
         #-------------------------------------
         lrow    = 0
@@ -246,16 +222,22 @@ class GUI:
 
         #------------- some of this may be added back later or not ---------------
 
-#        lrow    = 0
-#        lcol    = 4
-#        a_rb   =  Radiobutton( a_frame, text = "From Parms   ",      variable = self.rb_var, value=0,  command = self.controller.cb_rb_select )
-#        a_rb.grid( row = lrow,  column = lcol )
-#
-#        #lrow   = 1
-#        lcol   += 1
-#        a_rb   =  Radiobutton( a_frame, text = "From Last Sun",      variable = self.rb_var, value=1,  command=self.controller.cb_rb_select )
-#        a_rb.grid( row = lrow,  column = lcol )
-#
+        lrow    = 0
+        lcol    = 4
+        a_rb   =  Radiobutton( a_frame, text = "From Parms   ",      variable = self.rb_var, value=0,  command = self.controller.cb_rb_select )
+        a_rb.grid( row = lrow,  column = lcol )
+
+        #lrow   = 1
+        lcol   += 1
+        a_rb   =  Radiobutton( a_frame, text = "Today",             variable = self.rb_var, value=1,  command=self.controller.cb_rb_select )
+        a_rb.grid( row = lrow,  column = lcol )
+
+
+        #lrow    = 0
+        lcol    += 1
+        a_rb   =  Radiobutton( a_frame, text = "From Now - 1hr ",      variable = self.rb_var, value=6,  command=self.controller.cb_rb_select )
+        a_rb.grid( row = lrow,  column = lcol )
+
 #        lcol    += 1
 #        a_rb   =  Radiobutton( a_frame, text = "From Sun - 2 ",      variable = self.rb_var, value=2,  command=self.controller.cb_rb_select )
 #        a_rb.grid( row = lrow,  column = lcol )
@@ -274,12 +256,12 @@ class GUI:
 #        lcol    += 1
 #        a_rb   =  Radiobutton( a_frame, text = "From Sun - 5 ",      variable = self.rb_var, value=5,  command=self.controller.cb_rb_select )
 #        a_rb.grid( row = lrow,  column = lcol )
-#
+
 #        lrow    = 0
 #        lcol    += 1
-#        a_rb   =  Radiobutton( a_frame, text = "From Now - 1 ",      variable = self.rb_var, value=6,  command=self.controller.cb_rb_select )
+#        a_rb   =  Radiobutton( a_frame, text = "From Now - 1hr ",      variable = self.rb_var, value=6,  command=self.controller.cb_rb_select )
 #        a_rb.grid( row = lrow,  column = lcol )
-#
+
 #        lrow   = 1
 #        #lcol    += 1
 #        a_rb   =  Radiobutton( a_frame, text = "From Now - 3 ",      variable = self.rb_var, value=7,  command=self.controller.cb_rb_select )
@@ -496,10 +478,11 @@ class GUI:
         its name, return a string
         """
         #bw_for_db.set_text     = AppGlobal.parameters.db_file_name
+        # x = 1/0   # think should get directly from AppGlobal
         return( self.bw_for_db.get_text() )
 
     # ------------------------------------------
-    def display_info_string( self, data ):
+    def display_info_string( self, data, update_now = False ):
         """
         add info prefix and new line suffix and show in recieve area
         data expected to be a string, but other stuff has str applied to it
@@ -507,18 +490,17 @@ class GUI:
         """
         tab_char   = "\n"
         sdata      = f">>{data}{tab_char}"
-        self.display_string( sdata )
+        self.display_string( sdata, update_now = update_now )
         return
 
     # ---------------------------------------
-    def display_string( self, a_string ):
+    def display_string( self, a_string, update_now = False ):
         """
         print to recieve area, with scrolling and
         delete if there are too many lines in the area
         logging here !!
         """
         if  AppGlobal.parameters.log_gui_text:
-
             AppGlobal.logger.log( AppGlobal.parameters.log_gui_text_level, a_string, )
              #AppGlobal.logger.info( a_string )     # not sure about this level
 
@@ -531,7 +513,7 @@ class GUI:
             print( exception )
             numlines = 0
         if numlines > self.max_lines:
-            cut  = numlines/2     # lines to keep/remove
+            cut  = int( numlines/2  )   # lines to keep/remove py3 new make int
             # remove excess text
             self.rec_text.delete( 1.0, str( cut ) + ".0" )
             #msg     = "Delete from test area at " + str( cut )
@@ -540,6 +522,8 @@ class GUI:
         if self.cb_scroll_var.get():
             self.rec_text.see( END )
 
+        if update_now:
+            self.root.update()
         return
 
     # ----- button actions - this may be to indirect for some actions that go to the controller  ------------------------
@@ -637,6 +621,8 @@ class FileBrowseWidget( Frame ):
     in your frame ... more reusable ?
     better looking or what
     see graph_smart_plug gui for a use
+    !! code is duplicated in 2 guis, this should be fixed
+    right now linking to app global, this is really bad, should have a way to control at runtime
     """
     def __init__(self, parent ):
         #super( BrowseWidget, self ).__init__( parent, width=60, height=20, bg ="red")
@@ -656,15 +642,48 @@ class FileBrowseWidget( Frame ):
         """
         browse for a file name
         return full path or "" if no file chosen
-        """
-        Tk().withdraw()
-        filename     = askopenfilename()
 
+        from tkinter import filedialog
+        from tkinter import *
+
+        root = Tk()
+        root.filename =  filedialog.askopenfilename( initialdir = "/",
+                                            title = "Select file",
+                                            filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
+        print (root.filename)
+        or use asksaveasfilename
+        filedialog.asksaveasfile
+        import tkinter.filedialog
+        !! have not found docs ... do an ex_ file
+        tkinter.filedialog.asksaveasfilename()
+        tkinter.filedialog.asksaveasfile()
+        tkinter.filedialog.askopenfilename()
+        tkinter.filedialog.askopenfile()
+        tkinter.filedialog.askdirectory()
+        tkinter.filedialog.askopenfilenames()
+        tkinter.filedialog.askopenfiles()
+
+
+
+
+        """
+
+
+        Tk().withdraw()
+        #self.root.withdraw() # not part of gui so out of scope !! would it be better to get a gui reference
+#        filename     = asksaveasfile(  initialdir   = "./",
+#                                         title        = "Select file for db",
+#                                         filetypes    = (("database files","*.db"),("all files","*.*")))
+
+        filename     = askopenfilename(  initialdir   = "./",
+                                         title        = "Select file for db",
+                                         filetypes    = (("database files","*.db"),("all files","*.*")))
         if filename == "":
             return
 
         self.set_text( filename )
         print( f"get_text = {self.get_text()}", flush = True )
+#        bad idea AppGlobal.db_file_name   = filename
 
     # ------------------------------------------
     def set_text( self, a_string ):
@@ -676,7 +695,7 @@ class FileBrowseWidget( Frame ):
     # ------------------------------------------
     def get_text( self, ):
         """
-        get the text from the entry
+        get the text from the entry -- this is how to get db name at all times
         """
         a_string   =  self.a_string_var.get(  )
         return( a_string )
@@ -689,7 +708,7 @@ if __name__ == '__main__':
         """
         run the app
         """
-        import smart_plug_graph
+        import  smart_plug_graph
         a_app = smart_plug_graph.SmartPlugGraph(  )
 
 

@@ -28,6 +28,20 @@ class LineStyle():
 
         self.line_style.reset()      # for a new set
         !!consider changing to named tuple
+
+        may be more styles....
+        matplotlib.lines.Line2D — Matplotlib 3.1.1 documentation
+        https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle
+
+        markers = {'.': 'point', ',': 'pixel', 'o': 'circle', 'v': 'triangle_down', '^': 'triangle_up', '<':
+            'triangle_left', '>': 'triangle_right', '1': 'tri_down', '2': 'tri_up', '3': 'tri_left', '4': 'tri_right',
+            '8': 'octagon', 's': 'square', 'p': 'pentagon', '*': 'star', 'h': 'hexagon1', 'H': 'hexagon2', '+': 'plus',
+            'x': 'x', 'D': 'diamond', 'd': 'thin_diamond', '|': 'vline', '_': 'hline', 'P': 'plus_filled', 'X': 'x_filled', 0:
+                'tickleft', 1: 'tickright', 2: 'tickup', 3: 'tickdown', 4: 'caretleft', 5: 'caretright', 6: 'caretup', 7: 'caretdown',
+                8: 'caretleftbase', 9: 'caretrightbase', 10: 'caretupbase', 11: 'caretdownbase', 'None': 'nothing', None: 'nothing',
+                ' ': 'nothing', '': 'nothing'}¶
+
+
     """
     # -----------------------------------------------
     def __init__(self ):
@@ -39,7 +53,7 @@ class LineStyle():
         self.line_ix     = 0
         self.max_line    = len( self.lines  )
 
-        self.colors      = [ 'red', 'blue', 'cyan', 'green', 'black' ]   # want dark colors yellow and oarnge are light
+        self.colors      = [ 'red', 'blue', 'cyan', 'green', 'black' ]     # want dark colors yellow and oarnge are light
         self.color_ix    = 0
         self.max_color   = len( self.colors  )
 
@@ -51,10 +65,10 @@ class LineStyle():
         self.max_width   = len( self.widths  )
 
         # setup, need get_next_style befor use
-        self.line_style     = None
-        self.color_style    = None
-        self.marker_style   = None
-        self.width_style    = None
+        self.linestyle     = None
+        self.colorstyle    = None
+        self.markerstyle   = None
+        self.widthstyle    = None
 
         #  *>url  https://stackoverflow.com/questions/8409095/matplotlib-set-markers-for-individual-points-on-a-line
 
@@ -76,12 +90,11 @@ class LineStyle():
         inside class use only,
         get next line sytle
         """
-
         self.width_ix  += 1
         if self.width_ix >= self.max_width:
             self.width_ix = 0
-        self.width_style  = self.widths[ self.width_ix ]
-        return self.width_style
+        self.widthstyle  = self.widths[ self.width_ix ]
+        return self.widthstyle
 
     # -----------------------------------------------
     def _getNextLine_( self, ):
@@ -92,8 +105,8 @@ class LineStyle():
         self.line_ix  += 1
         if self.line_ix >= self.max_line:
             self.line_ix = 0
-        self.line_style      = self.lines[ self.line_ix ]
-        return self.line_style
+        self.linestyle      = self.lines[ self.line_ix ]
+        return self.linestyle
 
     # -----------------------------------------------
     def _getNextColor_( self, ):
@@ -101,12 +114,11 @@ class LineStyle():
         inside class use only,
         get next color sytle
         """
-
         self.color_ix  += 1
         if self.color_ix >= self.max_color:
             self.color_ix = 0
-        self.color_style        = self.colors[ self.color_ix ]
-        return self.color_style
+        self.colorstyle        = self.colors[ self.color_ix ]
+        return self.colorstyle
 
     # -----------------------------------------------
     def _getNextMarker_( self, ):
@@ -117,15 +129,22 @@ class LineStyle():
         self.marker_ix  += 1
         if self.marker_ix >= self.max_marker:
             self.marker_ix = 0
-        self.marker_style       = self.markers[ self.marker_ix ]
-        return self.marker_style
+        self.markerstyle       = self.markers[ self.marker_ix ]
+        return self.markerstyle
 
     # -----------------------------------------------
     def get_next_style( self,  ):
         """
         get the next tuple: ( line, color, marker )
         return tuple see below !! change to named tuple ??
-        can use the returned or perhaps cleare the instance var like   .marker_style
+        can use the returned or perhaps cleare the instance var like   .markerstyle
+
+        a_linestyle, a_colorstyle, a_markerstyle, a_widthstyle  = line_style.get_next_style()
+        or
+        line_style.get_next_style()
+        a_linestyle   = line_style.linestyle
+        a_color       = line_style.colorstyle
+        a_widthstyle
         """
         return ( self._getNextLine_() , self._getNextColor_(), self._getNextMarker_(), self._getNextWidth_()  )
 

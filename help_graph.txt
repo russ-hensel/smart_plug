@@ -1,0 +1,28 @@
+this is the smartplug graph help file  -- phase out move to wiki
+
+===================== how do i ===============================
+
+Erase my data
+
+
+=================== using the parameter file parameters.py ==============
+
+This article covers the basics of parameter files as I use them.
+Configuration Files For Python - OpenCircuits
+    *>url  http://www.opencircuits.com/Configuration_Files_For_Python
+
+for more documentation of the settings in this applications see the parameters.py file.
+
+Overview of what I have paramaterized
+    read the method    default_mode()   in parameters.py
+
+
+
+
+
+
+
+
+
+
+

@@ -1,53 +1,23 @@
 # -*- coding: utf-8 -*-
 #
 """
- gui    for smartplug
+Purpose:
+    gui    for smartplug
 
 """
 
-
 import  logging
 import  pyperclip
-from    tkinter import *   # is added everywhere since a gui assume tkinter namespace
+from    tkinter import *   # is added everywhere since a gui assume tkinter name space
+from    tkinter.filedialog import askopenfilename
 import  sys
 from    tkinter import ttk
+import  ctypes
 
-# local imports
+# ------ local imports
 from app_global import AppGlobal
 
 
-class RedirectText(object):
-    """
-    not currently used ???
-    simple class to let us redirect console prints to our recieve area
-    http://www.blog.pythonlibrary.org/2014/07/14/tkinter-redirecting-stdout-stderr/
-
-    """
-    #----------------------------------------------------------------------
-    def __init__(self, text_ctrl):
-        """
-        text_ctrl text area where we want output to go
-        """
-        self.output = text_ctrl
-
-    #----------------------------------------------------------------------
-    def write(self, string):
-        """
-        """
-        self.output.insert( END, string )
-        # add scrolling?
-        self.output.see( END )
-
-        #self.rec_text.insert( END, adata, )
-        #self.rec_text.see( END )
-
-    #--------------------------------
-    def flush(self, ):
-        """
-        here to mimic the standard sysout
-        does not really do the flush
-        """
-        pass
 
 # ======================= begin class ====================
 
@@ -58,30 +28,38 @@ class GUI( object ):
     much code in other places than your replacement GUI
     """
     def __init__( self, ):
-
+        AppGlobal.gui           = self
         self.controller         = AppGlobal.controller
         self.parameters         = AppGlobal.parameters
-        AppGlobal.gui           = self
-        self.gui_running        = False
-        self.root               = Tk()    # this is the tkinter root for the GUI move to gui after new working well plus bunch after here
 
-        a_title   = self.controller.app_name + " version: " + self.controller.version # + " mode: " + self.parameters.mode
+        self.gui_running        = False
+        self.root               = Tk()
+        a_title   = self.controller.app_name + " version: " + self.controller.version + " Mode: " +self.parameters.mode
+
         self.root.title( a_title )
         self.root.geometry( self.parameters.win_geometry )
 
+        #        print( "next set icon " + str( self.parameters.os_win ) )
+        if self.parameters.os_win:
+            # from qt - How to set application's taskbar icon in Windows 7 - Stack Overflow
+            # https://stackoverflow.com/questions/1551605/how-to-set-applications-taskbar-icon-in-windows-7/1552105#1552105
+
+            icon = self.parameters.icon
+            if not( icon is None ):
+#                print( "set icon "  + str( icon ))
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(icon)
+                self.root.iconbitmap( icon )
+            else:
+                print( "No icon for you!"  + str( icon ))
+
         self.logger             = logging.getLogger( self.controller.logger_id + ".gui")
-        #self.logger.info( "in class gui.GUI init")
-
-        self.save_redir          = None
-
-        self.save_sys_stdout     = sys.stdout   # think obsolete
+#        self.logger.info( "in class gui.GUI init")
 
         self.rec_text            = None    # set later   # ?? rename globally later
 
-        self.show_dict           =  {}    # populate as fileds are built  ?? old idea?
+        self.show_dict           =  {}    # populate as fields are built  ?? old idea?
 
-        self.max_lines           = self.parameters.max_lines    # max lines in recieve area then delete fraction 1/2 now
-
+        self.max_lines           = self.parameters.max_lines    # max lines in receive area then delete fraction 1/2 now
         self.prefix_info         = self.parameters.prefix_info
 
         #Button names -- this is a method I am not sure I will use in the future
@@ -93,7 +71,7 @@ class GUI( object ):
         #------ END constants for controlling layout ------
 
         # --------- gui standards work on more have themes have in another object ?
-        # but there are things called themes, look for more docu
+        # but there are things called themes, look for more doc
         self.btn_color     = self.parameters.btn_color
         self.bkg_color     = self.parameters.bkg_color
         #self.text_color    = "white"
@@ -103,7 +81,7 @@ class GUI( object ):
         self.root.configure(background = self.bkg_color )
 
         self.root.grid_columnconfigure( 0, weight=1 ) # final missing bit of magic
-#        self.root.grid_rowconfigure(    0, weight=1 )
+        #  self.root.grid_rowconfigure(    0, weight=1 )
 
         a_frame = self._make_button_frame( self.root,  )
         a_frame.grid(row=next_frame, column=0, sticky = E + W + N )
@@ -113,11 +91,15 @@ class GUI( object ):
         a_frame.grid( row = next_frame, column=0, sticky = E + W + N)
         next_frame += 1
 
+        a_frame = self._make_db_frame( self.root,  )
+        a_frame.grid( row = next_frame, column=0, sticky = E + W + N)
+        next_frame += 1
+
         # ------------ message frame ---------------------
         self.cb_scroll_var  = IntVar()  # for check box in reciev frame
 
-        a_frame    = self._make_message_frame( self.root,   )
-        self.rec_frame    = a_frame
+        a_frame           = self._make_message_frame( self.root,   )
+        # self.rec_frame    = a_frame
         a_frame.grid( row=next_frame, column=0, sticky= E + W + N + S )
         next_frame += 1
 
@@ -135,106 +117,7 @@ class GUI( object ):
 
         return a_frame
 
-#    # ------------------------------------------
-#    def _make_parm_frame( self, parent, ):
-#        """
-#        make parameter frame
-#        open/close port show port parms
-#        arg: parent is parent widget
-#        return frame to be placed
-#        """
-#        a_frame  = Frame( parent, width=600, height=200, bg =  self.parameters.bk_color, relief=RAISED, borderwidth=1 )
-#
-#        lrow   =  0
-#        lcol   =  0
-#        a_spacer  = Frame( a_frame, width=60, height=60, bg =self.parameters.id_color, relief=RAISED, borderwidth=1 )
-#        a_spacer.grid( row = 0, column=1, sticky=E + W + N + S, rowspan = 2 )
-#
-#        lrow   =  0
-#        lcol   += 1
-#        a_label   = ( Label( a_frame, text = "Communications >>", relief = RAISED,  )  )
-#        a_label.grid( row = lrow, column = lcol, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-#
-#        # ---------
-#        for ix in range( self.max_lables ):
-#            self.lables.append( Label( a_frame, text = "lbls" + str( ix ), relief = RAISED,  )  )
-#
-#        lrow    = 0
-#        lcol   += 2
-#        #lcol   += 1
-#        for i_label in self.lables:
-#            #print "label at ", lrow, lcol
-#            i_label.grid( row=lrow, column=lcol, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-#
-#            lrow    += 1
-#            if lrow >= 2:
-#                lrow   =  0
-#                lcol   += 1
-#
-#        for ix in range(  2, lcol  ):
-#            a_frame.grid_columnconfigure( ix, weight=0 )
-#
-#        # add some more for db, different style, which do I like best?   self.parameters.bk_color
-#        lrow   =  0
-#        lcol   += 1
-#        a_spacer  = Frame( a_frame, width=60, height=60, bg = self.parameters.bk_color, relief=RAISED, borderwidth=1 )
-#        a_spacer.grid( row = 0, column = lcol, sticky = E + W + N + S, rowspan = 2 )
-#
-#        lrow   =  0
-#        lcol   += 1
-#        a_label   = ( Label( a_frame, text = "Database >>", relief = RAISED,  )  )
-#        a_label.grid( row = lrow, column = lcol, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-#
-#        lcol   += 1
-#        #lrow    += 1
-#        if lrow >= 2:
-#            lrow   =  0
-#            lcol   += 1
-#
-#        a_label   = ( Label( a_frame, text = "status", relief = RAISED,  )  )
-#        a_label.grid( row=lrow, column=lcol, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-#        self.lbl_db_status                    = a_label
-#        self.show_dict[ 'db_status' ]         = a_label
-#
-#        ( lrow, lcol, self.lbl_db_connect )   = self._make_a_label( a_frame, lrow, lcol, "connnect", )
-#        self.show_dict[ 'db_connect' ]        = self.lbl_db_connect      # Add new entry
-#
-#        ( lrow, lcol, self.lbl_db_host )      = self._make_a_label( a_frame, lrow, lcol, "host", )
-#        self.show_dict[ 'db_host' ]           = self.lbl_db_host
-#
-#        ( lrow, lcol, self.lbl_db_db )        = self._make_a_label( a_frame, lrow, lcol, "db", )
-#        self.show_dict[ "db_db" ]             = self.lbl_db_db
-#
-#        ( lrow, lcol, self.lbl_db_user )      = self._make_a_label( a_frame, lrow, lcol, "user", )
-#        self.show_dict[ "db_user" ]           = self.lbl_db_user
-#
-#        #( lrow, lcol, a_lbl        )          = self._make_a_label( a_frame, lrow, lcol, "Extraaaa", "extra", self.show_dict )
-#        #self.show_dict[ "Extra" ]           = a_lbl
-#
-#        return  a_frame
-
-#     # ------------------------------------------
-#    def _make_helper_frame( self, parent, ):
-#        """
-#        make helper frame place to display helper info/status
-#        this may be only for debugging
-#        arg: parent is parent widget
-#        return frame to be placed
-#        """
-#        a_frame  = Frame( parent, width=600, height=20, bg ="gray", relief=RAISED, borderwidth=1 )
-#
-#        lrow   =  0
-#        lcol   =  0
-#        a_label   = Label( a_frame, text = "auto", relief = RAISED, width = 100, ) # wraplength = 90   )
-#        a_label.grid( row = lrow, column = lcol, columnspan=10,  sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-#
-#        self.show_dict[ "helper_info" ]   =  a_label    # if not there then  houston we have a prblem
-#        #self.helper_label     = a_label   # only helper writes to it
-#
-#        return  a_frame
-
     # ------------------------------------------
-#    def make_cc_button_frame( self, parent, ):
     def _make_button_frame( self, parent, ):
         """
         this is the primary frame for the standard gui buttons pretty much for all modes
@@ -261,11 +144,24 @@ class GUI( object ):
         a_button.config( command = self.controller.restart )
         a_button.pack( side = LEFT )
 
-#       keeep for a test button
+        a_button = Button( a_frame , width=10, height=2, text = "Probe Plugs" )
+        a_button.config( command = self.controller.cb_probe )
+        a_button.pack( side = LEFT )
+
+        #  graph
+        a_button = Button( a_frame , width=10, height=2, text = "Graph" )
+        a_button.config( command = self.controller.cb_graph_live )
+        a_button.pack( side = LEFT )
+
+        #  keeep for a test button
         a_button = Button( a_frame , width=10, height=2, text = "Test" )
-        #a_button.config( command = self.controller.cb_test )
         a_button.config( command = self.cb_test_1 )
         a_button.pack( side = LEFT )
+
+#        #  keeep for a test button
+#        a_button = Button( a_frame , width=10, height=2, text = "Test2" )
+#        a_button.config( command = self.controller.cb_gui_test_2 )
+#        a_button.pack( side = LEFT )
 
         a_button = Button( a_frame , width=10, height=2, text = "Help" )
         a_button.config( command = self.controller.os_open_helpfile )
@@ -273,7 +169,7 @@ class GUI( object ):
 
         return a_frame
 
-        # ------------------------------------------
+    # ------------------------------------------
     def _make_smart_plug_frame( self, parent, ):
         """
         one button set for each smartplug, config from parameters
@@ -287,6 +183,7 @@ class GUI( object ):
 
         rowspan    = 2
 
+        # one section for each plug
         for ix__smartplug_adapter, i_smartplug_adapter in enumerate( self.controller.smartplug_adapter_list ):
             lcol      = 0
             lrow      = ix__smartplug_adapter
@@ -294,55 +191,72 @@ class GUI( object ):
             #callback=lambda x=x: f(x)
             # a_button.device_id =..... but still eval a_button later
             a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "info" ) )
-            a_button.grid( row = lrow * rowspan, column = 0, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+            a_button.grid( row = lrow * rowspan, column = lcol, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
             lcol +=  1
 
-            a_button  = Button( a_frame , width=10, height=2, text = "On"  )
-            a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "on" ) )
-            a_button.grid( row = lrow * rowspan, column = 1, rowspan = 2, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+            # on off checkbox
+            cb_on_var    = IntVar()
+            a_widget     = Checkbutton( a_frame, text="Plug On", variable=cb_on_var, width = 10, anchor="w" )
+            a_widget.config( command = lambda ix = ix__smartplug_adapter: self.controller.cb_device_action( ix, "cb_on" ) )
+            a_widget.config( borderwidth = 5, relief = RAISED,  )
+            a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = 2, sticky=E + W + N + S )
+            i_smartplug_adapter.gui_tk_on_checkbox_var   = cb_on_var
+            # these work as with lables
+#            a_widget.config( width = 80)
+#            a_widget.config( text='Hello World!',   anchor="e" )    # anchor alligns text
             lcol +=  1
 
-            a_button  = Button( a_frame , width=10, height=2, text = "Off"  )
-            a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "off" ) )
-            a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+            # monitor checkbox
+            cb_mon_var    = IntVar()
+            a_widget     = Checkbutton( a_frame, text="Monitor", variable=cb_mon_var, width = 10, anchor="w" )
+            a_widget.config( command = lambda ix = ix__smartplug_adapter: self.controller.cb_device_action( ix, "mon" ) )
+            a_widget.config( borderwidth = 5, relief = RAISED,  )
+            a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = 2, sticky=E + W + N + S )
+            i_smartplug_adapter.gui_tk_mon_checkbox_var   = cb_mon_var
             lcol +=  1
 
-            a_button  = Button( a_frame , width=10, height=2, text = "Record On"  )
-            a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "record_on" ) )
-            a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+            # record checkbox
+            cb_record_var    = IntVar()
+            a_widget     = Checkbutton( a_frame, text="Record", variable=cb_record_var, width = 10, anchor="w" )
+            a_widget.config( command = lambda ix = ix__smartplug_adapter: self.controller.cb_device_action( ix, "record" ) )
+            a_widget.config( borderwidth = 5, relief = RAISED,  )
+            a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = 2, sticky=E + W + N + S )
+            i_smartplug_adapter.gui_tk_record_checkbox_var   = cb_record_var
             lcol +=  1
 
-            a_button  = Button( a_frame , width=10, height=2, text = "Record Off"  )
-            a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "record_off" ) )
-            a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-            lcol +=  1
+#            a_button  = Button( a_frame , width=10, height=2, text = "Retrieve"  )
+#            a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "retrieve" ) )
+#            a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
+#            lcol +=  1
 
-            a_button  = Button( a_frame , width=10, height=2, text = "Retrieve"  )
-            a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "retrieve" ) )
-            a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-            lcol +=  1
-
-            a_button  = Button( a_frame , width=10, height=2, text = "Start Timer for:"  )
+            a_button  = Button( a_frame , width=12, height=2, text = "Start Timer for:"  )
             a_button.config( command = lambda ix = ix__smartplug_adapter: self.cb_device_action( ix, "start" ) )
             a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
-            #print( "made device button" )
             lcol +=  1
 
-            times = ( "infinite", .1, .5, 1,  2, 3, 5, 10, 15, 20, 25, 30, 40, 50, 60  )   # think about adding units...
+            times = ( "infinite", ".1 min", ".5 min", "1 min",  "2 min", "3 min", "5 min", "10 min", "15 min",
+                                  "20 min", "25 min", "30 min", "40 min", "50 min", "60 min"   )
             #cbp3 = ttk.Labelframe(demoPanel, text='Pre-defined List')  # see ex_tkcombobox
-            a_widget   =  ttk.Combobox( a_frame, values=times, state='readonly', ) # text = "infinite" ) does not work
-            a_widget.current( 6 )    # set vaue
+            a_widget   =  ttk.Combobox( a_frame, values=times, state='readonly',  width = 10, ) # text = "infinite" ) does not work
+            a_widget.current( 3 )    # set default value
             a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )
             i_smartplug_adapter.gui_tk_combo = a_widget
             lcol +=  1
 
-            # once lable width set seems to stick -- adjust to your liking
+            # once Label width is set seems to stick -- adjust to your liking
             a_widget   =  Label( a_frame, text =  80*" ", justify = LEFT, anchor = W,
                                  borderwidth = 5, relief = RAISED,  )
             a_widget.config( width = 30)   # if not set adjusts to text
 
             a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky = E + W + N + S )
             i_smartplug_adapter.gui_tk_label  = a_widget
+            lcol +=  1
+
+            a_widget   =  Label( a_frame, text =  80*" ", justify = LEFT, anchor = W,
+                                 borderwidth = 5, relief = RAISED,  )
+            a_widget.config( width = 30)
+            a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky = E + W + N + S )
+            i_smartplug_adapter.gui_tk_label_2  = a_widget
             lcol +=  1
 
         return a_frame
@@ -353,7 +267,6 @@ class GUI( object ):
         make a new send frame, for just one button and text entry to send
         return frame for placement
         """
-        # print "___make_send_frame__"  color does not really work here as sends fill area
         send_frame  = Frame( parent, width=300, height=200, bg=self.parameters.id_color, relief=RAISED, borderwidth=1 )
 
         a_text = Entry( send_frame , ) # width=50, ) # height=2 )
@@ -381,92 +294,48 @@ class GUI( object ):
 
         return send_frame
 
-#    # ------------------------------------------
-#    def _make_send_frame( self, parent,  ):  # if this were a class then could access its variables later
-#        """
-#        make a new send frame containing little send frames
-#        """
-#        # print "___make_send_frame__"  color does not really work here as sends fill area
-#
-#        send_frame        = Frame( parent, width=300, height=200,
-#                                    #bg = self.parameters.bk_color,
-#                                    bg = "green",
-#                                    relief=RAISED, borderwidth=1 )
-#        self.ix_send      = 0
-#        self.send_frames  = []
-#        ix_row            = 0
-#        ix_col            = 0
-#
-#        # convert the parameter send_ctrls to our tuple form to make later processing easier
-#        ix_max_row        = self.parameters.max_send_rows
-#        parm_send_ctrls   = self.parameters.send_ctrls
-#        send_ctrls        = []
-#
-#        for ix in range( self.parameters.gui_sends ):
-#
-#            if ix < len( parm_send_ctrls ):
-#                parm_send_ctrl  = parm_send_ctrls[ ix ]
-#                if type( parm_send_ctrl ).__name__ == "tuple":
-#                    #print "is tuple"
-#                    send_ctrl  = parm_send_ctrl
-#                else:
-#                    # then it is text
-#                    send_ctrl  = ( "Send", parm_send_ctrl, True )
-#            else:
-#                send_ctrl  = ( "Send", "", True )
-#            #print( send_ctrl )
-#            send_ctrls.append( send_ctrl )
-#        #print( send_ctrls )
-#
-#        for i_send_ctrl  in send_ctrls:
-#
-#            send_frame1    =  self._make_one_send_frame_new( send_frame, self.ix_send, i_send_ctrl   )
-#            self.send_frames.append( send_frame1 )
-#            send_frame1.grid( row=ix_row,  column=ix_col, sticky= E + W + N  )
-#
-#            self.ix_send   += 1
-#            ix_row         += 1
-#            if ix_row >= ix_max_row:
-#                ix_row    = 0
-#                ix_col    += 1
-#
-#        return send_frame
-#
-#    # ------------------------------------------
-#    def _make_one_send_frame_new( self, parent, ix_send, ctrl_info ):  # if this were a class then could access its variables later
-#        """
-#        make a new send frame, for just one button and text entry to send
-#        """
-#        ( b_text, s_text, s_enable )  = ctrl_info
-#
-#        # print "___make_send_frame__"  color does not really work here as sends fill area
-#        #send_frame  = Frame( parent, width=300, height=200, bg=self.parameters.bk_color, relief=RAISED, borderwidth=1 )  # maybe color should always be gray
-#        send_frame  = Frame( parent, width=300, height=200, bg="gray", relief=RAISED, borderwidth=1 )  # maybe color should always be gray
-#
-#        a_text = Entry( send_frame , ) # width=50, ) # height=2 )
-#        a_text.configure( bg = "gray" )
-#        a_text.delete(0, END)    # this may be bad syntax when use eleswher
-#
-#        a_text.insert( 0, s_text )
-#
-#        if s_enable:
-#            a_text.config( state =  NORMAL   )
-#        else:
-#            a_text.config( state =  DISABLED )
-#
-#        a_button = Button( send_frame , width=10, height=2, text = b_text )
-#        a_button.bind( "<Button-1>", self.cb_send_button ) # function name no () which would call function then
-#
-#        # position
-#        a_button.pack( side = LEFT )
-#        a_text.pack(   side = LEFT, fill=BOTH, expand=1)  #  fill X Y BOTH but also need expand=1 ( or prehaps True )
-#
-#        # save for send function
-#        self.sends.append( send_frame )
-#        self.sends_buttons.append( a_button )
-#        self.sends_data.append( a_text )
-#
-#        return send_frame
+    # ------------------------------------------
+    def _make_db_frame( self, parent, ):
+        """
+        make a frame for db connect and graphing, csv .....
+        Return:  a frame with the controls in it
+        """
+        a_frame  = Frame( parent, width=600, height=200, bg =self.bkg_color, relief=RAISED, borderwidth=1 )
+
+        lrow       = 0
+        lcol       = 0
+        rowspan    = 1
+#        a_spacer  = Frame( a_frame, width=60, height=60, bg ="green", relief=RAISED, borderwidth=1 )
+#        a_spacer.grid( row = 0, column = lcol, sticky = E + W + N + S, rowspan = 2 )
+        # live graph checkbox
+
+        widget_var   = IntVar()
+        a_widget     = Checkbutton( a_frame, text="Live Graph", variable=widget_var, width = 10, anchor="w" )
+        a_widget.config( command = self.controller.cb_graph_live  )
+        a_widget.config( borderwidth = 5, relief = RAISED,  )
+        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
+        self.graph_live_var   = widget_var
+        lcol +=  1
+
+        a_widget = Button( a_frame , width = 10, height = 1, text = "Save CSV" )
+        a_widget.config( command = self.controller.cb_csv )
+        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
+        lcol   +=  1
+
+        a_widget = Button( a_frame , width = 10, height = 1, text = "Save DB" )
+        a_widget.config( command = self.controller.cb_csv )
+        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
+        lcol   +=  1
+
+        lcol    = 0
+        lrow   += 1
+        bw_for_db      = FileBrowseWidget( a_frame )
+        bw_for_db.grid( row = lrow, column = lcol, columnspan = 1 )
+        bw_for_db.set_text( AppGlobal.parameters.db_file_name )
+        self.bw_for_db = bw_for_db  # save reference
+        lcol   += 1
+
+        return  a_frame
 
     # ------------------------------------------
     def _make_message_frame( self, parent,  ):
@@ -480,10 +349,8 @@ class GUI( object ):
         bframe.grid( row=0, column=0, sticky = N + S )
 
         text0 = Text( iframe , width=50, height=20 )
-        #text0.configure( bg = "red" )
-        self.save_redir = RedirectText( text0 )
 
-        s_text0 = Scrollbar( iframe  )  # LEFT left
+        s_text0 = Scrollbar( iframe  )
         s_text0.grid( row=0, column=2, sticky = N + S )
 
         s_text0.config( command=text0.yview )
@@ -525,7 +392,6 @@ class GUI( object ):
         a_widget = Checkbutton( bframe,  width=7, height=2, text="A Scroll", variable=self.cb_scroll_var,  command=self.do_auto_scroll )
         a_widget.grid( row=row_ix, column=0   )
         row_ix += 1
-
         self.cb_scroll_var.set( self.parameters.default_scroll )
 
         return iframe
@@ -558,7 +424,7 @@ class GUI( object ):
     def run( self,  ):
         """
         run the gui
-        will block untill destroped, except for polling method in controller
+        will block until destroyed, except for polling method in controller
         """
         # move from controller to decouple type of gui
         self.gui_running        = True
@@ -597,10 +463,20 @@ class GUI( object ):
             lbl.config(  text    =  a_show_string )
 
     # ------------------------------------------
+    def get_db_file_name( self, ):
+        """
+        what it says
+        its name, return a string
+        """
+        #bw_for_db.set_text     = AppGlobal.parameters.db_file_name
+        # x = 1/0   # think should get directly from AppGlobal
+        return( self.bw_for_db.get_text() )
+
+    # ------------------------------------------
     def print_send_string( self, data ):
         """
         obsolete fix name !!
-        add recieve tag to parameters ??
+        add receive tag to parameters ??
         """
         sdata = self.prefix_send + data  + "\n"
         self.display_string( sdata )   # or just use directly
@@ -616,25 +492,25 @@ class GUI( object ):
         return
 
     # ------------------------------------------
-    def print_info_string( self, data ):
+    def print_info_string( self, data, update_now = False ):
         """
-        add info prefix and new line suffix and show in recieve area
+        add info prefix and new line suffix and show in receive area
         """
         sdata = self.prefix_info +  data  + "\n"    # how did data get to be an int and cause error ??
-        self.display_string( sdata )
+        self.display_string( sdata, update_now )
         return
 
     # ------------------------------------------
     def print_no_pefix_string( self, data ):
         """
-        add new line suffix and show in recieve area
+        add new line suffix and show in receive area
         """
         sdata = data  + "\n"
         self.display_string( sdata )
         return
 
     # ---------------------------------------
-    def display_string( self, a_string ):
+    def display_string( self, a_string, update_now = False ):
         """
         print to message area, with scrolling and
         log if we are configured for it
@@ -655,13 +531,21 @@ class GUI( object ):
             cut  = numlines/2     # lines to keep/remove
             # remove excess text
             self.rec_text.delete( 1.0, str( cut ) + ".0" )
-            #msg     = "Delete from test area at " + str( cut )
-            #self.logger.info( msg )
+#            msg     = "Delete from test area at " + str( cut )
+#            self.logger.info( msg )
 
         if self.cb_scroll_var.get():
             self.rec_text.see( END )
-
+        if update_now:
+            self.root.update()
         return
+
+#        process devices check box action, see lambda setup in button creation
+#        this may be more indirect than needed, go straight to controller ??
+        """
+#        print( f"cb_device_action {button_ix}, {action}" )--
+
+        self.controller.cb_device_action( button_ix, action  )
 
 #    # ------------------------------------------
 #    def display_device_label( self, msg, device_adapter  ):
@@ -673,14 +557,19 @@ class GUI( object ):
 #        label.config( text = msg )
 
     #----- buttons ------------------------
+     # ----------------------------------------
+    def cb_device_cb_action( self, button_ix, action  ):
+        """
+
+        """
+        pass
     # ------------------------------------------
     def cb_device_action( self, button_ix, action  ):
         """
-        process devices perhaps on, off timer , see lambda setup in button creation
-        this may be more indirect than needed, go straight to controller ??
+        process devices perhaps on, off timer, see lambda setup in button creation
+        this may be more indirect th
         """
 #        print( f"cb_device_action {button_ix}, {action}" )
-
         self.controller.cb_device_action( button_ix, action  )
 
     # ------------------------------------------
@@ -690,6 +579,7 @@ class GUI( object ):
         """
         print( "cb_test_1" )
         self.controller.cb_gui_test_1()
+        #an needed, go straight to controller ??
 
     # ------------------------------------------
     def doButtonText( self, event):
@@ -710,17 +600,13 @@ class GUI( object ):
             return
 
         elif btext == "Copy All":
-
             # may be in do CopyButton
             #def do_copy_button( self, event ):
-            """
-            """
             data  = self.rec_text.get( 1.0, END )
             pyperclip.copy( data )
             return
 
         elif btext == "Cvert":
-            # print btext
             adata   =  self.rec_text.get( 1.0, END )
 
             #bdata  = dataConvert1( adata )
@@ -748,8 +634,6 @@ class GUI( object ):
             pyperclip.copy( bdata )
             self.rec_text.delete( 1.0, END )
 
-
-
         #        elif btext == self.BN_SND_ARRAY:
         #            #self.text0.delete( 1.0, END )
         #            #print btext
@@ -774,7 +658,7 @@ class GUI( object ):
     def doClearButton( self, event):
         """
         for the clear button
-        clear the recieve area
+        clear the message area
         """
         self.rec_text.delete( 1.0, END )
         return
@@ -799,7 +683,7 @@ class GUI( object ):
         return
 
     # ------------------------------------------
-    def cb_send_button( self, event ) :  # how do we identify the button    def cb_send_button( self, event ) :  # how do we identify the button
+    def cb_send_button( self, event ):
         """
         any send button
         for at least now do the send echo locally ( and crlf or always use locally )
@@ -817,11 +701,72 @@ class GUI( object ):
         return
 
         # ---------------  end of button actions
+
+# -----------------------------------------
+class FileBrowseWidget( Frame ):
+    """
+    let user pick a file name on their computer
+    not sure why making it into a widget is a good idea but here goes
+    this is a widget that both holds a filename
+    and lets you browse to a file
+    how is it different from just a couple of widgets
+    in your frame ... more reusable ?
+    better looking or what
+    see graph_smart_plug gui for a use
+    !! code is duplicated in 2 guis, this should be fixed
+    """
+    def __init__(self, parent ):
+        #super( BrowseWidget, self ).__init__( parent, width=60, height=20, bg ="red")
+        super(  ).__init__( parent, width=60, height=20, bg ="red")
+        self.label_1      = Label( self, text="Database File: ").grid(row=1, column=0)
+
+        self.a_string_var = StringVar()
+
+        self.entry_1      = Entry( self , width=100,   text = "bound", textvariable = self.a_string_var )
+        self.entry_1.grid( row=1, column=1 )
+
+        self.button_2 = Button( self, text="Browse...", command = self.browse )
+        self.button_2.grid( row=1, column=3 )
+
+    # ------------------------------------------
+    def browse( self ):
+        """
+        browse for a file name
+        return full path or "" if no file chosen
+        """
+        Tk().withdraw()
+        filename     = askopenfilename(  initialdir   = "./",
+                                         title        = "Select file for db",
+                                         filetypes    = (("database files","*.db"),("all files","*.*")))
+
+        if filename == "":
+            return
+
+        self.set_text( filename )
+        print( f"get_text = {self.get_text()}", flush = True )
+
+        ## AppGlobal.db_file_name   = filename bad idea
+
+    # ------------------------------------------
+    def set_text( self, a_string ):
+        """
+        get the text from the entry
+        """
+        self.a_string_var.set( a_string )
+
+    # ------------------------------------------
+    def get_text( self, ):
+        """
+        get the text from the entry
+        """
+        a_string   =  self.a_string_var.get(  )
+        return( a_string )
+
 # =======================================
 
 if __name__ == '__main__':
     """
-    run the app -- this may be old code, check that it is right against main app
+    run the app
     """
     import smart_plug
     a_app = smart_plug.SmartPlug(  )
