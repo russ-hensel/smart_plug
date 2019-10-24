@@ -1,4 +1,7 @@
-Purpose: This is a Graphical User Interface Application is to control TP-LINK HS110 Smart Plug w/Energy Monitoring (*TP-LINK HS110 Smart Plug w/Energy Monitoring - - Amazon.com ) graph and otherwise process the data. The application uses the pyHS100 library code.
+Purpose: This is a a pair of Graphical User Interface Application is to control TP-LINK HS110 Smart Plug w/Energy Monitoring ( TP-LINK HS110 Smart Plug w/Energy Monitoring - - Amazon.com ) graph and otherwise process the data. The application uses the pyHS100 library code.  
+
+* Program One: smart_plug.py - Monitors, controls, collects, and graphs data from smart plugs.
+* Program Two: smart_plug_graph.py - Pulls smartplug data from the database to graph or convert to csv.
 
 Enviroment: Program should run on any OS supporting Python 3.6.  This should include Windows, Mac, Linux, and Raspberry Pi.  So far only tested on Windows.  More coming... 
 
@@ -33,6 +36,6 @@ Would You Like to Contribute??
 ```
 Guide to Repository
 
-* Root - all code ( src ) required to run the application.  I think it qualifies as pure python ( 3.6 ).
+* Root - all code ( src ) required to run the application.  I think it qualifies as pure python ( 3.6 ).  See introduction here for the files containing the "main programs".
 * images - various graphics: screen shots, and extra icons....
 * wiki_etc - pdf versions of the wiki at open circuits.
