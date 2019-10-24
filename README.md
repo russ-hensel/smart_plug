@@ -5,3 +5,27 @@ Enviroment: Program should run on any OS supporting Python 3.6.  This should inc
 Program Status: More or less alpha/beta, seems to work, but rough. Intended for those with some Python experience who can add the files to their Python development environment ( no install features for this code ). Some dependencies will need to be installed, probably prompted by error messages. Editing of the parameter file should be easier for those with Python experience. Users should find some useful documentation in the code, this is still a work in progress. Much code has been lifted from other projects of mine, some artifacts remain.
 
 http://www.opencircuits.com/Python_Control_of_Smart_Plugs
+
+
+
+``` 
+	Standard Disclaimer:
+		If you have more than a casual interest in this project you should contact me 
+		( no_spam_please_666 at comcast.net ) and see if the repository is actually in good shape.  
+		I may well have improved software and or documentation.  
+		I will try to answer all questions and perhaps even clean up what already exists.	
+``` 		
+
+Would You Like to Contribute??
+* Add other iot devices/sensors
+* Link to cloud
+* Support other databases
+	
+```	
+	Note for contributers 
+		Fixes would be great.
+		Extensions would be great.
+		Re write of current code would generally be discouraged... but you are free to create a fork of your own.
+		( take a look at readme_rsh.txt for some additional notes on changes... )
+	
+```
