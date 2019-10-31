@@ -63,7 +63,6 @@ class GUI( object ):
         self.prefix_info         = self.parameters.prefix_info
 
         #Button names -- this is a method I am not sure I will use in the future
-
         self.BN_CP_SELECTION      = "Copy Sel"
         self.BN_CVERT             = "Cvert"
         self.BN_CP_ALL            = "Copy All"
@@ -96,7 +95,7 @@ class GUI( object ):
         next_frame += 1
 
         # ------------ message frame ---------------------
-        self.cb_scroll_var  = IntVar()  # for check box in reciev frame
+
 
         a_frame           = self._make_message_frame( self.root,   )
         # self.rec_frame    = a_frame
@@ -148,10 +147,10 @@ class GUI( object ):
         a_button.config( command = self.controller.cb_probe )
         a_button.pack( side = LEFT )
 
-        #  graph
-        a_button = Button( a_frame , width=10, height=2, text = "Graph" )
-        a_button.config( command = self.controller.cb_graph_live )
-        a_button.pack( side = LEFT )
+#        #  graph
+#        a_button = Button( a_frame , width=10, height=2, text = "Graph" )
+#        a_button.config( command = self.controller.cb_graph_live )
+#        a_button.pack( side = LEFT )
 
         #  keeep for a test button
         a_button = Button( a_frame , width=10, height=2, text = "Test" )
@@ -165,6 +164,11 @@ class GUI( object ):
 
         a_button = Button( a_frame , width=10, height=2, text = "Help" )
         a_button.config( command = self.controller.os_open_helpfile )
+        a_button.pack( side = LEFT )
+
+        # about
+        a_button = Button( a_frame , width=10, height=2, text = "About" )
+        a_button.config( command = self.controller.cb_about )
         a_button.pack( side = LEFT )
 
         return a_frame
@@ -234,6 +238,7 @@ class GUI( object ):
             a_button.grid( row = lrow * rowspan, column = lcol, rowspan = rowspan, sticky=E + W + N + S )    # sticky=W+E+N+S  )   # relief = RAISED)
             lcol +=  1
 
+            # time combo box
             times = ( "infinite", ".1 min", ".5 min", "1 min",  "2 min", "3 min", "5 min", "10 min", "15 min",
                                   "20 min", "25 min", "30 min", "40 min", "50 min", "60 min"   )
             #cbp3 = ttk.Labelframe(demoPanel, text='Pre-defined List')  # see ex_tkcombobox
@@ -243,6 +248,7 @@ class GUI( object ):
             i_smartplug_adapter.gui_tk_combo = a_widget
             lcol +=  1
 
+            # output label widget
             # once Label width is set seems to stick -- adjust to your liking
             a_widget   =  Label( a_frame, text =  80*" ", justify = LEFT, anchor = W,
                                  borderwidth = 5, relief = RAISED,  )
@@ -252,6 +258,7 @@ class GUI( object ):
             i_smartplug_adapter.gui_tk_label  = a_widget
             lcol +=  1
 
+            # output label widget
             a_widget   =  Label( a_frame, text =  80*" ", justify = LEFT, anchor = W,
                                  borderwidth = 5, relief = RAISED,  )
             a_widget.config( width = 30)
@@ -310,22 +317,24 @@ class GUI( object ):
         # live graph checkbox
 
         widget_var   = IntVar()
-        a_widget     = Checkbutton( a_frame, text="Live Graph", variable=widget_var, width = 10, anchor="w" )
+        a_widget     = Checkbutton( a_frame, text="Live Graph", variable = widget_var, width = 10, anchor="w" )
         a_widget.config( command = self.controller.cb_graph_live  )
         a_widget.config( borderwidth = 5, relief = RAISED,  )
         a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
         self.graph_live_var   = widget_var
         lcol +=  1
 
-        a_widget = Button( a_frame , width = 10, height = 1, text = "Save CSV" )
-        a_widget.config( command = self.controller.cb_csv )
-        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
-        lcol   +=  1
-
-        a_widget = Button( a_frame , width = 10, height = 1, text = "Save DB" )
-        a_widget.config( command = self.controller.cb_csv )
-        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
-        lcol   +=  1
+#        # button to save graph data to csv file not implemented !!
+#        a_widget = Button( a_frame , width = 10, height = 1, text = "Save CSV" )
+#        a_widget.config( command = self.controller.cb_csv )
+#        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
+#        lcol   +=  1
+#
+#        # button to save graph data to csv file not implemented !!
+#        a_widget = Button( a_frame , width = 10, height = 1, text = "Save DB" )
+#        a_widget.config( command = self.controller.cb_csv )
+#        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
+#        lcol   +=  1
 
         lcol    = 0
         lrow   += 1
@@ -389,6 +398,7 @@ class GUI( object ):
         row_ix += 1
 
         # -------------
+        self.cb_scroll_var  = IntVar()  # for check box in reciev frame
         a_widget = Checkbutton( bframe,  width=7, height=2, text="A Scroll", variable=self.cb_scroll_var,  command=self.do_auto_scroll )
         a_widget.grid( row=row_ix, column=0   )
         row_ix += 1
@@ -536,6 +546,7 @@ class GUI( object ):
 
         if self.cb_scroll_var.get():
             self.rec_text.see( END )
+
         if update_now:
             self.root.update()
         return
@@ -675,7 +686,7 @@ class GUI( object ):
     # ------------------------------------------
     def do_auto_scroll( self,  ):
         """
-        pass, not needed, place holder
+        pass, not needed, place holder see
         """
         # print "do_auto_scroll"
         # not going to involve controller

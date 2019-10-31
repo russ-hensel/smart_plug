@@ -2,6 +2,7 @@
 
 """
 
+for smart_plug
 
 typical use:
 from app_global import AppGlobal
@@ -15,7 +16,8 @@ import webbrowser
 from   subprocess import Popen
 from   pathlib import Path
 import os
-
+import psutil
+from   tkinter import messagebox
 
 class AppGlobal( object ):
     """
@@ -25,6 +27,7 @@ class AppGlobal( object ):
     force_log_level         = 99        # value to force logging, high but not for errors
 
     # ----------- other important objects registerd by their inits
+
     controller              = None      # populated by the controller
     parameters              = None      # populated by parameters
     gui                     = None      # populated by the gui
@@ -40,7 +43,7 @@ class AppGlobal( object ):
     db_file_name            = None     # initially fetched from controller, later gui may update  this is a bad idea -- drop
     lock_db_file_name       = False     # just an idea, needs functions like check_lock_db_file_name  located whree !!
     graph_live_flag         = False     # true for live graph
-
+    graph_app               = False     # true if we are the db/graph version of the app
 
     # for the hours in the gui and their conversion to time
     dd_hours                = [ "0 Begin Day","01 - 1am","02 2am","03 3am","04 4am","05 5am","06 6am","07 7am","08 8am","09 9am","10 10am","11 11am","12 12am Noon",
@@ -84,6 +87,38 @@ class AppGlobal( object ):
 
     # ----------------------------------------------
     @classmethod
+    def show_process_memory( cls, call_msg = "", log_level = None ):
+        """
+        !! not really finished
+        """
+
+        # now most of setupe memory has been allocated -- may want to chekc in again later, save this value ??
+        process      = psutil.Process(os.getpid())    #  import psutil
+        mem          = process.memory_info().rss
+        # convert to mega and format
+        mem_mega     = mem/( 1e6 )
+        msg          = f"{call_msg}process memory = {mem_mega:10,.2f} mega bytes "
+        print( msg )
+        if not ( log_level is None ):
+            logger.log( log_level,  msg )
+        msg           =  f"{mem_mega:10,.2f} mega bytes "
+        return ( mem, msg )
+
+    # ----------------------------------------------
+    @classmethod
+    def about( cls,   ):
+        """
+
+        """
+        url   =  r"http://www.opencircuits.com/SmartPlug_Help_File"
+        __, mem_msg   = cls.show_process_memory( )
+        msg  = f"{cls.controller.app_name}  version:{cls.controller.version} \n  by Russ Hensel\n  Memory in use {mem_msg} \n  Check <Help> or \n     {url} \n     for more info."
+        messagebox.showinfo( "About", msg )
+
+
+
+    # ----------------------------------------------
+    @classmethod
     def os_open_txt_file( cls, txt_file ):
         """
         see parameters for different types of files and nameing that will work with this
@@ -99,8 +134,7 @@ class AppGlobal( object ):
         """
         a_string   = (   "AppGlobal" +
                                   str (AppGlobal.parameter_dicts ) +
-                           "\n    ---------- greenhouse ----------\n" + str( AppGlobal.parameter_dicts["greenhouse"]) +
-                           "\n    ---------- rootcellar ----------\n" + str( AppGlobal.parameter_dicts["rootcellar"])     )
+                           "\n    ---------- greenhouse ----------\n" + str( AppGlobal.parameter_dicts["greenhouse"]) )
         return a_string
 
     def print_me():

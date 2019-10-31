@@ -29,6 +29,7 @@ import datetime
 from   tkinter import messagebox
 from   subprocess import Popen
 #from   pathlib import Path
+import psutil
 
 # ----------- local imports --------------------------
 import parameters
@@ -55,12 +56,13 @@ class SmartPlugGraph:
         print( "" )
 
         self.app_name       = "SmartPlugGraph "
-        self.version        = "Ver5 2019 10 10.2"
+        self.version        = "Ver6 2019 10 26.2"
         self.gui            = None
 
         self.no_restarts    =  -1   # we count the restarts, adding one each time, first start is not a restart
 
         AppGlobal.controller = self
+        AppGlobal.graph_app  = True
         self.restart( )
 
     # --------------------------------------------------------
@@ -112,8 +114,19 @@ class SmartPlugGraph:
 
         self.exception_records   = []          # keep a list of  ExceptionRecord  add at end limit    self.ex_max  ?? implemented?
 
+        # now most of setupe memory has been allocated -- may want to chekc in again later, save this value ??
+        process      = psutil.Process(os.getpid())    #  import psutil
+        mem          = process.memory_info().rss
+        # convert to mega and format
+        mem_mega     = mem/( 1e6 )
+        msg          = f"process memory = {mem_mega:10,.2f} mega bytes "
+        print( msg )
+        self.logger.log( AppGlobal.force_log_level,      msg )
+
         # --------------------------------------------------------
         self.gui.root.mainloop()
+
+        self.grapher.end_graph()
 
         self.logger.info( self.app_name + ": all done" )
         return
@@ -499,7 +512,13 @@ class SmartPlugGraph:
         call back for gui button
         """
         print("cb_test called may cause error if test not set up  ")
-#        AppGlobal.graphing.test_query()
+
+    # ----------------------------------------------
+    def cb_about( self,  ):
+        """
+        call back for gui button
+        """
+        AppGlobal.about()
 
 # --------------------------------------
 if __name__ == '__main__':

@@ -71,28 +71,27 @@ class Parameters( object ):
         for particular computers.  Put in settings for you computer if you wish
         """
         if self.computername == "smithers":
-            self.port               = "COM5"   #  port not currently in use
             self.win_geometry       = '1450x700+20+20'      # width x height position
             self.ex_editor          =  r"D:\apps\Notepad++\notepad++.exe"    # russ win 10 smithers
             self.db_file_name       =  "smithers_db.db"
 
         elif self.computername == "millhouse":
-            self.port               = "COM3"
             self.ex_editor          =  r"C:\apps\Notepad++\notepad++.exe"
             #self.win_geometry   = '1300x600+20+20'
+            self.db_file_name       =  "millhouse_db.db"
 
         elif self.computername == "theprof":
             self.ex_editor          =  r"C:\apps\Notepad++\notepad++.exe"
-#            self.db_file_name       =  "the_prof_db.db"
+            self.db_file_name       =  "the_prof_db.db"
         else:
             print( f"In parameters: no special settings for {self.computername}" )
 
     # -------
     def mode_1(self,  ):
         """
-        changes only the name of the mode and...  Largely a place holder 
+        changes only the name of the mode and...  Largely a place holder
         """
-        self.mode     = "Mode 1"
+        self.mode               = "Mode 1"
         self.graph_time_units   = "days"  # ?? "hour" "min" days seconds.... add more   #  day hour  use my converter in future
 
     # -------
@@ -106,7 +105,7 @@ class Parameters( object ):
         self.icon               = "./spark_plug.ico"   # use None for no icon
         self.icon               = "./spark_plug_white.ico"
         self.icon               = "./electrical_plug_white_bkg.ico"
-        self.icon_graph         = "./spark_plug_white.ico"         # since we are supporting 2 apps in this parameter file 
+        self.icon_graph         = "./spark_plug_white.ico"         # since we are supporting 2 apps in this parameter file
 #        self.icon               = "./electrical_plug_white_bkg.ico"
 
         self.init_function_2    = None         # not used/useful as yet, a leftover
@@ -150,10 +149,37 @@ class Parameters( object ):
                 { "name": "device_209",  "tcpip": "192.168.0.209", "delta_t": 10,   },
                 { "name": "device_210",  "tcpip": "192.168.0.210", "delta_t": 10,   },
                 ]
-        #list of lists to be probed to find plugs  base, low_index hi_index hi not inclusive
-        self.probe_lists       = [ ( "192.168.0.", 209, 211 ),
-                                   ( "192.168.0.",  9, 12 )]
-        self.max_probe         = 0   # 0 is unlimited -- when looking probe/scan stop at this limit
+
+
+        self.device_list = [
+                              { "name": "device_1", "tcpip": "192.168.0.209", "delta_t": 10,   },
+                              { "name": "device_2", "tcpip": "192.168.0.92",  "delta_t": 10,   },
+                            ]
+        """
+		revise output to match above
+		>> self.device_list = [
+		{ "name": "device_1", "tcpip": "192.168.0.209" },
+		{ "name": "device_2", "tcpip": "192.168.0.92" },
+		]
+        """
+
+        #list of tuples to be probed to find plugs  base, low_index hi_index hi not inclusive
+        self.probe_lists       = [ ( "192.168.0.", 209, 210 ),
+                                                               ]
+
+
+#        #list of tuples to be probed to find plugs  base, low_index hi_index hi not inclusive
+#        self.probe_lists       = [ ( "192.168.0.", 209, 250 ),
+#                                   ( "192.168.0.",  50, 200 ),   ]
+#
+#
+#        # pretty much everthing  will take a long time
+#        self.probe_lists       = [ ( "192.168.0.",   0, 100 ),
+#                                    ( "192.168.0.", 100, 254 ),   ]
+#
+
+
+        self.max_probe         = 2   # 0 is unlimited -- when looking probe/scan stop at this limit
 
         self.record_delta      = 10  # time in seconds between recordings -- global for all devices, ?? move to device list time used for monitor as well
 
@@ -222,13 +248,21 @@ class Parameters( object ):
         # ----- logging ------------------
         # used by the python logger  -- controls the  logging file
         self.logger_id          = "splug"
+
         self.pylogging_fn       = "smart_plug.py_log"     # file name for the python logging
+
         self.logging_level      = logging.DEBUG           #   CRITICAL	50   ERROR	40 WARNING	30  INFO	20 DEBUG	10 NOTSET	0
         #self.logging_level     = logging.INFO            #   CRITICAL	50   ERROR	40 WARNING	30  INFO	20 DEBUG	10 NOTSET	0
         self.print_to_log       = False                   # does what? not implemented
 
         self.log_gui_text       = True                    # True or False   implemented ??
         self.log_gui_text_level = logging.DEBUG           # if log_gui_text is True then this is the level that we log at
+
+        # override whatever you want
+        if  AppGlobal.graph_app:
+            self.pylogging_fn       = "smart_plug_graph.py_log"     # file name for the python logging
+            self.logging_level      = logging.INFO          #   CRITICAL	50   ERROR	40 WARNING	30  INFO	20 DEBUG	10 NOTSET	0
+
 
         # ----- message area in gui   -----------
         self.default_scroll     = 1        # 1 auto scroll the receive area, else 0

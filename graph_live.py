@@ -14,15 +14,15 @@ Purpose:
 #import pylab
 
 import matplotlib.pyplot as plt     # plotting stuff
-import logging
+#import logging
 import time
-import datetime
-import sqlite3 as lite
-import os
+#import datetime
+#import sqlite3 as lite
+#import os
 
 # --------- local imports
 from   app_global import AppGlobal
-import parameters
+#import parameters
 import line_style
 
 # ========================== Begin Class ================================
@@ -34,6 +34,33 @@ class GraphLive:
         AppGlobal.graph_live  = self
 
         self.line_style     = line_style.LineStyle()   # this gives differnt line styles to different graph lines
+
+        self.debug_count    = 0
+
+    # ----------------------------------------------
+    def end_graph_live_evt( self, evt ):
+        """
+        basically strip off event and forward
+        """
+        print( f"end_graph_live_evt  {evt}")  # debug
+        self.end_graph_live()
+
+    # ----------------------------------------------
+    def end_graph_live( self, ):
+        """
+        end the live graphing
+        """
+        print( "end_graph_live" )
+        AppGlobal.graph_live_flag         = False
+        AppGlobal.graph_live_flag         = False
+        ## off with the check box ... this is uggly
+        AppGlobal.gui.graph_live_var.set( 0 )
+        # self.graphing            = False
+
+        for i_adapter in AppGlobal.smartplug_adapter_list:
+            i_adapter.end_graph_live(   )   # this is a setup it does not start graphing by itself
+
+        plt.close()
 
     # ---------------------------------------
     def start_graph_live( self, ):
@@ -52,16 +79,20 @@ class GraphLive:
             ??? what if new adapter is turned on ( was it on earlire ?? )
             ??? export csv    export all cached data to a csv, if none just a message
         """
+        print( f"graph_live  -- start_graph_live" )
         self.rescale_time_function        = lambda x: x     # default identity function
         self.set_rescale_time_function()
 
         #Set up plot
         self.figure, self.ax   = plt.subplots( figsize=( self.parameters.graph_x_size , self.parameters.graph_y_size ) )
 
+        self.figure.canvas.mpl_connect( 'close_event', self.end_graph_live_evt )
+
+        plt.legend( loc=2 )    # for label to show up ?  # made small sq show up no content, too early ?
         # lets try to build the line in each adapter
         self.lines,            = self.ax.plot([],[], 'o', color="red", linewidth=2.5, linestyle="-"  )     # the line is the thing to update ... can we add later, lets assume we can
         #Auto scale on unknown axis and known limits on the other
-        self.ax.set_autoscaley_on(True)
+        self.ax.set_autoscaley_on( True )
         #self.ax.set_xlim(self.min_x, self.max_x)
         #Other stuff
         self.ax.grid( linestyle='-', linewidth='0.5', color= 'red' )
@@ -69,6 +100,7 @@ class GraphLive:
 
         self.ax.set_title(  f"Power measured by SmartPlugs" );
         self.ax.set_xlabel( f"Time in {self.graph_time_units} from {self.graph_time_zero}" )   # these have been set multiple times
+        self.ax.set_ylabel( f"Power in watts" )   # these have been set multiple times
 
         for i_adapter in AppGlobal.smartplug_adapter_list:
             i_adapter.start_graph_live( self.ax  )   # this is a setup it does not start graphing by itself
@@ -95,6 +127,12 @@ class GraphLive:
                 #We need to draw *and* flush
             self.figure.canvas.draw()
             self.figure.canvas.flush_events()
+            plt.legend( loc=2 )                 # help with update  -- seems to work
+
+            self.debug_count += 1
+            if self.debug_count > 10:
+                AppGlobal.show_process_memory( "debug_count max reached", log_level = 20 )
+                self.debug_count = 0
 
     # ---------------------------------------
     def set_rescale_time_function( self,  ):

@@ -352,6 +352,12 @@ class GUI:
             a_button.config( command = self.controller.os_open_helpfile )
             a_button.pack( side = LEFT )
 
+            # about
+            a_button = Button( a_frame , width=10, height=2, text = "About" )
+            a_button.config( command = self.controller.cb_about )
+            a_button.pack( side = LEFT )
+
+            # restart
             a_button = Button( a_frame , width=10, height=2, text = "Restart" )
             a_button.config( command = self.controller.restart )
             a_button.pack( side = LEFT )

@@ -22,7 +22,7 @@ import os
 
 # --------- local imports
 from   app_global import AppGlobal
-import parameters
+# import parameters
 import line_style
 
 # ========================== Begin Class ================================
@@ -32,11 +32,10 @@ class Grapher:
         #self.controller     = AppGlobal.controller
         self.parameters     = AppGlobal.parameters
         AppGlobal.graphing  = self
-        print(AppGlobal.parameters )
-        print( self.parameters )
+
         #self.myLogger       = aController.myLogger
         self.logger         = logging.getLogger( AppGlobal.parameters.logger_id + ".sp_graph")
-        self.logger.info("in Grapher __init__" )
+        self.logger.info( "in Grapher __init__" )
         self.line_style     = line_style.LineStyle()   # this gives differnt line styles to different graph lines
 
     # ---------------------------------------
@@ -44,14 +43,21 @@ class Grapher:
         """
         db_device_adapters   list of device_adapters
 
-
         fetch data from database print and do a simple graph
         this interfaces back to the controller, the rest do not
         indirect to make easer to mess about
         """
+        self.end_graph()   # if an old one is hanging around
 #        self.graph_4( db_device_adapter, ts_begin, ts_end, min_points = 10 )
 #        self.graph_many( db_device_adapters[0], ts_begin, ts_end, min_points = 10 )
         self.graph_many_really( db_device_adapters, ts_begin, ts_end, min_points = 10 )
+
+    # ---------------------------------------
+    def end_graph( self,  ):
+        """
+        end graph even if none ( silent on error )
+        """
+        plt.close()
 
     # ---------------------------------------
     def graph_many_really ( self, db_device_adapters,  db_start, db_end, min_points ):
@@ -59,13 +65,8 @@ class Grapher:
         still testing
         ( db_start, db_end  -> ) db_start and db_end are both tuples  -- used to be
         [ 0] date in string forma     [1] a timestamp
-        call only from testGraph
-         .
         """
         db_file_name   = AppGlobal.gui.get_db_file_name()
-#        msg    = f"insert_measurements into {db_file_name} >> {data}"
-#        print( msg )
-#        AppGlobal.gui.print_info_string( msg )
 
         #db_file_name    = AppGlobal.gui.bw_for_db.get_text()
         if not( os.path.isfile( db_file_name  )):
@@ -99,8 +100,8 @@ class Grapher:
 
         #plt.figure( plt.figure( figsize = ( self.parameters.graph_x_size , self.parameters.graph_y_size ) )) ) us this get two graphs
 
-        fig, ax1 = plt.subplots( figsize=( self.parameters.graph_x_size , self.parameters.graph_y_size ) )
-        color    = 'tab:red'
+        fig, ax1     = plt.subplots( figsize=( self.parameters.graph_x_size , self.parameters.graph_y_size ) )
+        color        = 'tab:red'
 
         ax1.set_title(  f"Power and Energy for Device SmartPlugs" );
         ax1.set_xlabel( f"Time in {self.graph_time_units} from {self.graph_time_zero}")   # these have been set multiple times
@@ -117,7 +118,7 @@ class Grapher:
             ax1.plot( time_data, inst_pw_data,          linestyle = self.line_style.linestyle,
                                                         marker    = self.line_style.markerstyle,
                                                         color     = self.line_style.colorstyle,
-                                                        label     = "label1" ) # label= "Power (Watts)" )
+                                                        label     = i_device_adapter.name ) # label= "Power (Watts)" )
 
         ax1.tick_params( axis= 'y', labelcolor=color)
 
@@ -149,9 +150,9 @@ class Grapher:
             ax2.plot( time_data, total_energy_data,     linestyle = self.line_style.linestyle,
                                                         marker    = self.line_style.markerstyle,
                                                         color     = self.line_style.colorstyle,
-                                                        label     = "Energy (Watts*hr)")  # label= "Power (Watts)" )
+                                                        label     = i_device_adapter.name    )   # "Energy (Watts*hr)")  # label= "Power (Watts)" )
 
-        ax2.tick_params( axis='y', labelcolor=color )
+        ax2.tick_params( axis='y', labelcolor = color )
 
         ax2.legend(['ax2 Total Energy legend'])
         ax2.legend( loc = 1 )

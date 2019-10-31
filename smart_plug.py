@@ -30,11 +30,13 @@ import os
 import time
 import datetime
 import traceback
+import psutil
 import queue
 #import threading
 import importlib
 import pyHS100
 #import matplotlib.pyplot as plt     # plotting stuff
+from   tkinter import messagebox
 
 # ----------- local imports --------------------------
 import parameters
@@ -63,7 +65,7 @@ class SmartPlug( object ):
 
         AppGlobal.controller        = self
         self.app_name               = "SmartPlug"
-        self.version                = "Ver6 2019 10 23.1"
+        self.version                = "Ver6 2019 10 28.3"
 
         self.gui                    =  None  # the gui created later
         self.no_restarts            =  -1    # counter for the number of times the application is restarted
@@ -150,11 +152,24 @@ class SmartPlug( object ):
 
         self.gui                = gui.GUI(  )
         self.gui.root.after( self.parameters.gt_delta_t, self._polling )
+
+        # now most of setupe memory has been allocated -- may want to chekc in again later, save this value ??
+        process      = psutil.Process(os.getpid())    #  import psutil
+        mem          = process.memory_info().rss
+        # convert to mega and format
+        mem_mega     = mem/( 1e6 )
+        msg          = f"process memory = {mem_mega:10,.2f} mega bytes "
+        print( msg )
+        self.logger.log( AppGlobal.force_log_level,      msg )
+
         self.gui.run()
 
         self.post_to_queue( "stop", None  , (  ) )
 
         self.helper_thread.join()
+
+        self.graph_live.end_graph_live()    # will thow error if no plt ??
+
         self.logger.info( self.app_name + ": all done" )
 
     # --------------------------------------------------------
@@ -334,25 +349,46 @@ class SmartPlug( object ):
         pass
 
     # -------------------------------------------------------
+    def adapter_list_to_probe_list( self ):
+        """
+        device list generates a probe list for probe_for_plugs
+        """
+        probe_list    = []
+        for i_device in self.parameters.device_list:
+            tcpip        = i_device[ "tcpip" ]
+            splits       = tcpip.rsplit( ".",  1)
+            tcpip_base   = splits[0]
+            lo           = int( splits[1])
+            hi           = lo + 1
+            a_tuple      = ( tcpip_base, lo, hi )
+            print( f"splits {splits}" )
+            print( f"tcpip {tcpip}" )
+            print( f"a_tuple {a_tuple}" )
+            probe_list.append( a_tuple )
+        print( probe_list )
+        return probe_list
+
+    # -------------------------------------------------------
     def probe_for_plugs( self ):
         """
         use parms to control probe
         return tcpip of devices found
+        !! first probe for the one on the device list in parameters
         """
         probe_lists        = self.parameters.probe_lists
         max_probe          = self.parameters.max_probe
+        probe_lists.extend ( self.adapter_list_to_probe_list() )
         msg                = "Probing for plugs..."
         self.print_info_string_now( msg )
 
 #        self.gui.print_info_string( "Probing for plugs..." )
 #        self.gui.root.update()
         if len( probe_lists) == 0 or probe_lists is None :
-            self.gui.print_info_string( "parameters specify no probe lists. Done." )
+            self.gui.print_info_string( "parameters specify no probe lists or device list. Done." )
             return []
         found_list    = []
-        found_so_far  = 0
         for ix_probe in probe_lists:
-            found_list   += plug_util.scan_for_plugs( *ix_probe, msg_function = self.print_info_string_now )
+            found_list   += plug_util.scan_for_plugs( *ix_probe, msg_function = self.print_info_string_now, max_plugs = max_probe - len( found_list ) )
         msg   = f"....found {found_list} Done."
         self.print_info_string_now( msg )
         return found_list
@@ -522,13 +558,14 @@ class SmartPlug( object ):
 #        print( f"cb_graph_live  -- not linked {self.gui.graph_live_var.get()}" )
 
         if  self.gui.graph_live_var.get():
-            if AppGlobal. graph_live_flag:
+            if AppGlobal.graph_live_flag:
                  return
             self.graph_live.start_graph_live( )
 
         else:
             print( f"cb_graph_live  -- need turn off code {self.gui.graph_live_var.get()}" )
 
+            self.graph_live.end_graph_live( )
         return
 
    # ----------------------------------------------
@@ -538,7 +575,7 @@ class SmartPlug( object ):
         """
         print( "cb_gui_test_1" )
 #        self.probe_device_list()
-        self.cb_graph_live(  )
+        #self.cb_graph_live(  )
 
    # ----------------------------------------------
     def cb_gui_test_2( self,  ):
@@ -555,7 +592,18 @@ class SmartPlug( object ):
         """
         call back for gui button
         """
-        print( "cb_csv" )
+        #print( "cb_csv" )
+        msg  = "May be implemented at some point."
+        messagebox.showinfo( "Not Yet Implemented", msg )
+
+    # ----------------------------------------------
+    def cb_about( self,  ):
+        """
+        call back for gui button
+        """
+        AppGlobal.about()
+#        msg  = "Smart Plug Application\n   by Russ Hensel\n     Check <Help> for more info."
+#        messagebox.showinfo( "About", msg )
 
 # ==============================================
 if __name__ == '__main__':

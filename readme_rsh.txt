@@ -24,6 +24,21 @@ status:   working -- but many parts and features are being added or moved around
 !! constrain actions for plugs that are not present or do not monitor energy
 
 !! when timer times out need to uncheck the on checkbox
+!! Retrieve energy data from plug: On the GUI, but not implemented.
+!! move probe into helper thread, have a stop for it
+!! seperate log files for two apps
+!! why 5 lines when graphing 2 devices
+!!
+
+!!    self.show_db_updates      = True   # show updates in message area
+!! smartplug .... auto scroll on off seems not to work correctly
+!! probably take total energy off
+** time from now
+!! more memory reports
+** convert to numpy
+
+
+
 
 =============== graph live ================
 
@@ -65,9 +80,26 @@ total_power     total_energy
 
 
 
+plt.legend([plot1,plot2],["plot 1", "plot 2"])
 
 
+se handles AKA Proxy artists
 
+import matplotlib.lines as mlines
+import matplotlib.pyplot as plt
+# defining legend style and data
+blue_line = mlines.Line2D([], [], color='blue', label='My Label')
+reds_line = mlines.Line2D([], [], color='red', label='My Othes')
+
+plt.legend(handles=[blue_line, reds_line])
+
+plt.show()
+
+
+plt.legend([plot1,plot2],["plot 1", "plot 2"])
+
+AttributeError: 'SmartPlugAdapter' object has no attribute 'end_graph_live'
+No handles with labels found to put in legend.
 
 
 

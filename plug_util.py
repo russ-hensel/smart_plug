@@ -4,7 +4,7 @@
 
 """
 Purpose:
-
+   misc plug functions, not needing to be in a class 
 
 
 """
@@ -20,8 +20,8 @@ Purpose:
 #import importlib
 import pyHS100
 import collections
-#
-## ----------- local imports --------------------------
+
+# ----------- local imports --------------------------
 #import parameters
 #import gui
 #from   app_global import AppGlobal
@@ -151,7 +151,7 @@ def get_full_info( tcpip ):
 #  ------------------ helper --------------------
 def dict_to_str( a_dict ):
         """
-        use for printing
+        use for printing dicts
         """
         info_str  = ""
         for key, value in a_dict.items():

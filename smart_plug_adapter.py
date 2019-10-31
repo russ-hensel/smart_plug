@@ -76,7 +76,7 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def insert_event( self, ):
         """
-        call from gt and ??
+        call from gt and ??  no longer planning to implement
         save events like on off and retrieve data
         """
         pass
@@ -93,6 +93,11 @@ class SmartPlugAdapter( object ):
         #self.graphing                 = True
 
     # ----------------------------------------------
+    def end_graph_live( self, ):
+        print( "smart plug adapter end_graphing still need to work this out ?? delete data here " )
+        self.live_graph_ready     = False
+
+    # ----------------------------------------------
     def start_graph_live( self, a_ax ):
         """
 
@@ -107,7 +112,7 @@ class SmartPlugAdapter( object ):
 
         #self.reset_graphing_data()   # why bother consider keeping data !!
         if self.live_graph_lines is None:  # or use self.live_graph_ready
-            self.live_graph_lines,     = a_ax.plot([],[], 'o')   # note unpack comma -- seem to be a list of 1 element
+            self.live_graph_lines,     = a_ax.plot([],[], 'o',  label = self.name )   # note unpack comma -- seem to be a list of 1 element
             msg    =  f"self.live_graph_lines created for device: {self.name} {type(self.live_graph_lines)}  {self.live_graph_lines}"
             AppGlobal.logger.info( msg )
             print( msg )
@@ -122,6 +127,7 @@ class SmartPlugAdapter( object ):
         """
         from graph_live but could we use our own polling  ??
         return True or False, depending on weather we were already set up
+
         """
         if  (not self.graphing_new_data ) or ( not self.live_graph_ready ):
             return False
@@ -132,20 +138,23 @@ class SmartPlugAdapter( object ):
         self.live_graph_lines.set_xdata( self.graphing_data_t )
         self.live_graph_lines.set_ydata( self.graphing_data_p )
 
+        # not sure these need to be done on every cycle
         self.live_graph_lines.set_linestyle( self.linestyle   )
         self.live_graph_lines.set_color(     self.colorstyle  )
         self.live_graph_lines.set_marker(    self.markerstyle )
         self.live_graph_lines.set_linewidth( self.widthstyle  )
-
+        self.live_graph_lines.set_label( self.name)   # not currently working lacks update or.... setting legend later seemed to do it once may be enough
         self.graphing_new_data = False
+
         return True
 
     # ----------------------------------------------
     def end_graphing( self, ):
         """
-
+        this may be unused junk
         """
-        print( "end_graphing still need to work this out " )
+        print( "end_graphing still need to work this out ?? delete data here " )
+        self.live_graph_ready     = False
         # self.graphing            = False
 
     # ----------------------------------------------
