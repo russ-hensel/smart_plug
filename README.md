@@ -5,7 +5,9 @@ Purpose: This is a a pair of Graphical User Interface Application is to control 
 
 Enviroment: Program should run on any OS supporting Python 3.6.  This should include Windows, Mac, Linux, and Raspberry Pi.  So far only tested on Windows.  More coming... 
 
-Program Status: More or less beta, seems to work pretty well. Docs are a bit out of date.  I plan to fix than and then put this app on a shelf for awhile. Intended for those with some Python experience who can add the files to their Python development environment ( no install features for this code ). Some dependencies will need to be installed, probably prompted by error messages. Editing of the parameter file should be easier for those with Python experience. Users should find some useful documentation in the code, this is still a work in progress. Much code has been lifted from other projects of mine, some artifacts of the other projects remain.
+Program Status: More or less beta, seems to work pretty well, actually it did, but I discovered some threading issues which are deal breakers, should be fixed by about Nov 10.  Check back.  For now do not expect code to work.  Fix is now known but not applied.  Mostly needs refactoring.
+
+Docs are a bit out of date.  I plan to fix than and then put this app on a shelf for awhile. Intended for those with some Python experience who can add the files to their Python development environment ( no install features for this code ). Some dependencies will need to be installed, probably prompted by error messages. Editing of the parameter file should be easier for those with Python experience. Users should find some useful documentation in the code, this is still a work in progress. Much code has been lifted from other projects of mine, some artifacts of the other projects remain.
 
 http://www.opencircuits.com/Python_Control_of_Smart_Plugs
 
