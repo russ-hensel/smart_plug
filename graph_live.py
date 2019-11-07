@@ -19,6 +19,7 @@ import time
 #import datetime
 #import sqlite3 as lite
 #import os
+import threading
 
 # --------- local imports
 from   app_global import AppGlobal
@@ -33,7 +34,7 @@ class GraphLive:
         self.parameters       = AppGlobal.parameters
         AppGlobal.graph_live  = self
 
-        self.line_style     = line_style.LineStyle()   # this gives differnt line styles to different graph lines
+        self.line_style     = line_style.LineStyle()   # this gives different line styles to different graph lines
 
         self.debug_count    = 0
 
@@ -48,6 +49,7 @@ class GraphLive:
     # ----------------------------------------------
     def end_graph_live( self, ):
         """
+        call from main thread
         end the live graphing
         """
         print( "end_graph_live" )
@@ -65,7 +67,8 @@ class GraphLive:
     # ---------------------------------------
     def start_graph_live( self, ):
         """
-        start off a session of live graphing
+        call from main thread
+        start off a session of live graphing -- need to run in main thread
         moved from the plug
         no validation if start is ok
         no inactivation of controls .... even this should perhaps come from a checkbox
@@ -79,7 +82,10 @@ class GraphLive:
             ??? what if new adapter is turned on ( was it on earlire ?? )
             ??? export csv    export all cached data to a csv, if none just a message
         """
-        print( f"graph_live  -- start_graph_live" )
+        msg    =  "GraphLive.start_graph_live"
+#        AppGlobal.what_thread( threading.get_ident(), msg, 20  )
+        AppGlobal.log_if_wrong_thread( threading.get_ident(), msg = msg, main = True  )
+
         self.rescale_time_function        = lambda x: x     # default identity function
         self.set_rescale_time_function()
 
@@ -104,35 +110,66 @@ class GraphLive:
 
         for i_adapter in AppGlobal.smartplug_adapter_list:
             i_adapter.start_graph_live( self.ax  )   # this is a setup it does not start graphing by itself
-
-        AppGlobal.graph_live_flag      = True      # this will kick off in polling set last
+        plt.show( block = False )
+        AppGlobal.logger.error( "GraphLive.start_graph_live complete" )
+        AppGlobal.graph_live_flag      = True        # this will kick off in polling set last
 
         # call polling right away or just do redraw ??
 
     # ---------------------------------------
-    def polling( self, ):
+    def polling_mt( self, ):
         """
-        adjust how often this is updated
+        polling for the main thread ( gui thread )
         """
-#        print( f" GraphLive polling " )
+        msg = "GraphLive.polling_mt  "
+        AppGlobal.log_if_wrong_thread( threading.get_ident(), msg = msg, main = True  )
+#        AppGlobal.logger.error( msg )
 
+        # collect flags from the individual devices
         need_redraw_flag = False
         for i_adapter in AppGlobal.smartplug_adapter_list:
             if i_adapter.update_graph_live(  ):
                 need_redraw_flag = True
 
+        #AppGlobal.logger.error( "GraphLive.polling_mt test next" )
         if need_redraw_flag:
+            AppGlobal.logger.error( "GraphLive.polling_mt need redraw True" )
             self.ax.relim()
             self.ax.autoscale_view()
                 #We need to draw *and* flush
+            AppGlobal.logger.error( "GraphLive.polling_mt next draw flush" )
             self.figure.canvas.draw()
             self.figure.canvas.flush_events()
             plt.legend( loc=2 )                 # help with update  -- seems to work
+#            AppGlobal.logger.error( "GraphLive.polling_mt polling show next" )
+            plt.show( block = False )
+#            AppGlobal.logger.error( "GraphLive.polling_mtpolling post next" )
 
+            # ------------ for tracking memory use
             self.debug_count += 1
             if self.debug_count > 10:
-                AppGlobal.show_process_memory( "debug_count max reached", log_level = 20 )
+                AppGlobal.show_process_memory( "GraphLive.polling_mt polling debug_count max reached", log_level = 20 )
                 self.debug_count = 0
+
+    # ---------------------------------------
+    def polling_ht( self, ):
+        """
+        polling for the helper thread
+        not sure this is ever needed
+        """
+        msg = "GraphLive.polling_ht  "
+        AppGlobal.log_if_wrong_thread( threading.get_ident(), msg = msg, main = False  )
+        #print( "GraphLive.polling_ht running...")
+
+    # ---------------------------------------
+    def polling( self, ):
+        """
+        dead make sure delete
+        adjust how often this is updated  -- as here needs to run in main thread, may need two, one for main one for
+        may need to be called in main thread not helper ?? works in ipython  spyder, but not in shell
+        """
+        y = 1/x
+#        print( f" GraphLive polling " )
 
     # ---------------------------------------
     def set_rescale_time_function( self,  ):
@@ -141,7 +178,6 @@ class GraphLive:
         see similar in graph_from_db
         self.rescale_time        = lambda x: x     # default identity function
         set_rescale_function()
-
 
         self.graph_live_time_units   = "min"  # ?? "hour" "min" days seconds.... add more   #  day hour  use my converter in future
         self.graph_db_time_zero      = "now"    #   time labeled as 0 on the graph
@@ -160,7 +196,6 @@ class GraphLive:
             self.graph_time_zero   = "start of today"
         else:  # default or error ??
             convert_offset     =  0
-
 
 #        print( f"parameters say units {self.parameters.graph_time_units}"  )
         units  = self.parameters.graph_live_time_units.lower()
@@ -182,40 +217,43 @@ class GraphLive:
 
         self.rescale_time_function  =  lambda x: ( ( x - convert_offset ) * convert_factor )  # conversion on timestamps
 
-#    # ---------------------------------------
-#    def export_csv( self, db_device_adapters,  db_start, db_end, min_points = 10, csv_file_name = "data.csv" ):
-#        """
-#        needs update !! will throw error  need to append data so will work for multiple devices ??  or make take a list of device adapters
-#        think is passed the name of the adapter should be a list of adapters like graph
-#        ?? file name check -- now fixed, and we append
-#        add sep to parameters ??
-#        add csv file to parameters
-#        ?? more title stuff
-#        """
-#        #x = 1/0   # this uses the data cache, to work we need to graph first ( prep data ??? ) to populate cache, then how about a clean up
-#        msg        = f"Export data to csv file {csv_file_name}..."
-#        AppGlobal.gui.display_info_string( msg )
-#        sep     = "\t"
-#        for i_device_adapter in db_device_adapters:
-#            #time_data, inst_pw_data, total_power_data,    = self._prep_data( i_device_adapter,  db_start, db_end, min_points  )
-#            i_device_adapter.retrived_data_cache        = self._prep_data( i_device_adapter,  db_start, db_end, min_points  )
-#            time_data, inst_pw_data, total_power_data,  = i_device_adapter.retrived_data_cache
-#
-#            device_name       = i_device_adapter.name
-#
-#            if time_data is None:
-#                msg        = f"No data for {device_name}."
-#                AppGlobal.gui.display_info_string( msg )
-#            else:
-#                with open( csv_file_name, "a" ) as a_file:  # we are appending
-#                    a_file.write( f'"device"{sep}"time_data"{sep}"inst_pw_data"{sep}"total_power_data"\n' )
-#                    for ix_list, i_time in enumerate( time_data ):
-#                        a_file.write( f"{device_name}{sep}{time_data[ ix_list ]}{sep}{inst_pw_data[ ix_list ]}{sep}{total_power_data[ ix_list ]}\n" )
-#
-#        msg        = f"...CSV file complete."
-#        AppGlobal.gui.display_info_string( msg )
+    # ---------------------------------------
+    def export_csv( self,  csv_file_name = "live_data.csv" ):
+    #def export_csv( self, db_device_adapters,  db_start, db_end, min_points = 10, csv_file_name = "live_data.csv" ):
+        """
+        needs update !! will throw error  need to append data so will work for multiple devices ??  or make take a list of device adapters
+        think is passed the name of the adapter should be a list of adapters like graph
+        ?? file name check -- now fixed, and we append
+        add sep to parameters ??
+        add csv file to parameters
+        ?? more title stuff
+        """
+#        msg  = "May be implemented at some point."
+#        messagebox.showinfo( "Not Yet Implemented", msg )
+        #x = 1/0   # this uses the data cache, to work we need to graph first ( prep data ??? ) to populate cache, then how about a clean up
+        msg        = f"Export data to csv file {csv_file_name}..."
+        AppGlobal.gui.print_info_string( msg )
 
+        sep        = "\t"    # seperator for values \t is tab
+        for i_device_adapter in  AppGlobal.smartplug_adapter_list:
+            times           = i_device_adapter.gd_time
+            powers          = i_device_adapter.gd_power
+            #energies        = i_device_adapter.gd_energy    # no energy for graph live ??
+            device_name     = i_device_adapter.name
 
+            if len( times ) == 0:
+                msg        = f"No data for {device_name}."
+                AppGlobal.gui.print_info_string( msg )
+            else:
+                with open( csv_file_name, "a" ) as a_file:  # a  we are appending
+                    a_file.write( f'"device"{sep}"time_data"{sep}"inst_pw_data"{sep}"energy_data"\n' )
+                    for ix_list, i_time in enumerate( times ):
+                        #a_file.write( f"{device_name}{sep}{times[ ix_list ]}{sep}{powers[ ix_list ]}{sep}{energies[ ix_list ]}\n" )
+                        a_file.write( f"{device_name}{sep}{times[ ix_list ]}{sep}{powers[ ix_list ]}\n" )
+                    msg        = f"...{device_name}  {ix_list} lines..."
+                    AppGlobal.gui.print_info_string( msg )
+        msg        = f"...{csv_file_name} file complete."
+        AppGlobal.gui.print_info_string( msg )
 
 # --------------------------------
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 #
 """
 Purpose:
-    gui    for smartplug
+    gui    for smart_plug
 
 """
 
@@ -324,11 +324,11 @@ class GUI( object ):
         self.graph_live_var   = widget_var
         lcol +=  1
 
-#        # button to save graph data to csv file not implemented !!
-#        a_widget = Button( a_frame , width = 10, height = 1, text = "Save CSV" )
-#        a_widget.config( command = self.controller.cb_csv )
-#        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
-#        lcol   +=  1
+        # button to save graph data to csv file not implemented !!
+        a_widget = Button( a_frame , width = 10, height = 1, text = "Save CSV" )
+        a_widget.config( command = self.controller.cb_csv )
+        a_widget.grid( row = lrow, column = lcol, rowspan = 1, sticky = E + W + N + S )
+        lcol   +=  1
 #
 #        # button to save graph data to csv file not implemented !!
 #        a_widget = Button( a_frame , width = 10, height = 1, text = "Save DB" )
@@ -434,7 +434,7 @@ class GUI( object ):
     def run( self,  ):
         """
         run the gui
-        will block until destroyed, except for polling method in controller
+
         """
         # move from controller to decouple type of gui
         self.gui_running        = True

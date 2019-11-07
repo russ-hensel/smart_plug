@@ -39,14 +39,15 @@ class HelperThread( threading.Thread ):
     to do
     """
     def __init__(                  self, group=None,  target=None,   name=None, args=(), kwargs=None,  ):
+        """
+        call from main thread
+        """
         # this may not be python 3.x
         #threading.Thread.__init__( self, group=group, target=target, name=name, verbose=verbose )   # verbose not throwing an error   say what
         # for python 3
         threading.Thread.__init__( self, group=group, target=target, name=name, )   #
         # class threading.Thread(group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None)¶
-        """
-        call: gt
-        """
+
         self.args                   = args
         self.kwargs                 = kwargs
 
@@ -71,22 +72,33 @@ class HelperThread( threading.Thread ):
         self.parameters.init_from_helper()
 
         self.scheduled_event_list   = AppGlobal.scheduled_event_list
-#        AppGlobal.print_me()        # debug, take out
+        id = threading.get_ident()
+
+        msg = f"helper run  "
+        AppGlobal.log_if_wrong_thread( threading.get_ident(), msg = msg, main = False  )
+
+        self.logger.debug(  msg )
+
 #        print( "==============================================" )
         self.polling()   # may mach name in gui thread
 
     # ------------------------------------------------
     def device_polling(self):
         """
+        helper thread
         poll the devices - now just smartplugs, but fairly easily adapted to other polling
         tasks.
         so simple may put back in polling
         also extended for graphing
         """
 #        print( "device_polling" )
+        msg     =   "HealperThread.device_polling  "
+        AppGlobal.log_if_wrong_thread( threading.get_ident(), msg = msg, main = False  )
+
+        # AppGlobal.what_thread( threading.get_ident(), msg, 50  )
         now   = time.time()
         for   i_adapter in AppGlobal.smartplug_adapter_list:
-              i_adapter.poll()
+              i_adapter.polling_ht()
 
         # now the live graph
 #        print( f"AppGlobal.graph_live {AppGlobal.graph_live_flag}")
@@ -103,18 +115,22 @@ class HelperThread( threading.Thread ):
         if not update_graph_bool:
 #            print( f"update_graph_bool {update_graph_bool}" )
             return
-
-        AppGlobal.graph_live.polling()
+        AppGlobal.logger.error( "SmartPlugHelper.device_polling off to graph live" )
+        AppGlobal.graph_live.polling_ht()
 
     # ------------------------------------------------
     def polling(self):
         """
-        started from gui this is an infinite loop monitoring the queue
+        started from gui thread as beginning of new thread
+        this is an infinite loop monitoring the queue
         actions based on queue_to_helper and run_event
         application purpose is the device polling where we monitor/record the devices
-        call ht
+
         """
-#        self.logger.debug(  "HealperThread.polling()  entered " )
+        #self.logger.debug(  "HealperThread.polling()  entered " )
+        msg    =  "smart plug Helper.polling()"
+        AppGlobal.log_if_wrong_thread( threading.get_ident(), msg = msg, main = False )
+
         while True:
 
             try:
@@ -134,11 +150,13 @@ class HelperThread( threading.Thread ):
                     #self.print_helper_label( "return running helper loop " )
                     self.controller.helper_task_active  = False    # do we maintain this, or move to helper -- looks like not used, app global better location
                 if action == "stop":
-                    # this will kill the thread --- think it is the return which should end the loop ?  or do we need a braak
-                    # seems to be working fine, !! remove the print
-                    print( "helper got stop in the queue -- how do i end the thread " )
+                    # seems to be working fine
+                    msg    =  "helper got stop in the queue -- end thread with return "
+                    # AppGlobal.what_thread( threading.get_ident(), msg, 50  )
                     self.controller.helper_task_active  = False
-                    return
+                    return   # this will kill the thread --- think it is the return which should end the loop ?  or do we need a break -- we seem to keep looping
+                    msg    =  "helper got stop in the queue -- ran thru return "
+                    # AppGlobal.what_thread( threading.get_ident(), msg, 50  )
 
                 self.device_polling()
 
@@ -149,7 +167,7 @@ class HelperThread( threading.Thread ):
                 print(  f"see log: {msg}" )
                 self.logger.error( msg,  exc_info = True )        # info debug...
             time.sleep( self.ht_delta_t )  # ok here since it is the main pooling loop
-
+            #self.logger.debug(  "HealperThread.polling() done with sleep " )
         return
 
     # ------------------------------------------------
@@ -185,6 +203,7 @@ class HelperThread( threading.Thread ):
     # ------------------------------------------------
     def sleep_ht_with_msg_for( self, for_time,  msg, repeat_time, show_time ):
         """
+        dead code ??
         count down a time, with a message every repeat_time to gui
         """
         time_left  = for_time
@@ -204,7 +223,7 @@ class HelperThread( threading.Thread ):
     # ------------------------------------------------
     def sleep_ht_for( self, for_time ):
         """
-		probably left over code
+		dead code ??
         this is a way to pause action in the ht while keeping
         recieve active
         have it end if anything is recieved??
@@ -253,6 +272,7 @@ class HelperThread( threading.Thread ):
     # -------------------------------------------------------
     def send_receive( self, send_data, for_time  ):
         """
+        dead code ??
         probably dead for this app ??
         sends some data and waits for time to receive a reply
         (       )

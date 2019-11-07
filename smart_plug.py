@@ -32,7 +32,7 @@ import datetime
 import traceback
 import psutil
 import queue
-#import threading
+import threading
 import importlib
 import pyHS100
 #import matplotlib.pyplot as plt     # plotting stuff
@@ -56,6 +56,8 @@ class SmartPlug( object ):
         """
         mostly instances declared here or in restart
         """
+
+        AppGlobal.main_thread_id   = threading.get_ident()
         # ------------------- basic setup --------------------------------
         print( "" )
         print( "=============== starting SmartPlug ========================= " )
@@ -65,16 +67,15 @@ class SmartPlug( object ):
 
         AppGlobal.controller        = self
         self.app_name               = "SmartPlug"
-        self.version                = "Ver6 2019 10 28.3"
+        self.version                = "Ver7 2019 11 06.2"
 
         self.gui                    =  None  # the gui created later
         self.no_restarts            =  -1    # counter for the number of times the application is restarted
 
-        # ----------- for second thread -------
+        # ----------- thread inteactions -------
         self.queue_to_gui           = None
         self.queue_from_gui         = None
-#        self.gui_recieve_lock       = threading.Lock()   # when locked the gui will process receive, acquired released in helper
-                                                         # how different from just a variable set?
+
         self.restart( )
 
     # --------------------------------------------------------
@@ -150,6 +151,8 @@ class SmartPlug( object ):
 
         self.helper_thread.start()
 
+        #AppGlobal.what_thread( threading.get_ident(), "should be in gui, just started helper", 50  )
+
         self.gui                = gui.GUI(  )
         self.gui.root.after( self.parameters.gt_delta_t, self._polling )
 
@@ -166,7 +169,10 @@ class SmartPlug( object ):
 
         self.post_to_queue( "stop", None  , (  ) )
 
-        self.helper_thread.join()
+        self.helper_thread.join()    #
+
+        msg     = "thread join returned"
+        # AppGlobal.what_thread( threading.get_ident(), msg, 50  )
 
         self.graph_live.end_graph_live()    # will thow error if no plt ??
 
@@ -254,7 +260,7 @@ class SmartPlug( object ):
             loop_flag      = False
             ix_queue  += 1
             try:
-                #print( "try posting " )
+                print( f"try posting {( action, function, args )}" )
                 self.queue_to_helper.put_nowait( ( action, function, args ) )
             except queue.Full:
 
@@ -324,6 +330,7 @@ class SmartPlug( object ):
                 pass
             else:
                 self.gui.root.after( self.parameters.gt_delta_t, self._polling )  # reschedule event
+                self.graph_live.polling_mt()
         return
 
     # --------------------------------------------------
@@ -437,17 +444,14 @@ class SmartPlug( object ):
         used as callback from gui button -- rename cb ??
         """
         a_filename = self.starting_dir  + os.path.sep + "parameters.py"   # assuming a txt file
-
-        from subprocess import Popen, PIPE  # since infrequently used
-        proc = Popen( [ self.parameters.ex_editor, a_filename ] )
+        AppGlobal.os_open_txt_file( a_filename )
 
     # ----------------------------------------------
     def os_open_logfile( self,  ):
         """
         used as/by callback from gui button.  Can be called form gt
         """
-        from subprocess import Popen, PIPE  # since infrequently used
-        proc = Popen( [ self.parameters.ex_editor, self.parameters.pylogging_fn ] )
+        AppGlobal.os_open_txt_file( self.parameters.pylogging_fn )
 
     # ----------------------------------------------
     def os_open_helpfile( self,  ):
@@ -456,14 +460,6 @@ class SmartPlug( object ):
         """
         help_file            = self.parameters.help_file
         AppGlobal.os_open_help_file( help_file )
-
-#        a_filename = self.starting_dir  + os.path.sep + "parameters.py"
-#        a_filename = self.parameters.help_file
-#        from subprocess import Popen, PIPE  # since infrequently used
-#        proc = Popen( [ self.parameters.ex_editor, a_filename ] )
-
-#        ret  = webbrowser.open( r"http://www.opencircuits.com/SmartPlug_Help_File", new=0, autoraise=True )    # popopen might also work with a url
-#        print( f"help returned {ret}")
 
     # ----------------------------------------------
     def print_info_string_now( self, msg ):
@@ -554,16 +550,18 @@ class SmartPlug( object ):
     def cb_graph_live( self,  ):
         """
         call back for gui button
+        works in spyder but not at dos box
         """
-#        print( f"cb_graph_live  -- not linked {self.gui.graph_live_var.get()}" )
+#        print( f"cb_graph_live {self.gui.graph_live_var.get()}" )
 
         if  self.gui.graph_live_var.get():
             if AppGlobal.graph_live_flag:
                  return
+
             self.graph_live.start_graph_live( )
 
         else:
-            print( f"cb_graph_live  -- need turn off code {self.gui.graph_live_var.get()}" )
+#            print( f"cb_graph_live  -- need turn off code {self.gui.graph_live_var.get()}" )
 
             self.graph_live.end_graph_live( )
         return
@@ -574,8 +572,7 @@ class SmartPlug( object ):
         call back for gui button
         """
         print( "cb_gui_test_1" )
-#        self.probe_device_list()
-        #self.cb_graph_live(  )
+
 
    # ----------------------------------------------
     def cb_gui_test_2( self,  ):
@@ -583,18 +580,13 @@ class SmartPlug( object ):
         call back for gui button
         """
         print( "cb_gui_test_2" )
-#        self.probe_device_list()
-#        da   = AppGlobal.smartplug_adapter_list[0]
-#        da.gui_tk_mon_checkbox_var.set( 1 )   # will it trigger command ??
 
    # ----------------------------------------------
     def cb_csv( self,  ):
         """
         call back for gui button
         """
-        #print( "cb_csv" )
-        msg  = "May be implemented at some point."
-        messagebox.showinfo( "Not Yet Implemented", msg )
+        self.graph_live.export_csv()
 
     # ----------------------------------------------
     def cb_about( self,  ):
@@ -602,8 +594,6 @@ class SmartPlug( object ):
         call back for gui button
         """
         AppGlobal.about()
-#        msg  = "Smart Plug Application\n   by Russ Hensel\n     Check <Help> for more info."
-#        messagebox.showinfo( "About", msg )
 
 # ==============================================
 if __name__ == '__main__':

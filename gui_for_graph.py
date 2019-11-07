@@ -17,8 +17,6 @@ import ctypes
 #------- local imports
 from   app_global import AppGlobal
 
-
-
 # ======================= begin class ====================
 class GUI:
     """
@@ -60,8 +58,8 @@ class GUI:
         self.save_redir          = None
         self.save_sys_stdout     = sys.stdout
 
-        self.max_lables          = 6   # number of lables, normally used for parameters
-        self.lables              = []  # lables normally for parameters
+        self.max_lables          = 6   # number of labels, normally used for parameters
+        self.lables              = []  # labels normally for parameters
 
         self.rb_var              = IntVar() #Tk.IntVar()
 
@@ -76,13 +74,11 @@ class GUI:
 
         next_frame       = 0      # index of frames and position row for frames
 
-#        self.root_b      = Frame( self.root )   # this may be an extra unneded frame
+#        self.root_b      = Frame( self.root )   # this may be an extra unneeded frame
         self.root_b      =  self.root # !! to phase out root_b -- run a bit more the finish delete of _b
         #self.root.grid( column=1, row=1 )  # this seems to set up the col grid in the root
         #self.root.pack( expand = True, sticky = E+W )  # this also works, why needed? sticky not an option here
 
-        # this frame self.root may be rudundant with its parent
-#        self.root_b.grid(  column=0,row=0, sticky= E+W+N+S )  # remove as root_b becosme root
         self.root.grid_columnconfigure( 0, weight=1 ) # final missing bit of magic
 #        self.root.grid_rowconfigure(    0, weight=1 )
 
@@ -564,7 +560,7 @@ class GUI:
     # ------------------------------------------
     def do_graph( self,  ):
         """
-        do the graph -- call should probably have been direc t
+        do the graph -- call should probably have been direct
         """
         self.controller.cb_graph()
         return
@@ -670,11 +666,7 @@ class FileBrowseWidget( Frame ):
         tkinter.filedialog.askopenfiles()
 
 
-
-
         """
-
-
         Tk().withdraw()
         #self.root.withdraw() # not part of gui so out of scope !! would it be better to get a gui reference
 #        filename     = asksaveasfile(  initialdir   = "./",

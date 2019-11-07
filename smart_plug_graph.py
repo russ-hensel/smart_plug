@@ -30,6 +30,7 @@ from   tkinter import messagebox
 from   subprocess import Popen
 #from   pathlib import Path
 import psutil
+import threading
 
 # ----------- local imports --------------------------
 import parameters
@@ -50,13 +51,14 @@ class SmartPlugGraph:
     def __init__(self ):
         """
         """
+        AppGlobal.main_thread_id   = threading.get_ident()
         # ------------------- basic setup --------------------------------
         print( "" )
         print( "=============== starting smart plug graph ========================= " )
         print( "" )
 
         self.app_name       = "SmartPlugGraph "
-        self.version        = "Ver6 2019 10 26.2"
+        self.version        = "Ver7 2019 11 06.2"
         self.gui            = None
 
         self.no_restarts    =  -1   # we count the restarts, adding one each time, first start is not a restart
@@ -261,8 +263,52 @@ class SmartPlugGraph:
         need index for hour
                 self.gui.cal_begin
                 self.gui.cal_end
+
+                will move forward an hour and backward an hour then truncate
         """
-        pass
+#        msg   = "db_select_from_now_minus_hr not implemented"
+#        print( msg )
+#        AppGlobal.gui.display_info_string( msg )
+
+        delta_hr        = datetime.timedelta( hours =1 )
+        dt              = datetime.datetime.now()
+        dt_end          = dt + delta_hr
+        dt_begin        = dt - delta_hr
+
+        date_begin      = dt_begin.date()
+        self.gui.cal_begin.set_date( date_begin )
+        hr_begin        = dt_begin.hour
+        self.gui.time_begin.set( AppGlobal.dd_hours[ hr_begin -1 ] )
+
+        date_end      = dt_end.date()
+        self.gui.cal_end.set_date( date_end )
+        hr_end        = dt_end.hour
+        self.gui.time_end.set( AppGlobal.dd_hours[ hr_end -1 ] )
+
+
+#        print( f"datetime.datetime.now() = {dt}" )
+
+        #ix_hr              = hr_begin - 2   # will it be an int think this is safe  no use deltas
+
+
+#        print(( 'year  :     ', dt.year   ))   # all attributes may not exist so may need try except
+#        print( f"month :     {dt.month}"   )   # all
+#        print(( 'hour  :     ', dt.hour   ))
+#        print(( 'minute:     ', dt.minute ))
+#        print(( 'second:     ', dt.second ))
+#        print(( 'microsecond:', dt.microsecond ))
+#        print(( 'tzinfo:     ', dt.tzinfo ))
+
+#        dt     = datetime.datetime.now()
+#        print(( "datetime.datetime.now() = ", dt ))
+#
+#        # this a date, not a datetime
+#        dt      = datetime.date( 1981, 6, 16 )
+#        print(( f"datetime.date( 1981, 6, 16 ) = {type(dt)} {dt}", dt ))
+#
+#        dt      = datetime.datetime( 2008, 11, 10, 17, 53, 59 )
+#        print(( "datetime( 2008, 11, 10, 17, 53, 59 ) = ", dt ))
+#
 
     #-------------------------------------------
     def db_select_today( self, ):
@@ -358,8 +404,6 @@ class SmartPlugGraph:
         """
         what it says
         """
-        #print( "fix db_select_from_parms" )
-
         self.gui.cal_begin.set_date( self.parameters.graph_begin_date  )
         self.gui.cal_end.set_date( self.parameters.graph_end_date  )
 
@@ -385,8 +429,7 @@ class SmartPlugGraph:
         """
         callback from gui button
         """
-        from subprocess import Popen    # since infrequently used ??
-        proc = Popen( [ self.parameters.ex_editor, self.parameters.pylogging_fn ] )
+        AppGlobal.os_open_txt_file( self.parameters.pylogging_fn )
 
     # ----------------------------------------------
     def os_open_parmfile( self,  ):
@@ -402,9 +445,7 @@ class SmartPlugGraph:
         used as callback from gui button
         """
         a_filename = self.starting_dir  + os.path.sep + self.parmeters_x + ".py"
-
-        from subprocess import Popen, PIPE  # since infrequently used ??
-        proc = Popen( [ self.parameters.ex_editor, a_filename ] )
+        AppGlobal.os_open_txt_file( a_filename )
 
     # ----------------------------------------------
     def os_open_helpfile( self,  ):
@@ -435,18 +476,12 @@ class SmartPlugGraph:
            msg    = "No devices selected, so no graph."
            AppGlobal.gui.display_info_string( msg )
            return
-#        elif d_len == 1:
-#            device = device_list[ 0 ]
-#        else:
-#            print( "multiple devices selected using the first one " )
-#            device = device_list[0]
-
         self.grapher.do_graph( device_list, ts_begin, ts_end  )
 
     # ----------------------------------------------
     def cb_rb_select( self,  ):
         """
-        call back for gui button
+        call back for gui button  -- still thinking about these
         """
         ix_rb     = self.gui.rb_var.get()
 #        print( "rb val", ix_rb )
