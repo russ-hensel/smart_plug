@@ -3,7 +3,13 @@ Purpose: This is a a pair of Graphical User Interface Application is to control 
 * Program One: smart_plug.py - Monitors, controls, collects ( to memory and database ), and graphs data from smart plugs.
 * Program Two: smart_plug_graph.py - Pulls smartplug data from the database to graph or convert to csv.
 
-Enviroment: Program should run on any OS supporting Python 3.6.  This should include Windows, Mac, Linux, and Raspberry Pi.  So far only tested on Windows.  More coming... 
+Enviroment: 
+* Program should run on any OS supporting Python 3.6.  
+* This should include Windows, Mac, Linux, and Raspberry Pi.  
+* So far only tested on 
+** Windows 
+** Raspberry Pi
+** More coming... ( I do not have a mac ) 
 
 Program Status: Back to alpha ( maybe even beta ). 
 
