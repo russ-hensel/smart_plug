@@ -8,7 +8,7 @@ Purpose:
     working with partly implemented stuff
     and old crud still hanging around
 
-
+    also some stuff ex_... meant to be run from command line as tests
 
 """
 
@@ -155,8 +155,11 @@ def ex_select_all_plug_measurements( db_file_name ):
         cur.execute("SELECT * FROM plug_measurements")
 
         rows = cur.fetchall()
+        ix   = 0
         for row in rows:
+            ix += 1
             print( row  )
+        print( f"\nrow count {ix}\n" )
 
 # ----------------------------------------------
 def ex_select_where( db_file_name ):
@@ -243,6 +246,10 @@ if __name__ == '__main__':
 
     module_db_file_name = "define_db.db"
     module_db_file_name = "test_data.db"  # do no redefine test_data.db
+    module_db_file_name = "millhouse_test_data.db"
+    module_db_file_name = "the_prof_db.db"
+    module_db_file_name = "millhouse_db.db"
+    module_db_file_name = "smithers_db.db"
    # module_db_file_name = "test_data_dup.db"
     """
     to run from module

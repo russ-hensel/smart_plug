@@ -1,166 +1,29 @@
- 2019-11-05 16:53:22,533 - splug - INFO - Done _config_logger
-2019-11-05 16:53:22,534 - splug - Level 99 - 
-2019-11-05 16:53:22,534 - splug - Level 99 - 
-2019-11-05 16:53:22,534 - splug - Level 99 - ============================
-2019-11-05 16:53:22,534 - splug - Level 99 - 
-2019-11-05 16:53:22,534 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 02.2 Mode: Mode 1
-2019-11-05 16:53:22,534 - splug - Level 99 - 
-2019-11-05 16:53:22,534 - splug - Level 99 - command line arg 0 = smart_plug_graph.py
-2019-11-05 16:53:22,534 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 16:53:22,534 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 16:53:22,534 - splug - Level 99 - Time now: 2019-11-05 21:53:22
-2019-11-05 16:53:22,534 - splug - Level 99 - In wrong thread = Helper: + now in smart_plug_adapter.reset_graphing_data
-2019-11-05 16:53:22,534 - splug - Level 99 - In wrong thread = Helper: + now in smart_plug_adapter.reset_graphing_data
-2019-11-05 16:53:22,534 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 16:53:22,821 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 16:53:22,983 - splug - Level 99 - process memory =      75.16 mega bytes 
-2019-11-05 16:53:27,899 - splug - INFO - SmartPlugGraph : all done
-2019-11-05 17:32:58,339 - splug - INFO - Done _config_logger
-2019-11-05 17:32:58,340 - splug - Level 99 - 
-2019-11-05 17:32:58,340 - splug - Level 99 - 
-2019-11-05 17:32:58,340 - splug - Level 99 - ============================
-2019-11-05 17:32:58,340 - splug - Level 99 - 
-2019-11-05 17:32:58,340 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 02.2 Mode: Mode 1
-2019-11-05 17:32:58,340 - splug - Level 99 - 
-2019-11-05 17:32:58,340 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver7/smart_plug_graph.py
-2019-11-05 17:32:58,340 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 17:32:58,340 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 17:32:58,340 - splug - Level 99 - Time now: 2019-11-05 22:32:58
-2019-11-05 17:32:58,340 - splug - Level 99 - In wrong thread = Helper: + now in smart_plug_adapter.reset_graphing_data
-2019-11-05 17:32:58,340 - splug - Level 99 - In wrong thread = Helper: + now in smart_plug_adapter.reset_graphing_data
-2019-11-05 17:32:58,340 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 17:32:58,422 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 17:32:58,558 - splug - Level 99 - process memory =     136.55 mega bytes 
-2019-11-05 17:33:08,739 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_power_from_db  
-2019-11-05 17:33:08,750 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_energy_from_db  
-2019-11-05 17:33:58,697 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_power_from_db  
-2019-11-05 17:33:58,697 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_power_from_db  
-2019-11-05 17:33:58,707 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_energy_from_db  
-2019-11-05 17:33:58,708 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_energy_from_db  
-2019-11-05 17:34:29,783 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_power_from_db  
-2019-11-05 17:34:29,783 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_power_from_db  
-2019-11-05 17:34:29,793 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_energy_from_db  
-2019-11-05 17:34:29,794 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_energy_from_db  
-2019-11-05 17:34:32,333 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_power_from_db  
-2019-11-05 17:34:32,334 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_power_from_db  
-2019-11-05 17:34:32,345 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_energy_from_db  
-2019-11-05 17:34:32,346 - splug - Level 99 - In wrong thread = Helper: + SmartPlugAdapter.graph_energy_from_db  
-2019-11-05 17:34:38,667 - splug - INFO - SmartPlugGraph : all done
-2019-11-05 17:39:40,590 - splug - INFO - Done _config_logger
-2019-11-05 17:39:40,590 - splug - Level 99 - 
-2019-11-05 17:39:40,590 - splug - Level 99 - 
-2019-11-05 17:39:40,590 - splug - Level 99 - ============================
-2019-11-05 17:39:40,590 - splug - Level 99 - 
-2019-11-05 17:39:40,591 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 05.2 Mode: Mode 1
-2019-11-05 17:39:40,591 - splug - Level 99 - 
-2019-11-05 17:39:40,591 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver7/smart_plug_graph.py
-2019-11-05 17:39:40,591 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 17:39:40,591 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 17:39:40,591 - splug - Level 99 - Time now: 2019-11-05 22:39:40
-2019-11-05 17:39:40,591 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 17:39:40,664 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 17:39:40,789 - splug - Level 99 - process memory =     181.97 mega bytes 
-2019-11-05 17:42:28,196 - splug - INFO - SmartPlugGraph : all done
-2019-11-05 21:09:50,261 - splug - INFO - Done _config_logger
-2019-11-05 21:09:50,261 - splug - Level 99 - 
-2019-11-05 21:09:50,261 - splug - Level 99 - 
-2019-11-05 21:09:50,261 - splug - Level 99 - ============================
-2019-11-05 21:09:50,261 - splug - Level 99 - 
-2019-11-05 21:09:50,261 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 05.2 Mode: Mode 1
-2019-11-05 21:09:50,262 - splug - Level 99 - 
-2019-11-05 21:09:50,262 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver7/smart_plug_graph.py
-2019-11-05 21:09:50,262 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 21:09:50,262 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 21:09:50,262 - splug - Level 99 - Time now: 2019-11-06 02:09:50
-2019-11-05 21:09:50,262 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 21:09:50,317 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 21:09:50,447 - splug - Level 99 - process memory =     108.79 mega bytes 
-2019-11-05 21:12:17,218 - splug - INFO - Done _config_logger
-2019-11-05 21:12:17,218 - splug - Level 99 - 
-2019-11-05 21:12:17,218 - splug - Level 99 - 
-2019-11-05 21:12:17,218 - splug - Level 99 - ============================
-2019-11-05 21:12:17,218 - splug - Level 99 - 
-2019-11-05 21:12:17,219 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 05.2 Mode: Mode 1
-2019-11-05 21:12:17,219 - splug - Level 99 - 
-2019-11-05 21:12:17,219 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver7/smart_plug_graph.py
-2019-11-05 21:12:17,219 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 21:12:17,219 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 21:12:17,219 - splug - Level 99 - Time now: 2019-11-06 02:12:17
-2019-11-05 21:12:17,219 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 21:12:17,289 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 21:12:17,419 - splug - Level 99 - process memory =     136.90 mega bytes 
-2019-11-05 21:12:39,553 - splug - INFO - SmartPlugGraph : all done
-2019-11-05 21:12:42,826 - splug - INFO - Done _config_logger
-2019-11-05 21:12:42,826 - splug - Level 99 - 
-2019-11-05 21:12:42,826 - splug - Level 99 - 
-2019-11-05 21:12:42,826 - splug - Level 99 - ============================
-2019-11-05 21:12:42,826 - splug - Level 99 - 
-2019-11-05 21:12:42,826 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 05.2 Mode: Mode 1
-2019-11-05 21:12:42,826 - splug - Level 99 - 
-2019-11-05 21:12:42,826 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver7/smart_plug_graph.py
-2019-11-05 21:12:42,826 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 21:12:42,826 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 21:12:42,826 - splug - Level 99 - Time now: 2019-11-06 02:12:42
-2019-11-05 21:12:42,826 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 21:12:42,883 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 21:12:43,009 - splug - Level 99 - process memory =     141.73 mega bytes 
-2019-11-05 21:13:26,133 - splug - INFO - SmartPlugGraph : all done
-2019-11-05 21:13:27,785 - splug - INFO - Done _config_logger
-2019-11-05 21:13:27,785 - splug - Level 99 - 
-2019-11-05 21:13:27,785 - splug - Level 99 - 
-2019-11-05 21:13:27,785 - splug - Level 99 - ============================
-2019-11-05 21:13:27,785 - splug - Level 99 - 
-2019-11-05 21:13:27,785 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 05.2 Mode: Mode 1
-2019-11-05 21:13:27,786 - splug - Level 99 - 
-2019-11-05 21:13:27,786 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver7/smart_plug_graph.py
-2019-11-05 21:13:27,786 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 21:13:27,786 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 21:13:27,786 - splug - Level 99 - Time now: 2019-11-06 02:13:27
-2019-11-05 21:13:27,786 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 21:13:27,843 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 21:13:27,972 - splug - Level 99 - process memory =     143.91 mega bytes 
-2019-11-05 21:16:35,440 - splug - INFO - SmartPlugGraph : all done
-2019-11-05 21:16:37,779 - splug - INFO - Done _config_logger
-2019-11-05 21:16:37,779 - splug - Level 99 - 
-2019-11-05 21:16:37,779 - splug - Level 99 - 
-2019-11-05 21:16:37,779 - splug - Level 99 - ============================
-2019-11-05 21:16:37,779 - splug - Level 99 - 
-2019-11-05 21:16:37,779 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 05.2 Mode: Mode 1
-2019-11-05 21:16:37,779 - splug - Level 99 - 
-2019-11-05 21:16:37,779 - splug - Level 99 - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver7/smart_plug_graph.py
-2019-11-05 21:16:37,779 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 21:16:37,779 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 21:16:37,779 - splug - Level 99 - Time now: 2019-11-06 02:16:37
-2019-11-05 21:16:37,780 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 21:16:37,834 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 21:16:37,958 - splug - Level 99 - process memory =     146.36 mega bytes 
-2019-11-05 21:18:05,018 - splug - INFO - SmartPlugGraph : all done
-2019-11-05 21:21:36,134 - splug - INFO - Done _config_logger
-2019-11-05 21:21:36,134 - splug - Level 99 - 
-2019-11-05 21:21:36,134 - splug - Level 99 - 
-2019-11-05 21:21:36,134 - splug - Level 99 - ============================
-2019-11-05 21:21:36,134 - splug - Level 99 - 
-2019-11-05 21:21:36,134 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 05.2 Mode: Mode 1
-2019-11-05 21:21:36,134 - splug - Level 99 - 
-2019-11-05 21:21:36,134 - splug - Level 99 - command line arg 0 = D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7\smart_plug_graph.py
-2019-11-05 21:21:36,134 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-05 21:21:36,134 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-05 21:21:36,134 - splug - Level 99 - Time now: 2019-11-06 02:21:36
-2019-11-05 21:21:36,134 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-05 21:21:36,214 - splug.gui - INFO - in class gui_new GUI init
-2019-11-05 21:21:36,347 - splug - Level 99 - process memory =      75.08 mega bytes 
-2019-11-05 21:22:53,949 - splug - INFO - SmartPlugGraph : all done
-2019-11-07 09:47:02,761 - splug - INFO - Done _config_logger
-2019-11-07 09:47:02,761 - splug - Level 99 - 
-2019-11-07 09:47:02,761 - splug - Level 99 - 
-2019-11-07 09:47:02,761 - splug - Level 99 - ============================
-2019-11-07 09:47:02,761 - splug - Level 99 - 
-2019-11-07 09:47:02,761 - splug - Level 99 - Running SmartPlugGraph  version = Ver7 2019 11 06.2 Mode: Mode 2
-2019-11-07 09:47:02,761 - splug - Level 99 - 
-2019-11-07 09:47:02,761 - splug - Level 99 - command line arg 0 = smart_plug_graph.py
-2019-11-07 09:47:02,761 - splug - Level 99 - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
-2019-11-07 09:47:02,761 - splug - Level 99 - COMPUTERNAME THEPROF
-2019-11-07 09:47:02,761 - splug - Level 99 - Time now: 2019-11-07 14:47:02
-2019-11-07 09:47:02,762 - splug.sp_graph - INFO - in Grapher __init__
-2019-11-07 09:47:02,852 - splug.gui - INFO - in class gui_new GUI init
-2019-11-07 09:47:03,028 - splug - Level 99 - process memory =      74.76 mega bytes 
+ 2019-11-11 09:40:10,368 - splug - INFO - Done _config_logger
+2019-11-11 09:40:10,368 - splug - Notice - 
+2019-11-11 09:40:10,368 - splug - Notice - 
+2019-11-11 09:40:10,368 - splug - Notice - ============================
+2019-11-11 09:40:10,368 - splug - Notice - 
+2019-11-11 09:40:10,368 - splug - Notice - Running SmartPlugGraph  version = Ver7 2019 11 06.2 Mode: Mode 1
+2019-11-11 09:40:10,368 - splug - Notice - 
+2019-11-11 09:40:10,369 - splug - Notice - command line arg 0 = smart_plug_graph.py
+2019-11-11 09:40:10,369 - splug - Notice - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
+2019-11-11 09:40:10,369 - splug - Notice - COMPUTERNAME THEPROF
+2019-11-11 09:40:10,369 - splug - Notice - Time now: 2019-11-11 14:40:10
+2019-11-11 09:40:10,369 - splug.sp_graph - INFO - in Grapher __init__
+2019-11-11 09:40:10,451 - splug.gui - INFO - in class gui_new GUI init
+2019-11-11 09:40:10,590 - splug - Notice - process memory =      75.15 mega bytes 
+2019-11-16 09:57:26,979 - splug - INFO - Done _config_logger
+2019-11-16 09:57:26,992 - splug - Notice - 
+2019-11-16 09:57:26,992 - splug - Notice - 
+2019-11-16 09:57:26,992 - splug - Notice - ============================
+2019-11-16 09:57:26,992 - splug - Notice - 
+2019-11-16 09:57:26,992 - splug - Notice - Running SmartPlugGraph  version = Ver7 2019 11 06.2 Mode: Mode 1
+2019-11-16 09:57:26,992 - splug - Notice - 
+2019-11-16 09:57:26,992 - splug - Notice - command line arg 0 = D:/Russ/0000/python00/python3/_projects/smart_plug/Ver7/smart_plug_graph.py
+2019-11-16 09:57:26,992 - splug - Notice - current directory D:\Russ\0000\python00\python3\_projects\smart_plug\Ver7
+2019-11-16 09:57:26,992 - splug - Notice - COMPUTERNAME theprof
+2019-11-16 09:57:26,992 - splug - Notice - Time now: 2019-11-16 14:57:26
+2019-11-16 09:57:26,992 - splug.sp_graph - INFO - in Grapher __init__
+2019-11-16 09:57:27,206 - splug.gui - INFO - in class gui_new GUI init
+2019-11-16 09:57:27,350 - splug - Notice - process memory =      80.00 mega bytes 
+2019-11-16 09:57:40,049 - splug - INFO - SmartPlugGraph : all done

@@ -2,7 +2,7 @@
 
 """
 Purpose:
-parameters    for smart_plug and smart_plug_graph
+	parameters for smart_plug and smart_plug_graph
 
     Also documents the meaning of the parameters ( hopefully ).
     If you are changing parameters read the code first
@@ -24,7 +24,7 @@ class Parameters( object ):
     sets parameter values, globally available through AppGlobal
 	outside code using this object this object should not change the values set here, treat as constants
 
-	documentation of the parameters can be found in this code particurlally in the default mode subroutine: default_parms(  )
+	documentation of the parameters can be found in this code particularly in the default mode subroutine: default_parms(  )
     """
     def __init__(self,  ):
         self.controller       = AppGlobal.controller   # set class property for global access to parameters
@@ -135,7 +135,11 @@ class Parameters( object ):
 
         self.platform           = self.our_os    # I guess I had trouble deciding on a name -- I should eliminate one ......
         self.opening_dir        = os.getcwd()    # name of the directory that the application is started in. Probably "....../smart_plug
-        self.computername       = os.getenv( "COMPUTERNAME" ).lower() # at least in windows the lower case name of your computer.  what in linux?
+
+        if self.os_win:
+            self.computername       = os.getenv( "COMPUTERNAME" ).lower() # at least in windows the lower case name of your computer.  what in linux?
+        else:
+            self.computername       = "linux_box"
 
         #--------------- appearance ---------
         self.win_geometry      = '1300x700+20+20'    # window width x height + position x + position y
@@ -162,7 +166,7 @@ class Parameters( object ):
         delta_t: how often the device should be monitored
         ..... planning to add more like location and purpose ??
 
-        plug has some additional "built in atributes", you can see them after you connect by press the smart_plug gui butto with the device name
+        plug has some additional "built in attributes", you can see them after you connect by press the smart_plug gui button with the device name
         the information is displayed in the message areas of the gui
 		"""
         # list of dictionaries
@@ -174,8 +178,8 @@ class Parameters( object ):
 
         # since this is python only this setting sticks
         self.device_list = [
-                              { "name": "device_1", "tcpip": "192.168.0.209", "delta_t": 10,   },
-                              { "name": "device_2", "tcpip": "192.168.0.92",  "delta_t": 10,   },
+                              { "name": "device_1", "tcpip": "192.168.0.209", "delta_t": 30,   },
+                              { "name": "device_2", "tcpip": "192.168.0.92",  "delta_t": 30,   },
                             ]
         """
         !! note to russ
@@ -187,7 +191,7 @@ class Parameters( object ):
         """
 
         """
-        probe for devices smart_plug gui <probe plugs> is an appliction feature that will look for plugs and output
+        probe for devices smart_plug gui <probe plugs> is an application feature that will look for plugs and output
         to the message area a setting for device_list that will connect to the devices it finds
         looking for devices takes seconds for each address checked so can be slow
         """
@@ -277,12 +281,14 @@ class Parameters( object ):
         # used by the python logger  -- controls the  logging file
         self.logger_id          = "splug"
         self.pylogging_fn       = "smart_plug.py_log"     # file name for the python logging
+
+        # note if the debug level here is set low ( as in .DEBUG, INFO) the log files can be quite large
         self.logging_level      = logging.DEBUG           #   CRITICAL	50   ERROR	40 WARNING	30  INFO	20 DEBUG	10 NOTSET	0
-        #self.logging_level     = logging.INFO            #   CRITICAL	50   ERROR	40 WARNING	30  INFO	20 DEBUG	10 NOTSET	0
+
         self.print_to_log       = False                   # does what? not implemented
 
-        self.log_gui_text       = True                    # True or False   implemented ??
-        self.log_gui_text_level = logging.DEBUG           # if log_gui_text is True then this is the level that we log at
+        self.log_gui_text       = False                   # True or False   implemented ??
+        self.log_gui_text_level = logging.DEBUG       # level at wich gui text to be logged logged or non and not logged at all
 
         # override whatever you want
         if  AppGlobal.graph_app:

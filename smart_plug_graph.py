@@ -180,7 +180,7 @@ class SmartPlugGraph:
                 ix_arg += 1
 
         logger.log( fll,  "current directory " +  os.getcwd() )
-        logger.log( fll,  "COMPUTERNAME "      +  os.getenv( "COMPUTERNAME" ) )
+        logger.log( fll,  f"COMPUTERNAME {self.parameters.computername}" )
 
         start_ts     = time.time()
         dt_obj       = datetime.datetime.utcfromtimestamp( start_ts )
@@ -285,7 +285,6 @@ class SmartPlugGraph:
         hr_end        = dt_end.hour
         self.gui.time_end.set( AppGlobal.dd_hours[ hr_end -1 ] )
 
-
 #        print( f"datetime.datetime.now() = {dt}" )
 
         #ix_hr              = hr_begin - 2   # will it be an int think this is safe  no use deltas
@@ -315,9 +314,8 @@ class SmartPlugGraph:
         """
         what it says
         put values into gui for later use in graph
-
         """
-        #print( "db_select_today" )
+#        print( "db_select_today" )
         dt_now         = datetime.datetime.now()
         tt_now         = dt_now.timetuple( )
         dt_now         = datetime.datetime.now()
@@ -368,7 +366,7 @@ class SmartPlugGraph:
     #-------------------------------------------
     def db_select_from_sun( self, n ):
         """
-        select with start date going back n sundays )
+        select with start date going back n Sundays )
         """
         #print( "----------- db_select_from_sun  ------------" )
 
@@ -413,7 +411,7 @@ class SmartPlugGraph:
     #-------------------------------------------
     def display_db_select( self ):
         """
-        !! fix allignment of lables and length and will not need padding
+        !! fix alignment of labels and length and will not need padding
         """
         spacer   = "                                              "
         lab_len  = 20

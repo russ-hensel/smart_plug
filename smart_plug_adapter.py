@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
 
+"""
+Purpose:
+     Support for smart_plug.SmartPlug
+     This code interfaces the pyHS100 devices into the 2 smart plug applications
+	 typically the apps have an array of these instances one for each device.
+
+"""
+
+
+
 import datetime
 import time
 import os
@@ -7,7 +17,6 @@ import sqlite3 as lite
 import pyHS100
 import threading
 
-#import parameters    # or use the app global one ??
 
 # ----------- local imports --------------------------
 from   app_global import AppGlobal
@@ -123,7 +132,7 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def start_graph_live( self, a_ax ):
         """
-        main thead
+        main thread
         """
 #        print( f"start_graph_live in adapter {self.name} at {self.tcpip}" )
 #        msg    =  f"? ? start_graph_live for device: {self.name} "
@@ -163,8 +172,8 @@ class SmartPlugAdapter( object ):
         msg     =   "SmartPlugAdapter.update_graph_live  "
         AppGlobal.log_if_wrong_thread( threading.get_ident(), msg = msg, main = True  )
 
-        msg    =  f"Adapter.update_graph_live device: {self.name}  data: {self.graphing_new_data} ready: {self.live_graph_ready}"
-        AppGlobal.logger.info( msg )
+#        msg    =  f"Adapter.update_graph_live device: {self.name}  data: {self.graphing_new_data} ready: {self.live_graph_ready}"
+#        AppGlobal.logger.info( msg )
 
         if  (not self.graphing_new_data ) or ( not self.live_graph_ready ):
             return False
@@ -184,7 +193,7 @@ class SmartPlugAdapter( object ):
 
    # ----------------------------------------------
     def end_graph_live( self, ):
-        #print( "smart plug adapter end_graphing still need to work this out ?? delete data here " )
+#        print( "smart plug adapter end_graphing still need to work this out ?? delete data here " )
         self.live_graph_ready     = False
         self.reset_graphing_data()
 
@@ -340,7 +349,7 @@ class SmartPlugAdapter( object ):
 #        print( f"a_datetime_end = { type(a_datetime_end)}  {a_datetime_end} " )
 
         db_file_name       = AppGlobal.gui.get_db_file_name()
-#        db_file_name       = AppGlobal.db_file_name
+
         if not( os.path.isfile( db_file_name  )):      # already checked in caller but move whole connect back there
             msg   =  f"Error: db file does not exist: {db_file_name}"
             AppGlobal.gui.display_info_string( msg )
@@ -374,9 +383,10 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def adj_db_data_energy( self,   ):
         """
+        mutator
         always start from 0 as first energy point  -- think about including units
         self.gd_energy         >>          self.gd_energy_adj
-
+        new list to adjust the raw energy readings to 0 at the first data point
         """
         if len( self.gd_energy )  == 0:
             convert_offset         = 0
@@ -392,6 +402,7 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def adj_db_data_time( self,  convert_function ):
         """
+        mutator
         from self.gd_time        to   self.gd_time_adj
         """
         self.gd_time_adj             = [ convert_function( x ) for x in self.gd_time ]
@@ -399,7 +410,7 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def get_device_checked( self, ):
         """
-        see if device is checked
+        see if device is checked -- dead or not implemented
 
         """
         pass
@@ -407,6 +418,7 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def on( self, ):
         """
+        mutator
         plug on call from ht or gt
         manage exception: plug might not be there .......
         """
@@ -424,6 +436,7 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def off( self, ):
         """
+        mutator
         off from on or from timer running, may have a conflict as this may be called from
         either thread ht or gt
         if timer is on turn it off
@@ -439,7 +452,7 @@ class SmartPlugAdapter( object ):
 #                print( msg  )
                 AppGlobal.gui.print_info_string( msg )
         # may save event
-        except pyHS100.smartdevice.SmartDeviceException as exception:             # look up correct exception
+        except pyHS100.smartdevice.SmartDeviceException as exception:
             msg         = "failed to communicate with plug {self.tcpip}"
             self.display_msg( msg )
             msg         = msg + ": " + self.name
@@ -461,7 +474,7 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def cb_mon( self, ):
         """
-
+		button call back
         """
         cb_state = self.gui_tk_mon_checkbox_var
 #        print( f"cb_mon cb_state {cb_state.get()} " )
@@ -475,7 +488,8 @@ class SmartPlugAdapter( object ):
     # ----------------------------------------------
     def cb_record( self, ):
         """
-
+		button call back
+		set record on or off
         """
         cb_state = self.gui_tk_record_checkbox_var
 #        print( f"cb_record cb_state {cb_state.get()} " )
@@ -493,7 +507,7 @@ class SmartPlugAdapter( object ):
         """
         self.display_msg( "Record On" )
         msg   = f"record on for: {self.name}"
-        print( msg  )
+#        print( msg  )
         AppGlobal.gui.print_info_string( msg )
         self.recording           = True
         self.last_record_time    = 0.
@@ -583,8 +597,8 @@ class SmartPlugAdapter( object ):
         else:
             time_units = splits[1]
 
-        print( f"splits {splits}" )
-        print( f"time_num {time_num} time_units {time_units}" )
+#        print( f"splits {splits}" )
+#        print( f"time_num {time_num} time_units {time_units}" )
 
         # no analysis now of units
         sec     = time_num * 60
@@ -621,7 +635,7 @@ class SmartPlugAdapter( object ):
         # !! make connect an app global thing ??
         db_file_name   = AppGlobal.gui.get_db_file_name()
         msg    = f"insert_measurements into {db_file_name} >> {data}"
-        print( msg )
+#        print( msg )
         AppGlobal.gui.print_info_string( msg )
 
         sql_con = lite.connect( db_file_name )

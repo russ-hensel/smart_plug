@@ -58,6 +58,7 @@ class GUI:
         self.save_redir          = None
         self.save_sys_stdout     = sys.stdout
 
+		# perhaps dead
         self.max_lables          = 6   # number of labels, normally used for parameters
         self.lables              = []  # labels normally for parameters
 
@@ -74,10 +75,8 @@ class GUI:
 
         next_frame       = 0      # index of frames and position row for frames
 
-#        self.root_b      = Frame( self.root )   # this may be an extra unneeded frame
+        # this may be an extra unneeded frame
         self.root_b      =  self.root # !! to phase out root_b -- run a bit more the finish delete of _b
-        #self.root.grid( column=1, row=1 )  # this seems to set up the col grid in the root
-        #self.root.pack( expand = True, sticky = E+W )  # this also works, why needed? sticky not an option here
 
         self.root.grid_columnconfigure( 0, weight=1 ) # final missing bit of magic
 #        self.root.grid_rowconfigure(    0, weight=1 )
@@ -113,6 +112,7 @@ class GUI:
         # ------------------------------------------
     def _make_device_frame( self, parent, ):
         """
+		what it says
         device frame, list devices
         Return:  a frame with the controls in it
         """
@@ -234,6 +234,7 @@ class GUI:
         a_rb   =  Radiobutton( a_frame, text = "From Now - 1hr ",      variable = self.rb_var, value=6,  command=self.controller.cb_rb_select )
         a_rb.grid( row = lrow,  column = lcol )
 
+		#  ------- ikd buttons that could come back
 #        lcol    += 1
 #        a_rb   =  Radiobutton( a_frame, text = "From Sun - 2 ",      variable = self.rb_var, value=2,  command=self.controller.cb_rb_select )
 #        a_rb.grid( row = lrow,  column = lcol )
@@ -469,7 +470,6 @@ class GUI:
 #        a_datetime_end     = datetime.datetime.fromtimestamp( ts_end )
 #        print( f"a_datetime_end = { type(a_datetime_end)}  {a_datetime_end} " )
 
-        #return( datetime.datetime( self.cal_begin.get_date() ) , datetime.datetime( self.cal_end.get_date() ) )
         return( ts_begin , ts_end  )
 
     # -----  functions mostly for controller  ------------------------
@@ -486,7 +486,7 @@ class GUI:
     # ------------------------------------------
     def display_info_string( self, data, update_now = False ):
         """
-        add info prefix and new line suffix and show in recieve area
+        add info prefix and new line suffix and show in receive area
         data expected to be a string, but other stuff has str applied to it
         consider adding auto log
         """
@@ -498,7 +498,7 @@ class GUI:
     # ---------------------------------------
     def display_string( self, a_string, update_now = False ):
         """
-        print to recieve area, with scrolling and
+        print to receive area, with scrolling and
         delete if there are too many lines in the area
         logging here !!
         """
@@ -510,7 +510,6 @@ class GUI:
         try:
              numlines = int( self.rec_text.index( 'end - 1 line' ).split('.')[0] )  # !! beware int( None ) how could it happen ?? it did this is new
         except Exception as exception:
-        # Catch the custom exception
             self.logger.error( str( exception ) )
             print( exception )
             numlines = 0
@@ -518,10 +517,10 @@ class GUI:
             cut  = int( numlines/2  )   # lines to keep/remove py3 new make int
             # remove excess text
             self.rec_text.delete( 1.0, str( cut ) + ".0" )
-            #msg     = "Delete from test area at " + str( cut )
-            #self.logger.info( msg )
+#            msg     = "Delete from test area at " + str( cut )
+#            self.logger.info( msg )
 
-        if self.cb_scroll_var.get():
+        if self.cb_scroll_var.get():   # so no function on box needed !! remove later
             self.rec_text.see( END )
 
         if update_now:
@@ -534,16 +533,11 @@ class GUI:
         self.controller.restart()
         return
 
-#    # ------------------------------------------
-#    def do_open_button( self, event):
-#        self.controller.open_com_driver()
-#        return
-
     # ------------------------------------------
     def do_clear_button( self, event):
         """
         for the clear button
-        clear the recieve area
+        clear the receive area
         """
         self.rec_text.delete( 1.0, END )
         return
@@ -566,16 +560,6 @@ class GUI:
         return
 
     # ------------------------------------------
-    def do_auto_scroll( self,  ):
-        """
-        pass, not needed, place holder  -- may want to add back
-        """
-        # print "do_auto_scroll"
-        # not going to involve controller
-        pass
-        return
-
-    # ------------------------------------------
     def cb_send_button( self, event ) :  # how do we identify the button    def cb_send_button( self, event ) :  # how do we identify the button
         """
         any send button
@@ -591,6 +575,17 @@ class GUI:
         contents = self.sends_data[control_ix].get()
 
         self.controller.send( contents )
+        return
+
+    # ------------------------------------------
+    def do_auto_scroll( self,  ):
+        """
+        still configured so needed, but will not work ??
+        pass, not needed, place holder see
+        """
+        print( "do_auto_scroll fix !!" )
+        # not going to involve controller
+        pass
         return
 
     # --------------- may be left over from terminal check and delete dead stuff !!---------------------------
@@ -616,7 +611,7 @@ class GUI:
 class FileBrowseWidget( Frame ):
     """
     let user pick a file name on their computer
-    not sure why making it ino a widget is a good idea but here goes
+    not sure why making it into a widget is a good idea but here goes
     this is a widget that both holds a filename
     and lets you browse to a file
     how is it different from just a couple of widgets
@@ -708,5 +703,11 @@ if __name__ == '__main__':
         """
         import  smart_plug_graph
         a_app = smart_plug_graph.SmartPlugGraph(  )
+
+# ===================== eof ==================
+
+
+
+
 
 

@@ -2,6 +2,7 @@
 
 """
 Purpose:
+    part of smart_plug.SmartPlug
     use as central point in live graphing
     init graphing
     polling some code for begin same as end
@@ -147,8 +148,8 @@ class GraphLive:
 
             # ------------ for tracking memory use
             self.debug_count += 1
-            if self.debug_count > 10:
-                AppGlobal.show_process_memory( "GraphLive.polling_mt polling debug_count max reached", log_level = 20 )
+            if self.debug_count > 50:
+                AppGlobal.show_process_memory( "GraphLive.polling_mt polling time to log", log_level = 20 )
                 self.debug_count = 0
 
     # ---------------------------------------

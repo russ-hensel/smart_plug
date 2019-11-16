@@ -5,6 +5,7 @@
 
 #  markerfacecolor
 #  linewidth or lw
+
 """
 
 
@@ -41,19 +42,19 @@ class LineStyle():
                 8: 'caretleftbase', 9: 'caretrightbase', 10: 'caretupbase', 11: 'caretdownbase', 'None': 'nothing', None: 'nothing',
                 ' ': 'nothing', '': 'nothing'}¶
 
-
     """
+	
     # -----------------------------------------------
     def __init__(self ):
 
         """
         think we want lists to be relatively prime for longest cycle time
         """
-        self.lines       = [  '-', '--', ':' ]  #   "-." "_" totl of 4 ??
+        self.lines       = [  '-', '--', ':' ]  #   "-." "_" total of 4 ??
         self.line_ix     = 0
         self.max_line    = len( self.lines  )
 
-        self.colors      = [ 'red', 'blue', 'cyan', 'green', 'black' ]     # want dark colors yellow and oarnge are light
+        self.colors      = [ 'red', 'blue', 'cyan', 'green', 'black' ]     # want dark colors yellow and orange are light
         self.color_ix    = 0
         self.max_color   = len( self.colors  )
 
@@ -64,7 +65,7 @@ class LineStyle():
         self.widths      = [ 1, 2, 3, 4 ]       # "1" ......23   "4"
         self.max_width   = len( self.widths  )
 
-        # setup, need get_next_style befor use
+        # setup, need get_next_style before use
         self.linestyle     = None
         self.colorstyle    = None
         self.markerstyle   = None
@@ -77,7 +78,7 @@ class LineStyle():
     def reset( self, ):
         """
         reset for reuse from beginning
-        need to get next befor valid
+        need to get next before valid
         """
         self.marker_ix   = -1
         self.color_ix    = -1
@@ -88,7 +89,7 @@ class LineStyle():
     def _getNextWidth_( self, ):
         """
         inside class use only,
-        get next line sytle
+        get next line style
         """
         self.width_ix  += 1
         if self.width_ix >= self.max_width:
@@ -100,7 +101,7 @@ class LineStyle():
     def _getNextLine_( self, ):
         """
         inside class use only,
-        get next line sytle
+        get next line style
         """
         self.line_ix  += 1
         if self.line_ix >= self.max_line:
@@ -112,7 +113,7 @@ class LineStyle():
     def _getNextColor_( self, ):
         """
         inside class use only,
-        get next color sytle
+        get next color style
         """
         self.color_ix  += 1
         if self.color_ix >= self.max_color:
@@ -124,7 +125,7 @@ class LineStyle():
     def _getNextMarker_( self, ):
         """
         inside class use only,
-        get next marker sytle
+        get next marker style
         """
         self.marker_ix  += 1
         if self.marker_ix >= self.max_marker:
@@ -137,7 +138,7 @@ class LineStyle():
         """
         get the next tuple: ( line, color, marker )
         return tuple see below !! change to named tuple ??
-        can use the returned or perhaps cleare the instance var like   .markerstyle
+        can use the returned or perhaps clear the instance var like   .markerstyle
 
         a_linestyle, a_colorstyle, a_markerstyle, a_widthstyle  = line_style.get_next_style()
         or
@@ -160,3 +161,7 @@ if __name__ == '__main__':
     test   = LineStyle()
     for ix in range(0,20 ):
         print(test.get_next_style())
+
+
+
+

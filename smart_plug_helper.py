@@ -2,11 +2,10 @@
 
 """
 Purpose:
+     Support for a second thread in smart_plug.SmartPlug
      This module is mostly for things that run in the so called helper thread, ht_
      of course initial call does need to be done in the main thread
-     for the smart_plug.py app
-
-     !! catching too many exceptions ??
+   
 """
 
 import time
@@ -193,7 +192,7 @@ class HelperThread( threading.Thread ):
     # ------------------------------------------------
     def print_info_string( self, text ):
         """
-        print info string using the queue, so thread safe
+        print info string in the gui using the queue, so thread safe
         call ht
         """
         self.post_to_queue(  "info", None, ( text ) )  # info gui.print_info_string goes to message area
@@ -225,8 +224,8 @@ class HelperThread( threading.Thread ):
         """
 		dead code ??
         this is a way to pause action in the ht while keeping
-        recieve active
-        have it end if anything is recieved??
+        receive active
+        have it end if anything is received??
         args: for_time number of seconds to stay here
         call ht
         """
@@ -278,7 +277,7 @@ class HelperThread( threading.Thread ):
         (       )
 
         ?? add flag to control throwing of exception  or message for exception
-        sends a string, recieves a string, in meantime checks queue
+        sends a string, receives a string, in meantime checks queue
 
         receive data via the comm port
         display data
@@ -294,7 +293,7 @@ class HelperThread( threading.Thread ):
         receive only full strings ending with /n else
         accumulated in the driver /n is stripped
         call: ht
-        ret:  non empt string or throws exception
+        ret:  non empty string or throws exception
         """
         #self.logger.info( "helper: send_receive() entered",  )
         wait_till   = time.time( ) + for_time
@@ -327,7 +326,7 @@ class HelperThread( threading.Thread ):
     # --------------------------------------------------
     def post_to_queue( self, action, function, args ):
         """
-                post args to the queue to the controller
+        post args to the queue to the controller
         call from: helper thread
         args: action=string, function=a function, args=tuple of arguments to function
         ret: zip

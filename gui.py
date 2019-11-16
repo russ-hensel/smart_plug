@@ -4,19 +4,20 @@
 Purpose:
     gui    for smart_plug
 
+
+
 """
 
 import  logging
 import  pyperclip
 from    tkinter import *   # is added everywhere since a gui assume tkinter name space
 from    tkinter.filedialog import askopenfilename
-import  sys
+#import  sys
 from    tkinter import ttk
 import  ctypes
 
 # ------ local imports
 from app_global import AppGlobal
-
 
 
 # ======================= begin class ====================
@@ -205,7 +206,7 @@ class GUI( object ):
             a_widget.config( borderwidth = 5, relief = RAISED,  )
             a_widget.grid( row = lrow * rowspan, column = lcol, rowspan = 2, sticky=E + W + N + S )
             i_smartplug_adapter.gui_tk_on_checkbox_var   = cb_on_var
-            # these work as with lables
+            # these work as with labels
 #            a_widget.config( width = 80)
 #            a_widget.config( text='Hello World!',   anchor="e" )    # anchor alligns text
             lcol +=  1
@@ -538,9 +539,8 @@ class GUI( object ):
             print( exception )
             numlines = 0
         if numlines > self.max_lines:
-            cut  = numlines/2     # lines to keep/remove
-            # remove excess text
-            self.rec_text.delete( 1.0, str( cut ) + ".0" )
+            cut  = int( numlines/2  )    # lines to keep/remove
+            self.rec_text.delete( 1.0, str( cut ) + ".0" )               # remove excess text
 #            msg     = "Delete from test area at " + str( cut )
 #            self.logger.info( msg )
 
@@ -551,27 +551,11 @@ class GUI( object ):
             self.root.update()
         return
 
-#        process devices check box action, see lambda setup in button creation
-#        this may be more indirect than needed, go straight to controller ??
-        """
-#        print( f"cb_device_action {button_ix}, {action}" )--
-
-        self.controller.cb_device_action( button_ix, action  )
-
-#    # ------------------------------------------
-#    def display_device_label( self, msg, device_adapter  ):
-#        """
-#        not needed ?? done by actions directly in device adapter
-#        display msg in the device's label area
-#        """
-#        label       = device_adapter.gui_tk_label
-#        label.config( text = msg )
-
     #----- buttons ------------------------
      # ----------------------------------------
     def cb_device_cb_action( self, button_ix, action  ):
         """
-
+		call back function for button
         """
         pass
     # ------------------------------------------
@@ -645,12 +629,6 @@ class GUI( object ):
             pyperclip.copy( bdata )
             self.rec_text.delete( 1.0, END )
 
-        #        elif btext == self.BN_SND_ARRAY:
-        #            #self.text0.delete( 1.0, END )
-        #            #print btext
-        #            self.controller.sendArray()
-        #            pass
-
         # for screwing around
         elif btext == "Add DB":
             self.controller.addDB()
@@ -663,6 +641,17 @@ class GUI( object ):
         else:
             msg   = "no action defined for: " + btext
             self.logger.error( msg )
+        return
+
+    # ------------------------------------------
+    def do_auto_scroll( self,  ):
+        """
+        still configured so needed, but will not work ??
+        pass, not needed, place holder see
+        """
+        print( "do_auto_scroll fix !!" )
+        # not going to involve controller
+        pass
         return
 
     # ------------------------------------------
@@ -681,16 +670,6 @@ class GUI( object ):
         """
         data  = self.rec_text.get( 1.0, END )
         pyperclip.copy( data )
-        return
-
-    # ------------------------------------------
-    def do_auto_scroll( self,  ):
-        """
-        pass, not needed, place holder see
-        """
-        # print "do_auto_scroll"
-        # not going to involve controller
-        pass
         return
 
     # ------------------------------------------

@@ -36,7 +36,7 @@ import threading
 import importlib
 import pyHS100
 #import matplotlib.pyplot as plt     # plotting stuff
-from   tkinter import messagebox
+#from   tkinter import messagebox
 
 # ----------- local imports --------------------------
 import parameters
@@ -67,7 +67,7 @@ class SmartPlug( object ):
 
         AppGlobal.controller        = self
         self.app_name               = "SmartPlug"
-        self.version                = "Ver7 2019 11 06.2"
+        self.version                = "Ver7 2019 11 12.1"
 
         self.gui                    =  None  # the gui created later
         self.no_restarts            =  -1    # counter for the number of times the application is restarted
@@ -87,7 +87,6 @@ class SmartPlug( object ):
         ret: zip ... all sided effects
         """
 #        print( "===================restart===========================" )
-        #global print
         self.no_restarts    += 1
         if self.gui is not None:
 
@@ -174,7 +173,7 @@ class SmartPlug( object ):
         msg     = "thread join returned"
         # AppGlobal.what_thread( threading.get_ident(), msg, 50  )
 
-        self.graph_live.end_graph_live()    # will thow error if no plt ??
+        self.graph_live.end_graph_live()
 
         self.logger.info( self.app_name + ": all done" )
 
@@ -238,7 +237,7 @@ class SmartPlug( object ):
                 ix_arg += 1
 
         logger.log( fll,  "current directory " +  os.getcwd() )
-        logger.log( fll,  "COMPUTERNAME "      +  str( os.getenv( "COMPUTERNAME" ) ) )  # may not exist in linux
+        logger.log( fll,  f"COMPUTERNAME {self.parameters.computername}" )
 
         start_ts     = time.time()
         dt_obj       = datetime.datetime.utcfromtimestamp( start_ts )
@@ -368,9 +367,9 @@ class SmartPlug( object ):
             lo           = int( splits[1])
             hi           = lo + 1
             a_tuple      = ( tcpip_base, lo, hi )
-            print( f"splits {splits}" )
-            print( f"tcpip {tcpip}" )
-            print( f"a_tuple {a_tuple}" )
+#            print( f"splits {splits}" )
+#            print( f"tcpip {tcpip}" )
+#            print( f"a_tuple {a_tuple}" )
             probe_list.append( a_tuple )
         print( probe_list )
         return probe_list
@@ -378,7 +377,7 @@ class SmartPlug( object ):
     # -------------------------------------------------------
     def probe_for_plugs( self ):
         """
-        use parms to control probe
+        use parameters to control probe
         return tcpip of devices found
         !! first probe for the one on the device list in parameters
         """
