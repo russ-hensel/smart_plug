@@ -1,4 +1,4 @@
-Purpose: This is a a pair of Graphical User Interface Application is to control TP-LINK HS110 Smart Plug w/Energy Monitoring ( TP-LINK HS110 Smart Plug w/Energy Monitoring - - Amazon.com ) graph and otherwise process the data. The application uses the pyHS100 library code.  
+Purpose: This is a pair of Graphical User Interface Application is to control TP-LINK HS110 Smart Plug w/Energy Monitoring ( TP-LINK HS110 Smart Plug w/Energy Monitoring - - Amazon.com ) graph and otherwise process the data. The application uses the pyHS100 library code.  
 
 * Program One: smart_plug.py - Monitors, controls, collects ( to memory and database ), and graphs data from smart plugs.
 * Program Two: smart_plug_graph.py - Pulls smartplug data from the database to graph or convert to csv.
